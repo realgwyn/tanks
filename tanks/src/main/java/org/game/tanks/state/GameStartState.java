@@ -1,4 +1,4 @@
-package org.game.tanks.gui.widgets;
+package org.game.tanks.state;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,19 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ChatWindow extends GuiComponent{
+public class GameStartState extends State {
 
   @Autowired
   GameDisplay display;
-  
+
+  @Override
+  public void update() {
+
+  }
+
   @Override
   public void draw() {
     Graphics g = display.getGraphics();
-    g.setColor(Color.black);
-    g.fillRect(10, display.HEIGHT - 60, display.WIDTH - 20, 50);
-    g.setColor(Color.green);
-    g.drawRect(10, display.HEIGHT - 60, display.WIDTH - 20, 50);
-    g.drawString("Write Chat:", 20, display.HEIGHT - 45);
+    g.setColor(Color.BLACK);
+    g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
+    g.setColor(Color.WHITE);
+    g.drawString("GameStartState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
-
 }

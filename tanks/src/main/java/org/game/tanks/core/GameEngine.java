@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
-import org.game.tanks.gui.widgets.Focusable;
 import org.game.tanks.state.LoadingState;
 import org.game.tanks.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ public class GameEngine extends Loop {
 
   private final static Logger logger = Logger.getLogger(GameEngine.class);
   private State currentState;
-  private Focusable focusedComponent;
 
   @Autowired
   LoadingState loadingState;
@@ -33,6 +31,8 @@ public class GameEngine extends Loop {
   Config config;
   @Autowired
   PlayerInput input;
+  @Autowired
+  GuiManager guiManager;
 
   @PostConstruct
   public void init() {
@@ -49,6 +49,7 @@ public class GameEngine extends Loop {
     super.run(config.getPropertyInt("game.updaterate"));
   }
 
+  @Override
   public synchronized void stop() {
     runFlag = false;
   }
@@ -93,34 +94,17 @@ public class GameEngine extends Loop {
   @Override
   public void render() {
     currentState.draw();
-    if(focusedComponent != null){
-      focusedComponent.draw();      
-    }
+    guiManager.draw();
     display.render();
   }
 
   public void setState(State state) {
     logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
     currentState.onStateEnd();
-    if(focusedComponent == null){
-      input.setInputListener(state);      
-    }
+
     currentState = state;
     currentState.onStateBegin();
   }
   
-  public void setFocusedComponent(Focusable component){
-    logger.debug("Setting Focus on component: " + component.getClass().getSimpleName());
-    focusedComponent = component;
-    input.setInputListener(focusedComponent);
-    focusedComponent.onFocus();
-  }
-  
-  public void closeFocusedComponent(){
-    logger.debug("Setting Focus on root component: " + focusedComponent.getClass().getSimpleName());
-    focusedComponent.onFocusLost();
-    input.setInputListener(currentState);
-    focusedComponent = null;
-  }
 
 }

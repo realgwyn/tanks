@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LogicUnit {
-  
+public class GamePhysicsUnit {
+
   @Autowired
   EngineConstants gc;
   @Autowired
@@ -17,18 +17,18 @@ public class LogicUnit {
   public void generateConstantsValues() {
     // TODO Auto-generated method stub
   }
-  
+
   private int count;
-  public void update(){
+
+  public void update() {
     count++;
   }
-  
-  public void draw(){
-    
-    
+
+  public void draw() {
+
     int[] pixels = display.getRasterPixels();
     for (int i = 0; i < pixels.length; i++) {
-      pixels[i] = (int) ((i * count));
+      pixels[i] = ((i * count));
     }
   }
 

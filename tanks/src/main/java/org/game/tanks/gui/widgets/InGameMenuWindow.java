@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InGameMenuWindow extends GUIComponent{
+public class InGameMenuWindow extends GuiComponent{
 
   @Autowired
   GameDisplay display;
@@ -19,6 +19,8 @@ public class InGameMenuWindow extends GUIComponent{
   GameEngine engine;
   @Autowired
   MainMenuState mainMenuState;
+
+  @Autowired
   
   @Override
   public void draw() {

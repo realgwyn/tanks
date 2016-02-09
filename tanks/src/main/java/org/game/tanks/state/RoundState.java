@@ -7,7 +7,8 @@ import java.awt.event.KeyEvent;
 import org.apache.log4j.Logger;
 import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
-import org.game.tanks.core.LogicUnit;
+import org.game.tanks.core.GamePhysicsUnit;
+import org.game.tanks.core.GuiManager;
 import org.game.tanks.core.PlayerInput;
 import org.game.tanks.gui.widgets.InGameChatWindow;
 import org.game.tanks.gui.widgets.InGameMenuWindow;
@@ -24,21 +25,25 @@ public class RoundState extends State {
   @Autowired
   PlayerInput input;
   @Autowired
-  LogicUnit logicUnit;
+  GamePhysicsUnit gamePhysicsUnit;
   @Autowired
   GameEngine engine;
   @Autowired
   InGameChatWindow chatWindow;
   @Autowired
   InGameMenuWindow menuWindow;
+  @Autowired
+  GuiManager guiManager;
 
+  @Override
   public void update() {
-    logicUnit.update();
+    gamePhysicsUnit.update();
     //Update other stuff
   }
 
+  @Override
   public void draw() {
-    logicUnit.draw();
+    gamePhysicsUnit.draw();
     Graphics g = display.getGraphics();
     g.setColor(Color.WHITE);
     g.drawString("Game Round State", display.WIDTH / 2 - 75, display.HEIGHT / 2 - 10);
@@ -48,10 +53,10 @@ public class RoundState extends State {
   public void keyPressed(KeyEvent e) {
     switch(e.getKeyCode()){
     case KeyEvent.VK_ENTER:
-      engine.setFocusedComponent(chatWindow);
+      guiManager.showComponent(chatWindow);
       break;
     case KeyEvent.VK_ESCAPE:
-      engine.setFocusedComponent(menuWindow);
+      guiManager.showComponent(menuWindow);
     break;
       default:
         break;
