@@ -38,7 +38,6 @@ public class GameEngine extends Loop {
   public void init() {
     currentState = loadingState;
     input.setInputListener(currentState);
-    focusedComponent = currentState;
   }
 
   public synchronized void start() {
@@ -94,21 +93,34 @@ public class GameEngine extends Loop {
   @Override
   public void render() {
     currentState.draw();
+    if(focusedComponent != null){
+      focusedComponent.draw();      
+    }
     display.render();
   }
 
   public void setState(State state) {
     logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
     currentState.onStateEnd();
+    if(focusedComponent == null){
+      input.setInputListener(state);      
+    }
     currentState = state;
     currentState.onStateBegin();
   }
   
   public void setFocusedComponent(Focusable component){
-    focusedComponent.onFocusLost();
+    logger.debug("Setting Focus on component: " + component.getClass().getSimpleName());
     focusedComponent = component;
     input.setInputListener(focusedComponent);
     focusedComponent.onFocus();
+  }
+  
+  public void closeFocusedComponent(){
+    logger.debug("Setting Focus on root component: " + focusedComponent.getClass().getSimpleName());
+    focusedComponent.onFocusLost();
+    input.setInputListener(currentState);
+    focusedComponent = null;
   }
 
 }

@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 
 public interface Focusable {
 
+  void draw();
+  
   void keyPressed(KeyEvent e);
 
   void keyReleased(KeyEvent e);

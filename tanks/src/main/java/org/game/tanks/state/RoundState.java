@@ -9,6 +9,8 @@ import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
 import org.game.tanks.core.LogicUnit;
 import org.game.tanks.core.PlayerInput;
+import org.game.tanks.gui.widgets.InGameChatWindow;
+import org.game.tanks.gui.widgets.InGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +28,9 @@ public class RoundState extends State {
   @Autowired
   GameEngine engine;
   @Autowired
-  RoundChatState chatState;
+  InGameChatWindow chatWindow;
   @Autowired
-  RoundMenuState roundMenuState;
+  InGameMenuWindow menuWindow;
 
   public void update() {
     logicUnit.update();
@@ -46,10 +48,10 @@ public class RoundState extends State {
   public void keyPressed(KeyEvent e) {
     switch(e.getKeyCode()){
     case KeyEvent.VK_ENTER:
-      engine.setState(chatState);
+      engine.setFocusedComponent(chatWindow);
       break;
     case KeyEvent.VK_ESCAPE:
-      engine.setState(roundMenuState);
+      engine.setFocusedComponent(menuWindow);
     break;
       default:
         break;

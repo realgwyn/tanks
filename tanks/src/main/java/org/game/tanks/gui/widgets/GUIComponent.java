@@ -4,9 +4,8 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("serial")
 public abstract class GUIComponent extends Rectangle implements Focusable {
-
-  private static final long serialVersionUID = 2704815453491615138L;
 
   public void keyPressed(KeyEvent e) {
   }
@@ -25,11 +24,11 @@ public abstract class GUIComponent extends Rectangle implements Focusable {
 
   public void mouseReleased(MouseEvent e) {
   }
-  
-  public void onFocus(){
+
+  public void onFocus() {
   }
-  
-  public void onFocusLost(){
+
+  public void onFocusLost() {
   }
 
 }
