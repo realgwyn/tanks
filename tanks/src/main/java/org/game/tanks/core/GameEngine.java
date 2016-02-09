@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
+import org.game.tanks.gui.widgets.Focusable;
 import org.game.tanks.state.LoadingState;
 import org.game.tanks.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class GameEngine extends Loop {
 
-  final static Logger logger = Logger.getLogger(GameEngine.class);
-  State currentState;
+  private final static Logger logger = Logger.getLogger(GameEngine.class);
+  private State currentState;
+  private Focusable focusedComponent;
 
   @Autowired
   LoadingState loadingState;
@@ -35,7 +37,8 @@ public class GameEngine extends Loop {
   @PostConstruct
   public void init() {
     currentState = loadingState;
-    input.setKeyTypedListener(currentState);
+    input.setInputListener(currentState);
+    focusedComponent = currentState;
   }
 
   public synchronized void start() {
@@ -98,8 +101,14 @@ public class GameEngine extends Loop {
     logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
     currentState.onStateEnd();
     currentState = state;
-    input.setKeyTypedListener(currentState);
     currentState.onStateBegin();
+  }
+  
+  public void setFocusedComponent(Focusable component){
+    focusedComponent.onFocusLost();
+    focusedComponent = component;
+    input.setInputListener(focusedComponent);
+    focusedComponent.onFocus();
   }
 
 }

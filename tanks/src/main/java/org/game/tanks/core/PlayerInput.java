@@ -5,18 +5,17 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
+import org.game.tanks.gui.widgets.Focusable;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlayerInput implements KeyListener, MouseListener, MouseMotionListener {
 
   private boolean[] keyFlags = new boolean[10];
-  KeyListener keyTypedListener;
+  Focusable inputListener;
 
   private Map<Integer, Integer> keyboardBinding;
   private Map<Integer, Integer> mouseBinding;
@@ -39,8 +38,8 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
     mouseBinding.put(MouseEvent.BUTTON3, GameButtons.MOUSE_RIGHT);
   }
 
-  public void setKeyTypedListener(KeyListener listener) {
-    this.keyTypedListener = listener;
+  public void setInputListener(Focusable listener) {
+    this.inputListener = listener;
   }
 
   @Override
@@ -49,8 +48,8 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
     if (key != null) {
       keyFlags[key] = true;
     }
-    if (keyTypedListener != null) {
-      keyTypedListener.keyPressed(keyEvent);
+    if (inputListener != null) {
+      inputListener.keyPressed(keyEvent);
     }
   }
 
@@ -60,8 +59,8 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
     if (key != null) {
       keyFlags[key] = false;
     }
-    if (keyTypedListener != null) {
-      keyTypedListener.keyReleased(keyEvent);
+    if (inputListener != null) {
+      inputListener.keyReleased(keyEvent);
     }
   }
 
@@ -72,11 +71,13 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
   @Override
   public void mousePressed(MouseEvent mouseEvent) {
     keyFlags[mouseBinding.get(mouseEvent.getButton())] = true;
+    inputListener.mousePressed(mouseEvent);
   }
 
   @Override
   public void mouseReleased(MouseEvent mouseEvent) {
     keyFlags[mouseBinding.get(mouseEvent.getButton())] = false;
+    inputListener.mouseReleased(mouseEvent);
   }
 
   @Override
@@ -93,14 +94,13 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
 
   @Override
   public void mouseDragged(MouseEvent e) {
-    mouseX = e.getX();
-    mouseY = e.getY();
   }
 
   @Override
   public void mouseMoved(MouseEvent e) {
     mouseX = e.getX();
     mouseY = e.getY();
+    inputListener.mouseMoved(e);
   }
   
   public boolean[] getKeyFlags() {
