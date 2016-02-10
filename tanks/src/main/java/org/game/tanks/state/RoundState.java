@@ -12,6 +12,7 @@ import org.game.tanks.core.GuiManager;
 import org.game.tanks.core.PlayerInput;
 import org.game.tanks.gui.widgets.InGameChatWindow;
 import org.game.tanks.gui.widgets.InGameMenuWindow;
+import org.game.tanks.state.State.StateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,6 +35,10 @@ public class RoundState extends State {
   InGameMenuWindow menuWindow;
   @Autowired
   GuiManager guiManager;
+  
+  public RoundState(){
+    super(StateType.ROUND);
+  }
 
   @Override
   public void update() {

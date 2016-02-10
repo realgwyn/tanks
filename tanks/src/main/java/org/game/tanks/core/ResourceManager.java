@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import org.game.tanks.cfg.ImageName;
 import org.game.tanks.cfg.MessageName;
 import org.game.tanks.cfg.SpriteName;
-import org.game.tanks.model.Sprite;
+import org.game.tanks.game.model.Sprite;
 import org.springframework.stereotype.Component;
 
 @Component

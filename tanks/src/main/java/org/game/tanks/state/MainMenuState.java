@@ -13,7 +13,8 @@ import org.game.tanks.cfg.SpriteName;
 import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
 import org.game.tanks.core.ResourceManager;
-import org.game.tanks.model.Sprite;
+import org.game.tanks.game.model.Sprite;
+import org.game.tanks.state.State.StateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,10 @@ public class MainMenuState extends State {
   RoundState roundState;
   @Autowired
   ResourceManager res;
+  
+  public MainMenuState(){
+    super(StateType.MAIN_MENU);
+  }
 
   @Override
   public void onStateBegin() {

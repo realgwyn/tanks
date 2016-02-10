@@ -2,12 +2,12 @@ package org.game.tanks.network;
 
 import java.io.IOException;
 
+import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.NetworkDataModel;
-import org.game.tanks.network.model.PacketType;
-import org.game.tanks.network.model.TCPRequest;
-import org.game.tanks.network.model.TCPResponse;
-import org.game.tanks.network.model.UDPRequest;
-import org.game.tanks.network.model.UDPResponse;
+import org.game.tanks.network.model.TCPMessage;
+import org.game.tanks.network.model.UDPMessage;
+import org.game.tanks.network.model.message.ChatMessage;
+import org.game.tanks.network.model.udp.GameSnapshot;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -36,7 +36,7 @@ public class NetworkServer {
     server.start();
     try {
       server.bind(tcpPort, udpPort);
-      
+
       run();
     } catch (IOException e) {
       e.printStackTrace();
@@ -46,20 +46,21 @@ public class NetworkServer {
 
   private void initActions() {
     server.addListener(new Listener() {
+      @Override
       public void received(Connection conn, Object object) {
-        if (object instanceof UDPRequest) {
-          udpListener.receivedRequest(conn, (UDPRequest) object);
-        } else if (object instanceof TCPRequest) {
-          tcpListener.receivedRequest(conn, (TCPRequest) object);
+        if (object instanceof UDPMessage) {
+          udpListener.receivedRequest(conn, (UDPMessage) object);
+        } else if (object instanceof TCPMessage) {
+          tcpListener.receivedRequest(conn, (TCPMessage) object);
         }
       }
     });
   }
-  
-  public void run(){
+
+  public void run() {
     running = true;
-    while(running){
-      server.sendToAllUDP(new UDPResponse(PacketType.SNAPSHOT, "<id><players positions>".getBytes()));
+    while (running) {
+      server.sendToAllUDP(new GameSnapshot());
       try {
         Thread.sleep(5);
       } catch (InterruptedException e) {
@@ -81,36 +82,38 @@ public class NetworkServer {
     tcpListener = listener;
   }
 
-  public void sendTCPResponse(Connection conn, TCPResponse response) {
+  public void sendTCPResponse(Connection conn, TCPMessage response) {
     conn.sendTCP(response);
   }
 
-  public void sendUDPResponse(Connection conn, UDPResponse response) {
+  public void sendUDPResponse(Connection conn, UDPMessage response) {
     conn.sendUDP(response);
   }
 
   public static void main(String[] args) throws NetworkException, InterruptedException {
     final NetworkServer server = new NetworkServer();
     server.setTCPListener(new TCPListener() {
-      public void receivedResponse(Connection conn, TCPResponse request) {
+      @Override
+      public void receivedResponse(Connection conn, TCPMessage request) {
         System.out.println("Received Response");
       }
 
-      public void receivedRequest(Connection conn, TCPRequest request) {
+      @Override
+      public void receivedRequest(Connection conn, TCPMessage request) {
         System.out.println("Received Request");
-        if (request.getType() == PacketType.MESSAGE) {
-          System.out.println("Received request.data.string:" + new String(request.getBytes()));
+        if (request instanceof ChatMessage) {
+          ChatMessage msg = (ChatMessage) request;
+          System.out.println("Received receivedRequest ChatMessage: " + msg.getText());
           System.out.println("Sending response");
-          String responseMsg = "hello " + conn.getRemoteAddressTCP().getHostName();
-          server.sendTCPResponse(conn, new TCPResponse(PacketType.MESSAGE, responseMsg.getBytes()));
-        } else if (request.getType() == PacketType.COMMAND) {
-          System.out.println("received command packet doing stuffs");
+          ChatMessage response = new ChatMessage();
+          response.setText("hello " + conn.getRemoteAddressTCP().getHostName());
+          server.sendTCPResponse(conn, response);
+        } else if (request instanceof Command) {
+          System.out.println("received Command packet " + request.getClass().getSimpleName());
         }
       }
     });
     server.start(55555, 55556);
   }
-
-
 
 }

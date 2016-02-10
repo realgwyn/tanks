@@ -12,6 +12,10 @@ public class GameLoadState extends State {
 
   @Autowired
   GameDisplay display;
+  
+  public GameLoadState(){
+    super(StateType.GAME_LOAD);
+  }
 
   @Override
   public void update() {

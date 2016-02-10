@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.game.tanks.demo.network.Network.ChatMessage;
+import org.game.tanks.demo.network.Network.ChatMessagee;
 import org.game.tanks.demo.network.Network.RegisterName;
 import org.game.tanks.demo.network.Network.UpdateNames;
 
@@ -50,7 +50,7 @@ public class ChatServer {
           // Store the name on the connection.
           connection.name = name;
           // Send a "connected" message to everyone except the new client.
-          ChatMessage chatMessage = new ChatMessage();
+          ChatMessagee chatMessage = new ChatMessagee();
           chatMessage.text = name + " connected.";
           server.sendToAllExceptTCP(connection.getID(), chatMessage);
           // Send everyone a new list of connection names.
@@ -58,10 +58,10 @@ public class ChatServer {
           return;
         }
 
-        if (object instanceof ChatMessage) {
+        if (object instanceof ChatMessagee) {
           // Ignore the object if a client tries to chat before registering a name.
           if (connection.name == null) return;
-          ChatMessage chatMessage = (ChatMessage)object;
+          ChatMessagee chatMessage = (ChatMessagee)object;
           // Ignore the object if the chat message is invalid.
           String message = chatMessage.text;
           if (message == null) return;
@@ -78,7 +78,7 @@ public class ChatServer {
         ChatConnection connection = (ChatConnection)c;
         if (connection.name != null) {
           // Announce to everyone that someone (with a registered name) has left.
-          ChatMessage chatMessage = new ChatMessage();
+          ChatMessagee chatMessage = new ChatMessagee();
           chatMessage.text = connection.name + " disconnected.";
           server.sendToAllTCP(chatMessage);
           updateNames();

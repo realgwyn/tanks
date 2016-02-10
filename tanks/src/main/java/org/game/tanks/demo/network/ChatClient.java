@@ -26,7 +26,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.game.tanks.demo.network.Network.ChatMessage;
+import org.game.tanks.demo.network.Network.ChatMessagee;
 import org.game.tanks.demo.network.Network.RegisterName;
 import org.game.tanks.demo.network.Network.UpdateNames;
 
@@ -62,8 +62,8 @@ public class ChatClient {
           return;
         }
 
-        if (object instanceof ChatMessage) {
-          ChatMessage chatMessage = (ChatMessage)object;
+        if (object instanceof ChatMessagee) {
+          ChatMessagee chatMessage = (ChatMessagee)object;
           chatFrame.addMessage(chatMessage.text);
           return;
         }
@@ -96,7 +96,7 @@ public class ChatClient {
     // This listener is called when the send button is clicked.
     chatFrame.setSendListener(new Runnable() {
       public void run () {
-        ChatMessage chatMessage = new ChatMessage();
+        ChatMessagee chatMessage = new ChatMessagee();
         chatMessage.text = chatFrame.getSendText();
         client.sendTCP(chatMessage);
       }

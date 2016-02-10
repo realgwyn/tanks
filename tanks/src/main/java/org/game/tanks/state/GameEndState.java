@@ -12,6 +12,10 @@ public class GameEndState extends State {
 
   @Autowired
   GameDisplay display;
+  
+  public GameEndState(){
+    super(StateType.GAME_END);
+  }
 
   @Override
   public void update() {

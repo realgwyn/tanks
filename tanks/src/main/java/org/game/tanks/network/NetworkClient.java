@@ -3,11 +3,10 @@ package org.game.tanks.network;
 import java.io.IOException;
 
 import org.game.tanks.network.model.NetworkDataModel;
-import org.game.tanks.network.model.PacketType;
-import org.game.tanks.network.model.TCPRequest;
-import org.game.tanks.network.model.TCPResponse;
-import org.game.tanks.network.model.UDPRequest;
-import org.game.tanks.network.model.UDPResponse;
+import org.game.tanks.network.model.TCPMessage;
+import org.game.tanks.network.model.UDPMessage;
+import org.game.tanks.network.model.message.ChatMessage;
+import org.game.tanks.network.model.udp.GameSnapshot;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -43,11 +42,12 @@ public class NetworkClient {
 
   private void initActions() {
     client.addListener(new Listener() {
+      @Override
       public void received(Connection conn, Object object) {
-        if (object instanceof UDPResponse) {
-          udpListener.receivedResponse(conn, (UDPResponse) object);
-        } else if (object instanceof TCPResponse) {
-          tcpListener.receivedResponse(conn, (TCPResponse) object);
+        if (object instanceof UDPMessage) {
+          udpListener.receivedResponse(conn, (UDPMessage) object);
+        } else if (object instanceof TCPMessage) {
+          tcpListener.receivedResponse(conn, (TCPMessage) object);
         }
       }
     });
@@ -61,12 +61,12 @@ public class NetworkClient {
     tcpListener = listener;
   }
 
-  public void sendTCPRequest(TCPRequest request) {
+  public void sendTCPRequest(TCPMessage request) {
     client.sendTCP(request);
   }
 
-  public void sendUDPRequest(UDPResponse response) {
-    client.sendUDP(response);
+  public void sendUDPRequest(TCPMessage request) {
+    client.sendUDP(request);
   }
 
   public void disconnect() {
@@ -86,31 +86,41 @@ public class NetworkClient {
   public static void main(String[] args) throws NetworkException, InterruptedException {
     NetworkClient client = new NetworkClient();
     client.setTCPListener(new TCPListener() {
-      public void receivedResponse(Connection conn, TCPResponse response) {
+      @Override
+      public void receivedResponse(Connection conn, TCPMessage response) {
         System.out.println("Received Response");
-        if (response.getType() == PacketType.MESSAGE) {
-          System.out.println("Received response.data.string:" + new String(response.getBytes()));
-        } else if (response.getType() == PacketType.SNAPSHOT) {
-          System.out.println("Received response.data:" + response);
+        if (response instanceof ChatMessage) {
+          ChatMessage msg = (ChatMessage) response;
+          System.out.println("Received ChatMessage: " + msg.getText());
+        } else {
+          System.out.println("Received other type of response: " + response);
         }
       }
 
-      public void receivedRequest(Connection conn, TCPRequest request) {}
+      @Override
+      public void receivedRequest(Connection conn, TCPMessage request) {
+      }
     });
 
     client.setUDPListener(new UDPListener() {
-      public void receivedResponse(Connection conn, UDPResponse response) {
-        if (response.getType() == PacketType.SNAPSHOT) {
-          System.out.println("Received response.data:" + response);
+      @Override
+      public void receivedResponse(Connection conn, UDPMessage response) {
+        if (response instanceof GameSnapshot) {
+          System.out.println("Received GameSnapshot:" + response);
         }
       }
-      public void receivedRequest(Connection conn, UDPRequest request) {}
+
+      @Override
+      public void receivedRequest(Connection conn, UDPMessage request) {
+      }
     });
     client.connect(new ConnectionAddress("Game Server 1", "127.0.0.1", 55555, 55556));
 
     Thread.sleep(200);
 
-    client.sendTCPRequest(new TCPRequest(PacketType.MESSAGE, "Hello".getBytes()));
+    ChatMessage msg = new ChatMessage();
+    msg.setText("Hello server!");
+    client.sendTCPRequest(msg);
 
     Thread.sleep(20000);
   }

@@ -9,6 +9,13 @@ import org.game.tanks.gui.widgets.Focusable;
 public abstract class State implements Focusable {
 
   static final Logger logger = Logger.getLogger(State.class);
+  
+  public enum StateType {GAME_END, GAME_LOAD, GAME_PENDING, GAME_START, STARTUP, MAIN_MENU, ROUND_END, ROUND_START, ROUND}
+  private StateType type;
+  
+  public State(StateType type){
+    this.type = type;
+  }
 
   public abstract void update();
 
@@ -44,4 +51,8 @@ public abstract class State implements Focusable {
   public void mouseReleased(MouseEvent e) {
   }
 
+  public StateType getType() {
+    return type;
+  }
+  
 }

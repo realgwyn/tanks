@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
-import org.game.tanks.state.LoadingState;
+import org.game.tanks.state.StartupState;
 import org.game.tanks.state.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +24,7 @@ public class GameEngine extends Loop {
   private State currentState;
 
   @Autowired
-  LoadingState loadingState;
+  StartupState loadingState;
   @Autowired
   GameDisplay display;
   @Autowired

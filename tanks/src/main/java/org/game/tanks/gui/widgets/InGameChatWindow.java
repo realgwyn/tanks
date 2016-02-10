@@ -4,8 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
+import org.game.tanks.core.GameContext;
 import org.game.tanks.core.GameDisplay;
-import org.game.tanks.core.GameEngine;
+import org.game.tanks.core.GuiManager;
+import org.game.tanks.core.MessageService;
+import org.game.tanks.network.model.message.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +18,11 @@ public class InGameChatWindow extends GuiComponent{
   @Autowired
   GameDisplay display;
   @Autowired
-  GameEngine engine;
+  GuiManager guiManager;
+  @Autowired 
+  MessageService messageService;
+  @Autowired
+  GameContext gameContext;
   
   @Override
   public void draw() {
@@ -31,11 +38,11 @@ public class InGameChatWindow extends GuiComponent{
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
     case KeyEvent.VK_ENTER:
+      guiManager.removeComponent(this);
       sendChatMessage("wololo");
-      engine.closeFocusedComponent();
       break;
     case KeyEvent.VK_ESCAPE:
-      engine.closeFocusedComponent();
+      guiManager.removeComponent(this);
       break;
     default:
       
@@ -44,7 +51,8 @@ public class InGameChatWindow extends GuiComponent{
   }
 
   private void sendChatMessage(String chatMessage) {
-    System.out.println("Sending chat message: " + chatMessage);
+    ChatMessage message = new ChatMessage();
+    messageService.sendMessage(message);
   }
 
   

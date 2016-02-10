@@ -6,13 +6,14 @@ import java.awt.Graphics;
 import org.apache.log4j.Logger;
 import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
+import org.game.tanks.state.State.StateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LoadingState extends State {
+public class StartupState extends State {
 
-  final static Logger logger = Logger.getLogger(LoadingState.class);
+  final static Logger logger = Logger.getLogger(StartupState.class);
 
   private int count;
   private int percent=0;
@@ -23,6 +24,10 @@ public class LoadingState extends State {
   GameEngine engine;
   @Autowired
   MainMenuState mainMenuState;
+  
+  public StartupState(){
+    super(StateType.STARTUP);
+  }
 
   @Override
   public void update() {

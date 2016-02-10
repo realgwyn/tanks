@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
+import org.game.tanks.core.GuiManager;
 import org.game.tanks.state.MainMenuState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,9 +20,9 @@ public class InGameMenuWindow extends GuiComponent{
   GameEngine engine;
   @Autowired
   MainMenuState mainMenuState;
-
   @Autowired
-  
+  GuiManager guiManager;
+
   @Override
   public void draw() {
     Graphics g = display.getGraphics();
@@ -37,11 +38,11 @@ public class InGameMenuWindow extends GuiComponent{
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
     case KeyEvent.VK_E:
-      engine.closeFocusedComponent();
+      guiManager.removeAllComponents();
       engine.setState(mainMenuState);
       break;
     case KeyEvent.VK_ESCAPE:
-      engine.closeFocusedComponent();
+      guiManager.removeComponent(this);
       break;
     default:
       break;

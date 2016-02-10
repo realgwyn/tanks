@@ -1,4 +1,4 @@
-package org.game.tanks.model;
+package org.game.tanks.game.model;
 
 import java.awt.image.BufferedImage;
 

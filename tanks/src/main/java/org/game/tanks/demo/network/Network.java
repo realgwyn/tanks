@@ -14,7 +14,7 @@ public class Network {
     kryo.register(RegisterName.class);
     kryo.register(String[].class);
     kryo.register(UpdateNames.class);
-    kryo.register(ChatMessage.class);
+    kryo.register(ChatMessagee.class);
   }
 
   static public class RegisterName {
@@ -25,7 +25,7 @@ public class Network {
     public String[] names;
   }
 
-  static public class ChatMessage {
+  static public class ChatMessagee {
     public String text;
   }
 }
