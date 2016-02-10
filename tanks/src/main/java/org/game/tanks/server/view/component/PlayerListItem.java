@@ -1,0 +1,102 @@
+package org.game.tanks.server.view.component;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.game.tanks.server.core.ServerController;
+import org.game.tanks.server.model.PlayerServerModel;
+
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+
+public class PlayerListItem extends JPanel {
+
+  private PlayerServerModel playerServerModel;
+  private ServerController controller;
+
+  JLabel lblRankNumber;
+  JLabel lblName;
+  JLabel lblId;
+  JLabel lblKills;
+  JLabel lblDeaths;
+  JLabel lblLatency;
+  JButton btnKick;
+  JButton btnBan;
+
+  public PlayerListItem(PlayerServerModel playerServerModel, ServerController controller) {
+    this.playerServerModel = playerServerModel;
+    this.controller = controller;
+    setLayout(
+        new FormLayout(new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("160px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormSpecs.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
+            FormSpecs.DEFAULT_COLSPEC, }, new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+
+    lblRankNumber = new JLabel();
+    add(lblRankNumber, "2, 2");
+
+    lblName = new JLabel();
+    add(lblName, "4, 2");
+
+    lblId = new JLabel();
+    add(lblId, "6, 2");
+
+    lblKills = new JLabel();
+    add(lblKills, "8, 2");
+
+    lblDeaths = new JLabel();
+    add(lblDeaths, "10, 2");
+
+    lblLatency = new JLabel();
+    add(lblLatency, "12, 2");
+
+    btnKick = new JButton("Kick");
+    add(btnKick, "14, 2");
+
+    btnBan = new JButton("Ban");
+
+    add(btnBan, "16, 2");
+    setModel(playerServerModel);
+    initActions();
+  }
+
+  private void initActions() {
+    btnKick.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        controller.actionKickPlayer(playerServerModel.getPlayerId());
+      }
+    });
+    btnBan.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        controller.actionBanPlayer(playerServerModel.getPlayerId());
+      }
+    });
+  }
+
+  private void setModel(PlayerServerModel model) {
+    lblRankNumber.setText(Integer.toString(model.getRankNumber()));
+    lblName.setText(model.getPlayerName());
+    lblId.setText(Long.toString(model.getPlayerId()));
+    lblKills.setText(Integer.toString(model.getKills()));
+    lblDeaths.setText(Integer.toString(model.getDeaths()));
+    lblLatency.setText(Integer.toString(model.getLatency()));
+  }
+
+  public PlayerServerModel getModel() {
+    return playerServerModel;
+  }
+
+  public void refresh() {
+    setModel(playerServerModel);
+  }
+
+}
