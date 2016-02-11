@@ -13,6 +13,8 @@ public class MapModel {
   public MapModel() {
     objectsPositions = new MapObject[1][1];
     objects = new ArrayList<>();
+    width = 1000;
+    height = 1000;
   }
 
   public int getWidth() {

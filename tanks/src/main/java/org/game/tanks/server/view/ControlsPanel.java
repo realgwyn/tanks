@@ -13,9 +13,9 @@ import org.game.tanks.server.core.ServerController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 @Component
@@ -27,14 +27,15 @@ public class ControlsPanel extends JPanel {
   private JTextField txtAddress;
   private JTextField txtTcpPort;
   private JTextField txtUdpPort;
+  JLabel lblStatus;
 
   public ControlsPanel() {
     setLayout(new FormLayout(
-        new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormSpecs.RELATED_GAP_COLSPEC,
+        new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormFactory.RELATED_GAP_COLSPEC,
             ColumnSpec.decode("100px"), },
-        new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
-            FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
-            FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+        new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
+            FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
+            FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
             RowSpec.decode("20px"), }));
 
     JLabel lblServerName = new JLabel("Server Name");
@@ -69,7 +70,7 @@ public class ControlsPanel extends JPanel {
     btnStart.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        serverController.startServer(txtServerName.getText(), txtAddress.getText(), txtTcpPort.getText(), txtUdpPort.getText());
+        serverController.startServer(txtServerName.getText(), txtTcpPort.getText(), txtUdpPort.getText());
       }
     });
     add(btnStart, "2, 10");
@@ -83,10 +84,46 @@ public class ControlsPanel extends JPanel {
     });
     add(btnStop, "4, 10");
 
-    JLabel lblStatus = new JLabel("Status: stopped");
+    lblStatus = new JLabel("Status: stopped");
     lblStatus.setHorizontalAlignment(SwingConstants.LEFT);
     lblStatus.setVerticalAlignment(SwingConstants.TOP);
     add(lblStatus, "2, 12, 3, 1");
+  }
+
+  public void setServerName(String string) {
+    txtServerName.setText(string);
+  }
+
+  public void setNetworkAddress(String networkAddress) {
+    txtAddress.setText(networkAddress);
+  }
+
+  public void setTcpPort(int port) {
+    txtTcpPort.setText(Integer.toString(port));
+  }
+
+  public void setUdpPort(int port) {
+    txtUdpPort.setText(Integer.toString(port));
+  }
+
+  public String getTxtServerName() {
+    return txtServerName.getText();
+  }
+
+  public String getTxtAddress() {
+    return txtAddress.getText();
+  }
+
+  public String getTxtTcpPort() {
+    return txtTcpPort.getText();
+  }
+
+  public String getTxtUdpPort() {
+    return txtUdpPort.getText();
+  }
+
+  public void setStatus(String string) {
+    lblStatus.setText(string);
   }
 
 }

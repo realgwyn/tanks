@@ -17,9 +17,9 @@ import javax.swing.text.DefaultCaret;
 
 import org.springframework.stereotype.Component;
 
+import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 @Component
@@ -30,10 +30,11 @@ public class ServerLogPanel extends JPanel {
   public ServerLogPanel() {
     setBackground(UIManager.getColor("Button.background"));
     setLayout(new FormLayout(
-        new ColumnSpec[] { FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
-            FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC,
-            FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
-        new RowSpec[] { FormSpecs.DEFAULT_ROWSPEC, RowSpec.decode("default:grow"), }));
+        new ColumnSpec[] { FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+            FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+            FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
+        new RowSpec[] { FormFactory.DEFAULT_ROWSPEC, RowSpec.decode("default:grow"), FormFactory.RELATED_GAP_ROWSPEC,
+            FormFactory.DEFAULT_ROWSPEC, }));
 
     JButton btnCopy = new JButton("Copy");
     btnCopy.addActionListener(new ActionListener() {
@@ -46,10 +47,17 @@ public class ServerLogPanel extends JPanel {
       }
     });
 
+    JScrollPane scrollPane = new JScrollPane();
+    add(scrollPane, "1, 2, 9, 1, fill, fill");
+
+    textArea = new JTextArea();
+    ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+    scrollPane.setViewportView(textArea);
+
     JLabel lblServerLog = new JLabel("Server Log");
     add(lblServerLog, "1, 1");
     btnCopy.setBackground(UIManager.getColor("Button.background"));
-    add(btnCopy, "3, 1");
+    add(btnCopy, "1, 4");
 
     final JToggleButton tglbtn = new JToggleButton("Lock");
     tglbtn.addActionListener(new ActionListener() {
@@ -64,7 +72,7 @@ public class ServerLogPanel extends JPanel {
       }
     });
     tglbtn.setBackground(UIManager.getColor("Button.background"));
-    add(tglbtn, "5, 1");
+    add(tglbtn, "3, 4");
 
     JButton btnClear = new JButton("Clear");
     btnClear.addActionListener(new ActionListener() {
@@ -74,14 +82,9 @@ public class ServerLogPanel extends JPanel {
       }
     });
     btnClear.setBackground(UIManager.getColor("Button.background"));
-    add(btnClear, "7, 1");
+    add(btnClear, "7, 4");
 
-    JScrollPane scrollPane = new JScrollPane();
-    add(scrollPane, "1, 2, 9, 1, fill, fill");
 
-    textArea = new JTextArea();
-    ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-    scrollPane.setViewportView(textArea);
   }
 
   public void setText(String text) {

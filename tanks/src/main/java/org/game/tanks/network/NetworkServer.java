@@ -29,10 +29,10 @@ public class NetworkServer {
     initActions();
   }
 
-  public void start(int udpPort, int tcpPort) throws NetworkException {
+  public void start(int tcpPort, int udpPort) throws NetworkException {
     System.out.println("Starting server at tcpPort: " + tcpPort + ", udpPort: " + udpPort);
-    this.udpPort = udpPort;
     this.tcpPort = tcpPort;
+    this.udpPort = udpPort;
     server.start();
     try {
       server.bind(tcpPort, udpPort);

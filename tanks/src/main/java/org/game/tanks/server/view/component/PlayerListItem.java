@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 import org.game.tanks.server.core.ServerController;
 import org.game.tanks.server.model.PlayerServerModel;
 
+import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class PlayerListItem extends JPanel {
@@ -33,11 +33,11 @@ public class PlayerListItem extends JPanel {
     this.playerServerModel = playerServerModel;
     this.controller = controller;
     setLayout(
-        new FormLayout(new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("160px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormSpecs.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC, FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC,
-            FormSpecs.DEFAULT_COLSPEC, }, new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+        new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("160px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormFactory.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC,
+            FormFactory.DEFAULT_COLSPEC, }, new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
 
     lblRankNumber = new JLabel();
     add(lblRankNumber, "2, 2");

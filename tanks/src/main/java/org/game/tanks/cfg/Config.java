@@ -5,6 +5,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.core.Game;
+import org.game.tanks.server.core.Server;
 import org.game.tanks.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,8 +20,13 @@ public class Config {
   private Properties configProperties;
 
   @Bean
-  public Game mainRunner() {
+  public Game gameRunner() {
     return new Game();
+  }
+
+  @Bean
+  public Server serverRunner() {
+    return new Server();
   }
 
   @PostConstruct

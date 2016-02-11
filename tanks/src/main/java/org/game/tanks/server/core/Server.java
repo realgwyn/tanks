@@ -1,14 +1,19 @@
-package org.game.tanks.core;
+package org.game.tanks.server.core;
 
+import org.game.tanks.server.view.ServerWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 
-public class Game {
+public class Server {
 
   @Autowired
-  GameEngine engine;
+  ServerWindow serverWindow;
+  @Autowired
+  ServerContext serverContext;
+  @Autowired
+  ServerConfig serverConfig;
 
   public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
     AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -19,12 +24,16 @@ public class Game {
     }
     ctx.refresh();
 
-    Game runner = (Game) ctx.getBean("gameRunner");
+    Server runner = (Server) ctx.getBean("serverRunner");
     runner.run();
   }
 
   public void run() {
-    engine.start();
+    serverWindow.setVisible(true);
+    serverWindow.setPlayers(serverContext.getPlayers());
+    serverWindow.setServerName("Tanks Game Server 1");
+    serverWindow.setTcpPort(serverConfig.getDefaultTcpPort());
+    serverWindow.setUdpPort(serverConfig.getDefaultUdpPort());
   }
 
 }

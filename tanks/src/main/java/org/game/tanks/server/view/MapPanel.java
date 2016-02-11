@@ -10,8 +10,9 @@ import org.game.tanks.server.model.MapModel;
 import org.game.tanks.server.model.MapObject;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.game.tanks.utils.GraphicsUtils;
+import org.springframework.stereotype.Component;
 
-@SuppressWarnings("serial")
+@Component
 public class MapPanel extends JPanel {
 
   private ConcurrentLinkedQueue<PlayerServerModel> players;
@@ -25,7 +26,7 @@ public class MapPanel extends JPanel {
     setBackground(Color.WHITE);
   }
 
-  public void setPlayersData(ConcurrentLinkedQueue<PlayerServerModel> players) {
+  public void setPlayers(ConcurrentLinkedQueue<PlayerServerModel> players) {
     this.players = players;
   }
 

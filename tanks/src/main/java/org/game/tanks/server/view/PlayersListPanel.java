@@ -3,6 +3,7 @@ package org.game.tanks.server.view;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,9 +16,9 @@ import org.game.tanks.server.view.component.PlayerListItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
 @Component
@@ -32,7 +33,7 @@ public class PlayersListPanel extends JPanel {
   public PlayersListPanel() {
     playerListItems = new ArrayList<>();
     setLayout(new FormLayout(new ColumnSpec[] { ColumnSpec.decode("default:grow"), },
-        new RowSpec[] { FormSpecs.DEFAULT_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, RowSpec.decode("default:grow"), }));
+        new RowSpec[] { FormFactory.DEFAULT_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, RowSpec.decode("default:grow"), }));
 
     JPanel panel = new JPanel();
     panel.setBackground(Color.WHITE);
@@ -40,11 +41,11 @@ public class PlayersListPanel extends JPanel {
     panel
         .setLayout(
             new FormLayout(
-                new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC,
-                    ColumnSpec.decode("160px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"),
-                    FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC,
-                    ColumnSpec.decode("40px"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
-                new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+                new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
+                    ColumnSpec.decode("160px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"),
+                    FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
+                    ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
+                new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
 
     JLabel lblRank = new JLabel("Rank");
     panel.add(lblRank, "2, 2");
@@ -82,12 +83,24 @@ public class PlayersListPanel extends JPanel {
     FormLayout layout = new FormLayout(new ColumnSpec[] {}, new RowSpec[] {});
     playersListPanel.setLayout(layout);
     for (PlayerListItem item : playerListItems) {
-      layout.appendRow(FormSpecs.DEFAULT_ROWSPEC);
+      layout.appendRow(FormFactory.DEFAULT_ROWSPEC);
       playersListPanel.add(item, "2, " + layout.getRowCount());
-      layout.appendRow(FormSpecs.RELATED_GAP_ROWSPEC);
+      layout.appendRow(FormFactory.RELATED_GAP_ROWSPEC);
     }
     revalidate();
     repaint();
+  }
+
+  public void removePlayer(PlayerServerModel model) {
+    // playerListItems.removeIf((PlayerListItem o) -> o.getModel().getPlayerId() == model.getPlayerId());
+    refreshLayout();
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  public void setPlayers(ConcurrentLinkedQueue<PlayerServerModel> players) {
+    for (PlayerServerModel player : players) {
+      addPlayer(player);
+    }
   }
 
   public void addPlayer(PlayerServerModel model) {
@@ -96,10 +109,10 @@ public class PlayersListPanel extends JPanel {
     refreshLayout();
   }
 
-  public void removePlayer(PlayerServerModel model) {
-    // playerListItems.removeIf((PlayerListItem o) -> o.getModel().getPlayerId() == model.getPlayerId());
-    refreshLayout();
-    throw new UnsupportedOperationException("Not implemented yet");
+  public void refresh() {
+    for (PlayerListItem playerListItem : playerListItems) {
+      playerListItem.refresh();
+    }
   }
 
 }
