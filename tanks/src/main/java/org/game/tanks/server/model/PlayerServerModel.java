@@ -1,5 +1,7 @@
 package org.game.tanks.server.model;
 
+import java.awt.Polygon;
+
 import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerServerModel {
@@ -10,6 +12,7 @@ public class PlayerServerModel {
   private String playerName;
   private int positionX;
   private int positionY;
+  private Polygon shape;
   private int kills;
   private int deaths;
   private int team;
@@ -93,6 +96,14 @@ public class PlayerServerModel {
 
   public void setRankNumber(int rankNumber) {
     this.rankNumber = rankNumber;
+  }
+
+  public Polygon getShape() {
+    return shape;
+  }
+
+  public void setShape(Polygon shape) {
+    this.shape = shape;
   }
 
 }

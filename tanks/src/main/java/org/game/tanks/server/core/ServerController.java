@@ -25,4 +25,9 @@ public class ServerController {
 
   }
 
+  public void sendChatMessage(String message) {
+    // TODO Auto-generated method stub
+
+  }
+
 }

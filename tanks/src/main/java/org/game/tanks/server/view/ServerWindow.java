@@ -1,6 +1,7 @@
 package org.game.tanks.server.view;
 
 import java.awt.EventQueue;
+import java.beans.Beans;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -53,26 +54,35 @@ public class ServerWindow extends JFrame {
    */
   public ServerWindow() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 779, 465);
+    setBounds(100, 100, 955, 465);
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     setContentPane(contentPane);
     contentPane.setLayout(new FormLayout(
-        new ColumnSpec[] { FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), },
-        new RowSpec[] { FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"),
+        new ColumnSpec[] { FormSpecs.DEFAULT_COLSPEC, FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"),
+            FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("200px"), },
+        new RowSpec[] { RowSpec.decode("200px"), FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"),
             FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"), }));
 
+    if (Beans.isDesignTime()) {
+      controlsPanel = new ControlsPanel();
+      mapPanel = new MapPanel();
+      playersListPanel = new PlayersListPanel();
+      chatPanel = new ChatPanel();
+      serverLogPanel = new ServerLogPanel();
+    }
+
     contentPane.add(controlsPanel, "1, 1, fill, fill");
+    contentPane.add(playersListPanel, "3, 1, fill, fill");
 
     mapPanel = new MapPanel();
-    contentPane.add(mapPanel, "3, 1, fill, fill");
 
-    contentPane.add(playersListPanel, "1, 3, fill, fill");
+    contentPane.add(mapPanel, "5, 1, fill, fill");
 
     chatPanel = new ChatPanel();
-    contentPane.add(chatPanel, "3, 3, fill, fill");
+    contentPane.add(chatPanel, "1, 3, 5, 1, fill, fill");
 
-    contentPane.add(serverLogPanel, "1, 5, 3, 1, fill, fill");
+    contentPane.add(serverLogPanel, "1, 5, 5, 1, fill, fill");
   }
 
 }
