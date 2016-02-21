@@ -1,5 +1,6 @@
 package org.game.tanks.server.core;
 
+import org.game.tanks.cfg.Config;
 import org.game.tanks.server.view.ServerWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -13,7 +14,7 @@ public class Server {
   @Autowired
   ServerContext serverContext;
   @Autowired
-  ServerConfig serverConfig;
+  Config config;
 
   public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
     AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
@@ -31,9 +32,9 @@ public class Server {
   public void run() {
     serverWindow.setVisible(true);
     serverWindow.setPlayers(serverContext.getPlayers());
-    serverWindow.setServerName("Tanks Game Server 1");
-    serverWindow.setTcpPort(serverConfig.getDefaultTcpPort());
-    serverWindow.setUdpPort(serverConfig.getDefaultUdpPort());
+    serverWindow.setServerName(config.getProperty(Config.SERVER_DEFAULT_SERVER_NAME));
+    serverWindow.setTcpPort(config.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT));
+    serverWindow.setUdpPort(config.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT));
   }
 
 }

@@ -2,13 +2,16 @@ package org.game.tanks.server.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.Beans;
 
+import javax.annotation.PostConstruct;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.game.tanks.cfg.Config;
 import org.game.tanks.server.core.ServerController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +26,8 @@ public class ControlsPanel extends JPanel {
 
   @Autowired
   private ServerController serverController;
+  @Autowired
+  private Config config;
   private JTextField txtServerName;
   private JTextField txtAddress;
   private JTextField txtTcpPort;
@@ -30,13 +35,24 @@ public class ControlsPanel extends JPanel {
   JLabel lblStatus;
 
   public ControlsPanel() {
+    if (Beans.isDesignTime()) {
+      initComponents();
+    }
+  }
+
+  @PostConstruct
+  public void init() {
+    initComponents();
+  }
+
+  private void initComponents() {
     setLayout(new FormLayout(
         new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormFactory.RELATED_GAP_COLSPEC,
             ColumnSpec.decode("100px"), },
         new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
-            FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
-            FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
-            RowSpec.decode("20px"), }));
+            FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
+            FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
+            FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, RowSpec.decode("20px"), }));
 
     JLabel lblServerName = new JLabel("Server Name");
     add(lblServerName, "2, 2, right, default");

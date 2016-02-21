@@ -10,7 +10,7 @@ public class ServerController {
   @Autowired
   ServerEngine engine;
   @Autowired
-  ServerConfig config;
+  ServerContext serverContext;
   @Autowired
   ServerWindow serverWindow;
 
@@ -25,10 +25,10 @@ public class ServerController {
   }
 
   public void startServer(String serverName, String tcpPort, String udpPort) {
-    try{
-      config.setTcpPort(Integer.parseInt(tcpPort));
-      config.setUdpPort(Integer.parseInt(udpPort));
-    }catch(Exception e){
+    try {
+      serverContext.setTcpPort(Integer.parseInt(tcpPort));
+      serverContext.setUdpPort(Integer.parseInt(udpPort));
+    } catch (Exception e) {
       serverWindow.setStatus("Invalid port");
       e.printStackTrace();
       return;

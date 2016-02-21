@@ -7,17 +7,12 @@ import org.game.tanks.network.model.NetworkDataModel;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
 import org.game.tanks.network.model.message.ChatMessage;
-import org.game.tanks.network.model.udp.GameSnapshot;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 public class NetworkServer {
-
-  private int udpPort;
-  private int tcpPort;
-  private boolean running;
 
   Server server;
   UDPListener udpListener;
@@ -31,13 +26,9 @@ public class NetworkServer {
 
   public void start(int tcpPort, int udpPort) throws NetworkException {
     System.out.println("Starting server at tcpPort: " + tcpPort + ", udpPort: " + udpPort);
-    this.tcpPort = tcpPort;
-    this.udpPort = udpPort;
     server.start();
     try {
       server.bind(tcpPort, udpPort);
-
-      run();
     } catch (IOException e) {
       e.printStackTrace();
       throw new NetworkException("Unable to start the server, reason:" + e.getMessage());
@@ -57,20 +48,7 @@ public class NetworkServer {
     });
   }
 
-  public void run() {
-    running = true;
-    while (running) {
-      server.sendToAllUDP(new GameSnapshot());
-      try {
-        Thread.sleep(5);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
   public void stop() {
-    running = false;
     server.stop();
   }
 
@@ -82,12 +60,28 @@ public class NetworkServer {
     tcpListener = listener;
   }
 
-  public void sendTCPResponse(Connection conn, TCPMessage response) {
-    conn.sendTCP(response);
+  public void sendTCP(Connection conn, TCPMessage msg) {
+    conn.sendTCP(msg);
   }
 
-  public void sendUDPResponse(Connection conn, UDPMessage response) {
-    conn.sendUDP(response);
+  public void sendUDP(Connection conn, UDPMessage msg) {
+    conn.sendUDP(msg);
+  }
+
+  public void sendToAllTCP(TCPMessage msg) {
+    server.sendToAllTCP(msg);
+  }
+
+  public void sendToAllUDP(UDPMessage msg) {
+    server.sendToAllUDP(msg);
+  }
+
+  public void sendToAllExceptTCP(int connectionID, TCPMessage msg) {
+    server.sendToAllExceptTCP(connectionID, msg);
+  }
+
+  public void sendToAllExceptUDP(int connectionID, UDPMessage msg) {
+    server.sendToAllExceptUDP(connectionID, msg);
   }
 
   public static void main(String[] args) throws NetworkException, InterruptedException {
@@ -107,7 +101,7 @@ public class NetworkServer {
           System.out.println("Sending response");
           ChatMessage response = new ChatMessage();
           response.setText("hello " + conn.getRemoteAddressTCP().getHostName());
-          server.sendTCPResponse(conn, response);
+          server.sendTCP(conn, response);
         } else if (request instanceof Command) {
           System.out.println("received Command packet " + request.getClass().getSimpleName());
         }

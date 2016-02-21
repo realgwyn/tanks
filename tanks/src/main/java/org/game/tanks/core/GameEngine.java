@@ -46,7 +46,7 @@ public class GameEngine extends Loop {
 
   @Override
   public void run() {
-    super.run(config.getPropertyInt("game.updaterate"));
+    super.run(config.getPropertyInt(Config.GAME_UPDATE_RATE));
   }
 
   @Override
@@ -105,6 +105,5 @@ public class GameEngine extends Loop {
     currentState = state;
     currentState.onStateBegin();
   }
-  
 
 }

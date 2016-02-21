@@ -32,15 +32,15 @@ public class GameDisplay extends Canvas {
 
   @PostConstruct
   public void init() {
-    WIDTH = config.getPropertyInt("resolution.width");
-    HEIGHT = config.getPropertyInt("resolution.height");
-    SCALE = config.getPropertyInt("resolution.scale");
+    WIDTH = config.getPropertyInt(Config.RESOLUTION_WIDTH);
+    HEIGHT = config.getPropertyInt(Config.RESOLUTION_HEIGHT);
+    SCALE = config.getPropertyInt(Config.RESOLUTION_SCALE);
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     rasterPixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
     setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
     setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-    frame = new JFrame(config.getProperty("game.name"));
+    frame = new JFrame(config.getProperty(Config.GAME_NAME));
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setLayout(new BorderLayout());
     frame.add(this, BorderLayout.CENTER);

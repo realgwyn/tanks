@@ -1,5 +1,7 @@
 package org.game.tanks.server.core;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
 import org.game.tanks.core.Loop;
 import org.game.tanks.network.NetworkException;
@@ -25,10 +27,13 @@ public class ServerEngine extends Loop {
   ServerWindow serverWindow;
   @Autowired
   ServerContext serverContext;
-  @Autowired
-  ServerConfig config;
 
   private NetworkServer server;
+
+  @PostConstruct
+  public void init() {
+    currentState = offlineState;
+  }
 
   @Override
   public void run() {
@@ -49,7 +54,7 @@ public class ServerEngine extends Loop {
     logger.debug("Starting server threads...");
     server = new NetworkServer();
     try {
-      server.start(config.getTcpPort(), config.getUdpPort());
+      server.start(serverContext.getTcpPort(), serverContext.getUdpPort());
     } catch (NetworkException e) {
       serverWindow.setStatus("Network error");
       e.printStackTrace();
@@ -75,6 +80,14 @@ public class ServerEngine extends Loop {
   @Override
   public void render() {
 
+  }
+
+  public void setState(ServerState state) {
+    logger.debug("Changing Server State to: " + state.getClass().getSimpleName());
+    currentState.onStateEnd();
+
+    currentState = state;
+    currentState.onStateBegin();
   }
 
 }
