@@ -39,7 +39,7 @@ public class LoadingMapState extends ServerState {
       engine.setState(waitingForPlayersState);
     }
 
-    playerConnectionManager.processIncomingPlayers();
+    playerConnectionManager.processPlayerConnections();
   }
 
 }

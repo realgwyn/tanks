@@ -45,9 +45,9 @@ public class NetworkClient {
       @Override
       public void received(Connection conn, Object object) {
         if (object instanceof UDPMessage) {
-          udpListener.receivedResponse(conn, (UDPMessage) object);
+          udpListener.receivedUDPMessage(conn, (UDPMessage) object);
         } else if (object instanceof TCPMessage) {
-          tcpListener.receivedResponse(conn, (TCPMessage) object);
+          tcpListener.receivedTCPMessage(conn, (TCPMessage) object);
         }
       }
     });
@@ -87,7 +87,7 @@ public class NetworkClient {
     NetworkClient client = new NetworkClient();
     client.setTCPListener(new TCPListener() {
       @Override
-      public void receivedResponse(Connection conn, TCPMessage response) {
+      public void receivedTCPMessage(Connection conn, TCPMessage response) {
         System.out.println("Received Response");
         if (response instanceof ChatMessage) {
           ChatMessage msg = (ChatMessage) response;
@@ -97,22 +97,16 @@ public class NetworkClient {
         }
       }
 
-      @Override
-      public void receivedRequest(Connection conn, TCPMessage request) {
-      }
     });
 
     client.setUDPListener(new UDPListener() {
       @Override
-      public void receivedResponse(Connection conn, UDPMessage response) {
+      public void receivedUDPMessage(Connection conn, UDPMessage response) {
         if (response instanceof GameSnapshot) {
           System.out.println("Received GameSnapshot:" + response);
         }
       }
 
-      @Override
-      public void receivedRequest(Connection conn, UDPMessage request) {
-      }
     });
     client.connect(new ConnectionAddress("Game Server 1", "127.0.0.1", 55555, 55556));
 

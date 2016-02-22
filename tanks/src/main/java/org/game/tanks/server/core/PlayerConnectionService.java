@@ -1,5 +1,8 @@
 package org.game.tanks.server.core;
 
+import java.util.Iterator;
+
+import org.game.tanks.network.ServerNetworkAdapter;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,11 +11,13 @@ import org.springframework.stereotype.Component;
 public class PlayerConnectionService {
 
   @Autowired
-  ServerContext serverContext;
+  ServerContext ctx;
+  @Autowired
+  ServerNetworkAdapter networkAdapter;
 
-  public void processIncomingPlayers() {
-    while (!serverContext.getIncomingPlayers().isEmpty()) {
-      PlayerServerModel newPlayer = serverContext.getIncomingPlayers().poll();
+  public void processPlayerConnections() {
+    while (!ctx.getIncomingPlayers().isEmpty()) {
+      PlayerServerModel newPlayer = ctx.getIncomingPlayers().poll();
 
       // Send initialization commands to player
       // Send map info
@@ -23,9 +28,14 @@ public class PlayerConnectionService {
 
       // Broadcast to all about new incoming player
 
-      serverContext.getPlayers().add(newPlayer);
+      ctx.getPlayers().add(newPlayer);
     }
 
+    // TODO process leaving players
+    Iterator<PlayerServerModel> it = ctx.getPlayers().iterator();
+    while (it.hasNext()) {
+
+    }
   }
 
 }

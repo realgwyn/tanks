@@ -6,8 +6,6 @@ import com.esotericsoftware.kryonet.Connection;
 
 public interface UDPListener {
 
-  void receivedRequest(Connection conn, UDPMessage request);
-
-  void receivedResponse(Connection conn, UDPMessage response);
+  void receivedUDPMessage(Connection conn, UDPMessage request);
 
 }

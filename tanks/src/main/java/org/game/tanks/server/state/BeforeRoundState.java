@@ -6,8 +6,9 @@ import org.springframework.stereotype.Component;
  * @author rafal.kojta
  */
 @Component
-public class BeforeRoundState {
+public class BeforeRoundState extends ServerState {
 
+  @Override
   public void update() {
     // freeze players + countdown
   }

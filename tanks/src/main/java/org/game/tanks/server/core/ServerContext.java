@@ -4,6 +4,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.server.model.MapModel;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,8 @@ public class ServerContext {
   private int serverName;
   private ConcurrentLinkedQueue<PlayerServerModel> players;
   private ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers;
+  private ConcurrentLinkedQueue<GameEvent> incomingGameEvents;
+  private ConcurrentLinkedQueue<GameEvent> outgoingGameEvents;
   private MapModel currentMap;
   private MapModel nextMap;
 
@@ -80,6 +83,22 @@ public class ServerContext {
 
   public void setIncomingPlayers(ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers) {
     this.incomingPlayers = incomingPlayers;
+  }
+
+  public ConcurrentLinkedQueue<GameEvent> getIncomingGameEvents() {
+    return incomingGameEvents;
+  }
+
+  public void setIncomingGameEvents(ConcurrentLinkedQueue<GameEvent> incomingGameEvents) {
+    this.incomingGameEvents = incomingGameEvents;
+  }
+
+  public ConcurrentLinkedQueue<GameEvent> getOutgoingGameEvents() {
+    return outgoingGameEvents;
+  }
+
+  public void setOutgoingGameEvents(ConcurrentLinkedQueue<GameEvent> outgoingGameEvents) {
+    this.outgoingGameEvents = outgoingGameEvents;
   }
 
 }

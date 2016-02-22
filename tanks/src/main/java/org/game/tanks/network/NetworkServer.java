@@ -40,9 +40,9 @@ public class NetworkServer {
       @Override
       public void received(Connection conn, Object object) {
         if (object instanceof UDPMessage) {
-          udpListener.receivedRequest(conn, (UDPMessage) object);
+          udpListener.receivedUDPMessage(conn, (UDPMessage) object);
         } else if (object instanceof TCPMessage) {
-          tcpListener.receivedRequest(conn, (TCPMessage) object);
+          tcpListener.receivedTCPMessage(conn, (TCPMessage) object);
         }
       }
     });
@@ -87,13 +87,9 @@ public class NetworkServer {
   public static void main(String[] args) throws NetworkException, InterruptedException {
     final NetworkServer server = new NetworkServer();
     server.setTCPListener(new TCPListener() {
-      @Override
-      public void receivedResponse(Connection conn, TCPMessage request) {
-        System.out.println("Received Response");
-      }
 
       @Override
-      public void receivedRequest(Connection conn, TCPMessage request) {
+      public void receivedTCPMessage(Connection conn, TCPMessage request) {
         System.out.println("Received Request");
         if (request instanceof ChatMessage) {
           ChatMessage msg = (ChatMessage) request;
