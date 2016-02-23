@@ -23,13 +23,17 @@ public class WaitingForPlayersState extends ServerState {
 
   @Override
   public void update() {
-    // display info that points will not start until there will be more than one player in the game
     gameEventHandler.processGameEvents();
+
+    // display info that points will not start until there will be more than one player in the game
+
     playerConnectionManager.processPlayerConnections();
 
     if (ctx.getPlayers().size() > 1) {
       engine.setState(beforeRoundState);
     }
+
+    gameEventHandler.sendOutGameEvents();
   }
 
 }

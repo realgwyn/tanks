@@ -6,6 +6,6 @@ import com.esotericsoftware.kryonet.Connection;
 
 public interface TCPListener {
 
-  void receivedTCPMessage(Connection conn, TCPMessage request);
+  void receivedTCPMessage(Connection conn, TCPMessage message);
 
 }

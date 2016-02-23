@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.network.model.GameEvent;
+import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.model.MapModel;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class ServerContext {
   private int serverName;
   private ConcurrentLinkedQueue<PlayerServerModel> players;
   private ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers;
+  private ConcurrentLinkedQueue<PlayerSnapshot> incomingPlayerSnapshots;
   private ConcurrentLinkedQueue<GameEvent> incomingGameEvents;
   private ConcurrentLinkedQueue<GameEvent> outgoingGameEvents;
   private MapModel currentMap;
@@ -25,16 +27,12 @@ public class ServerContext {
   @PostConstruct
   public void init() {
     players = new ConcurrentLinkedQueue<>();
+    incomingPlayers = new ConcurrentLinkedQueue<>();
+    incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
+    incomingGameEvents = new ConcurrentLinkedQueue<>();
+    outgoingGameEvents = new ConcurrentLinkedQueue<>();
     currentMap = new MapModel();
     nextMap = new MapModel();
-  }
-
-  public ConcurrentLinkedQueue<PlayerServerModel> getPlayers() {
-    return players;
-  }
-
-  public void setPlayers(ConcurrentLinkedQueue<PlayerServerModel> players) {
-    this.players = players;
   }
 
   public MapModel getCurrentMap() {
@@ -81,24 +79,20 @@ public class ServerContext {
     return incomingPlayers;
   }
 
-  public void setIncomingPlayers(ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers) {
-    this.incomingPlayers = incomingPlayers;
-  }
-
   public ConcurrentLinkedQueue<GameEvent> getIncomingGameEvents() {
     return incomingGameEvents;
-  }
-
-  public void setIncomingGameEvents(ConcurrentLinkedQueue<GameEvent> incomingGameEvents) {
-    this.incomingGameEvents = incomingGameEvents;
   }
 
   public ConcurrentLinkedQueue<GameEvent> getOutgoingGameEvents() {
     return outgoingGameEvents;
   }
 
-  public void setOutgoingGameEvents(ConcurrentLinkedQueue<GameEvent> outgoingGameEvents) {
-    this.outgoingGameEvents = outgoingGameEvents;
+  public ConcurrentLinkedQueue<PlayerSnapshot> getIncomingPlayerSnapshots() {
+    return incomingPlayerSnapshots;
+  }
+
+  public ConcurrentLinkedQueue<PlayerServerModel> getPlayers() {
+    return players;
   }
 
 }

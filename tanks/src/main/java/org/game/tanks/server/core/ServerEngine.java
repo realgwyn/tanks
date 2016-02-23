@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.game.tanks.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
+import org.game.tanks.network.ServerNetworkAdapter;
 import org.game.tanks.server.state.LoadingMapState;
 import org.game.tanks.server.state.OfflineState;
 import org.game.tanks.server.state.ServerState;
@@ -27,6 +28,10 @@ public class ServerEngine extends Loop {
   ServerWindow serverWindow;
   @Autowired
   ServerContext serverContext;
+  @Autowired
+  ServerNetworkAdapter networkAdapter;
+  @Autowired
+  GameEventHandler gameEventHandler;
 
   private NetworkServer server;
 
@@ -61,6 +66,9 @@ public class ServerEngine extends Loop {
       return;
     }
     currentState = loadingMapState;
+    networkAdapter.setServer(server);
+    server.setTCPListener(gameEventHandler);
+    server.setUDPListener(gameEventHandler);
     logger.debug("Server running...");
   }
 

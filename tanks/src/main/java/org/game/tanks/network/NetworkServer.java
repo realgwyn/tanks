@@ -61,26 +61,32 @@ public class NetworkServer {
   }
 
   public void sendTCP(Connection conn, TCPMessage msg) {
+    System.out.println(">TCP(id:" + conn.getID() + ")");
     conn.sendTCP(msg);
   }
 
   public void sendUDP(Connection conn, UDPMessage msg) {
+    System.out.println(">UDP(id:" + conn.getID() + ")");
     conn.sendUDP(msg);
   }
 
   public void sendToAllTCP(TCPMessage msg) {
+    System.out.println(">TCPall");
     server.sendToAllTCP(msg);
   }
 
   public void sendToAllUDP(UDPMessage msg) {
+    System.out.println(">UDPall)");
     server.sendToAllUDP(msg);
   }
 
   public void sendToAllExceptTCP(int connectionID, TCPMessage msg) {
+    System.out.println(">TCPxor(id:" + connectionID + ")");
     server.sendToAllExceptTCP(connectionID, msg);
   }
 
   public void sendToAllExceptUDP(int connectionID, UDPMessage msg) {
+    System.out.println(">UDPxor(id:" + connectionID + ")");
     server.sendToAllExceptUDP(connectionID, msg);
   }
 

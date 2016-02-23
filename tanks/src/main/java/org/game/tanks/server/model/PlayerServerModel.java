@@ -2,21 +2,31 @@ package org.game.tanks.server.model;
 
 import java.awt.Polygon;
 
+import org.game.tanks.network.model.udp.PlayerPosition;
+
 import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerServerModel {
 
+  public long sequenceNumber;
+  public boolean sequenceFlipFlag;
+  public PlayerPosition playerPosition;
+  public Polygon shape;
+  public long playerId;
+
   private Connection connection;
   private int rankNumber;
-  private long playerId;
   private String playerName;
-  private int positionX;
-  private int positionY;
-  private Polygon shape;
   private int kills;
   private int deaths;
   private int team;
   private int latency;
+
+  public PlayerServerModel(long playerId) {
+    this.playerId = playerId;
+    this.playerPosition = new PlayerPosition();
+    this.playerPosition.id = playerId;
+  }
 
   public Connection getConnection() {
     return connection;
@@ -30,10 +40,6 @@ public class PlayerServerModel {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
-    this.playerId = playerId;
-  }
-
   public String getPlayerName() {
     return playerName;
   }
@@ -43,19 +49,19 @@ public class PlayerServerModel {
   }
 
   public int getPositionX() {
-    return positionX;
+    return playerPosition.x;
   }
 
   public void setPositionX(int positionX) {
-    this.positionX = positionX;
+    this.playerPosition.x = positionX;
   }
 
   public int getPositionY() {
-    return positionY;
+    return playerPosition.y;
   }
 
   public void setPositionY(int positionY) {
-    this.positionY = positionY;
+    this.playerPosition.y = positionY;
   }
 
   public int getKills() {
@@ -104,6 +110,30 @@ public class PlayerServerModel {
 
   public void setShape(Polygon shape) {
     this.shape = shape;
+  }
+
+  public long getSequenceNumber() {
+    return sequenceNumber;
+  }
+
+  public void setSequenceNumber(long sequenceNumber) {
+    this.sequenceNumber = sequenceNumber;
+  }
+
+  public float getBodyAngle() {
+    return playerPosition.bodyAngle;
+  }
+
+  public void setBodyAngle(float bodyAngle) {
+    playerPosition.bodyAngle = bodyAngle;
+  }
+
+  public float getTowerAngle() {
+    return playerPosition.towerAngle;
+  }
+
+  public void setTowerAngle(float towerAngle) {
+    playerPosition.towerAngle = towerAngle;
   }
 
 }
