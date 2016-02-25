@@ -7,7 +7,7 @@ public class SystemCommand extends AdminCommand {
   private static final long serialVersionUID = 386997896742861838L;
 
   public enum SystemCommandName {
-    ENABLE_PROCESS_SCHEDULER, ENABLE_ANTI_CHEAT, ENABLE_PLAYER_POSITION_CORRECTION
+    ENABLE_PROCESS_SCHEDULER, ENABLE_ANTI_CHEAT, ENABLE_PLAYER_POSITION_CORRECTION, ENABLE_PACKET_VALIDATION
   }
 
   private SystemCommandName name;

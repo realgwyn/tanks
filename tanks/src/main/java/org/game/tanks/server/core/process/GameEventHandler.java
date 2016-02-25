@@ -5,7 +5,6 @@ import org.game.tanks.network.model.event.HitEvent;
 import org.game.tanks.network.model.event.KillEvent;
 import org.game.tanks.network.model.event.ShootEvent;
 import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.core.ServerNetworkAdapter;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.game.tanks.server.model.PlayerServerModel.PlayerState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +18,6 @@ public class GameEventHandler extends ScheduledProcess {
 
   @Autowired
   private ServerContext context;
-  @Autowired
-  private ServerNetworkAdapter networkAdapter;
 
   @Override
   public void runProcess() {
