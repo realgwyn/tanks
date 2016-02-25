@@ -41,9 +41,14 @@ public class ServerContext {
     players = new ArrayList<>();
     playerById = new HashMap<>();
     incomingPlayers = new ConcurrentLinkedQueue<>();
+    leavingPlayerIds = new ConcurrentLinkedQueue<>();
     incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
     incomingGameEvents = new ConcurrentLinkedQueue<>();
     outgoingGameEvents = new ConcurrentLinkedQueue<>();
+    incomingCommands = new ConcurrentLinkedQueue<>();
+    outgoingCommands = new ConcurrentLinkedQueue<>();
+    incomingMessages = new ConcurrentLinkedQueue<>();
+    outgoingMessages = new ConcurrentLinkedQueue<>();
     currentMap = new MapModel();
     nextMap = new MapModel();
   }

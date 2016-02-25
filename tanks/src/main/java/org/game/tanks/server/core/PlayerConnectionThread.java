@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.esotericsoftware.kryonet.Connection;
 
 @Component
-public class PlayerConnectionThread extends Thread {
+public class PlayerConnectionThread implements Runnable {
 
   private final static Logger logger = Logger.getLogger(PlayerConnectionThread.class);
 
@@ -20,14 +20,18 @@ public class PlayerConnectionThread extends Thread {
   @Autowired
   ServerNetworkAdapter networkAdapter;
 
-  List<Long> generatedIds;
-  long idCount;
+  private List<Long> generatedIds;
+  private long idCount;
+  private boolean running;
 
-  private boolean running = true;
+  public synchronized void start() {
+    new Thread(this).start();
+  }
 
   private void initialize() {
     generatedIds = new ArrayList<>();
     idCount = 0;
+    running = true;
   }
 
   @Override
@@ -38,7 +42,7 @@ public class PlayerConnectionThread extends Thread {
     while (running) {
       processPlayerConnections();
       try {
-        sleep(250);// Sleep a little bit
+        Thread.sleep(250);// Sleep a little bit
       } catch (InterruptedException e) {
       }
     }

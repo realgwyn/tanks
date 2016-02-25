@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * Separate thread used to send NetworkMessages
  */
 @Component
-public class MessageSendingThread extends Thread {
+public class MessageSendingThread implements Runnable {
 
   private final static Logger logger = Logger.getLogger(MessageSendingThread.class);
   private boolean running = true;
@@ -20,6 +20,10 @@ public class MessageSendingThread extends Thread {
   @Autowired
   ServerNetworkAdapter networkAdapter;
 
+  public synchronized void start() {
+    new Thread(this).start();
+  }
+
   @Override
   public void run() {
     logger.debug("Running...");
@@ -27,7 +31,7 @@ public class MessageSendingThread extends Thread {
     while (running) {
       sendOutgoingMessages();
       try {
-        sleep(5);// Sleep a little bit
+        Thread.sleep(5);// Sleep a little bit
       } catch (InterruptedException e) {
       }
     }
