@@ -12,16 +12,18 @@ public class HitEvent extends GameEvent {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public HitEvent setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
   public float getDamage() {
     return damage;
   }
 
-  public void setDamage(float damage) {
+  public HitEvent setDamage(float damage) {
     this.damage = damage;
+    return this;
   }
 
 }

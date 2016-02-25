@@ -1,9 +1,15 @@
 package org.game.tanks.server.core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.network.model.Command;
+import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.model.MapModel;
@@ -16,17 +22,24 @@ public class ServerContext {
   private int tcpPort;
   private int udpPort;
   private int serverName;
-  private ConcurrentLinkedQueue<PlayerServerModel> players;
+  private List<PlayerServerModel> players;
+  private HashMap<Long, PlayerServerModel> playerById;
   private ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers;
+  private ConcurrentLinkedQueue<Long> leavingPlayerIds;
   private ConcurrentLinkedQueue<PlayerSnapshot> incomingPlayerSnapshots;
   private ConcurrentLinkedQueue<GameEvent> incomingGameEvents;
   private ConcurrentLinkedQueue<GameEvent> outgoingGameEvents;
+  private ConcurrentLinkedQueue<Command> incomingCommands;
+  private ConcurrentLinkedQueue<Command> outgoingCommands;
+  private ConcurrentLinkedQueue<CommunicationMessage> incomingMessages;
+  private ConcurrentLinkedQueue<CommunicationMessage> outgoingMessages;
   private MapModel currentMap;
   private MapModel nextMap;
 
   @PostConstruct
   public void init() {
-    players = new ConcurrentLinkedQueue<>();
+    players = new ArrayList<>();
+    playerById = new HashMap<>();
     incomingPlayers = new ConcurrentLinkedQueue<>();
     incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
     incomingGameEvents = new ConcurrentLinkedQueue<>();
@@ -91,8 +104,50 @@ public class ServerContext {
     return incomingPlayerSnapshots;
   }
 
-  public ConcurrentLinkedQueue<PlayerServerModel> getPlayers() {
+  public ConcurrentLinkedQueue<Command> getIncomingCommands() {
+    return incomingCommands;
+  }
+
+  public ConcurrentLinkedQueue<Command> getOutgoingCommands() {
+    return outgoingCommands;
+  }
+
+  public ConcurrentLinkedQueue<CommunicationMessage> getIncomingCommunicationMessages() {
+    return incomingMessages;
+  }
+
+  public ConcurrentLinkedQueue<CommunicationMessage> getOutgoingCommunicationMessages() {
+    return outgoingMessages;
+  }
+
+  public ConcurrentLinkedQueue<Long> getLeavingPlayerIds() {
+    return leavingPlayerIds;
+  }
+
+  public List<PlayerServerModel> getPlayers() {
     return players;
+  }
+
+  public void addPlayer(PlayerServerModel newPlayer) {
+    players.add(newPlayer);
+    playerById.put(newPlayer.getPlayerId(), newPlayer);
+  }
+
+  public PlayerServerModel getPlayerById(long id) {
+    return playerById.get(id);
+  }
+
+  public void removePlayer(long playerId) {
+    Iterator<PlayerServerModel> it = players.iterator();
+    while (it.hasNext()) {
+      PlayerServerModel player = it.next();
+      if (player.getPlayerId() == playerId) {
+        players.remove(player);
+        break;
+      }
+    }
+
+    playerById.remove(playerId);
   }
 
 }

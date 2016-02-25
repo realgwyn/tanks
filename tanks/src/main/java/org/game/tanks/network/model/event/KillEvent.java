@@ -11,8 +11,9 @@ public class KillEvent extends GameEvent {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public KillEvent setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
 }

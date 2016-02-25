@@ -1,18 +1,18 @@
 package org.game.tanks.network.model.command;
 
 import org.game.tanks.network.model.Command;
-import org.game.tanks.state.State.StateType;
+import org.game.tanks.state.ClientState.ClientStateType;
 
 public class ChangeState extends Command {
 
   private static final long serialVersionUID = -8464279087332407343L;
-  private StateType type;
+  private ClientStateType type;
 
-  public StateType getType() {
+  public ClientStateType getType() {
     return type;
   }
 
-  public void setType(StateType type) {
+  public void setType(ClientStateType type) {
     this.type = type;
   }
 

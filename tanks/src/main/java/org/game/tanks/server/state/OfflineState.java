@@ -5,6 +5,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class OfflineState extends ServerState {
 
+  public OfflineState() {
+    super(ServerStateType.OFFLINE);
+  }
+
   @Override
   public void onStateBegin() {
     // Shut down all network listening threads

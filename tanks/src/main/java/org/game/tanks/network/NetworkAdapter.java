@@ -1,5 +1,5 @@
 package org.game.tanks.network;
 
-public class NetworkAdapter {
+public abstract class NetworkAdapter implements UDPListener, TCPListener {
 
 }

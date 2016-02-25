@@ -1,20 +1,22 @@
 package org.game.tanks.server.state;
 
-import org.game.tanks.server.core.GameEventHandler;
+import org.game.tanks.server.core.process.ProcessScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AfterRoundState extends ServerState{
-  
+public class AfterRoundState extends ServerState {
+
   @Autowired
-  private GameEventHandler gameEventHandler;
+  ProcessScheduler processScheduler;
+
+  public AfterRoundState() {
+    super(ServerStateType.AFTER_ROUND);
+  }
 
   @Override
-  public void update(){
-    gameEventHandler.processGameEvents();
-    //display which team has won this round
-    gameEventHandler.sendOutGameEvents();
+  public void update() {
+    processScheduler.runProcesses();
   }
 
 }

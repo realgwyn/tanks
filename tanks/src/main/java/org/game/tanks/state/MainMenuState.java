@@ -1,7 +1,9 @@
 package org.game.tanks.state;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +16,12 @@ import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
 import org.game.tanks.core.ResourceManager;
 import org.game.tanks.game.model.Sprite;
-import org.game.tanks.state.State.StateType;
+import org.game.tanks.utils.GraphicsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MainMenuState extends State {
+public class MainMenuState extends ClientState {
 
   static final Logger logger = Logger.getLogger(MainMenuState.class);
 
@@ -31,9 +33,9 @@ public class MainMenuState extends State {
   RoundState roundState;
   @Autowired
   ResourceManager res;
-  
-  public MainMenuState(){
-    super(StateType.MAIN_MENU);
+
+  public MainMenuState() {
+    super(ClientStateType.MAIN_MENU);
   }
 
   @Override
@@ -41,11 +43,10 @@ public class MainMenuState extends State {
     display.requestFocus();
   }
 
-  
   List<Sprite> sprites;
-  
+
   @PostConstruct
-  public void init(){
+  public void init() {
     sprites = new ArrayList<>();
     sprites.add(res.getSprite(SpriteName.TANK_EXPLO));
     sprites.add(res.getSprite(SpriteName.FX_HIT_PUFF));
@@ -55,30 +56,40 @@ public class MainMenuState extends State {
     sprites.add(res.getSprite(SpriteName.TANK_TOWER_FIRE));
     sprites.add(res.getSprite(SpriteName.UPGRADE_AMMO));
   }
-  
+
   @Override
   public void update() {
-    for(Sprite sprite : sprites){
+    for (Sprite sprite : sprites) {
       sprite.updateTick();
     }
   }
 
   @Override
   public void draw() {
-    
 
-    Graphics g = display.getGraphics();
+    Graphics2D g = (Graphics2D) display.getGraphics();
     g.setColor(Color.BLACK);
     g.fillRect(0, 0, display.WIDTH, display.HEIGHT);
     g.setColor(Color.WHITE);
     g.drawString("Welcome to the Game", 20, 20);
     g.drawString("ENTER - Start Game!", 40, 50);
     g.drawString("ESCAPE - Exit", 40, 70);
-    
-    for(int i = 0;i<sprites.size();i++){
+
+    for (int i = 0; i < sprites.size(); i++) {
       display.getGraphics().drawImage(sprites.get(i).getImage(), i * 40, 200, null);
     }
-    
+
+    g.setColor(Color.red);
+    Polygon p = new Polygon();
+    p.addPoint(10, 10);
+    p.addPoint(20, 10);
+    p.addPoint(20, 20);
+    p.addPoint(10, 20);
+    g.draw(p);
+
+    Shape p2 = GraphicsUtils.updatePlayerShape(p, 40, 40, 20, 0);
+    g.draw(p2);
+
   }
 
   @Override

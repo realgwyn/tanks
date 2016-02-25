@@ -4,18 +4,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.core.GameDisplay;
-import org.game.tanks.state.State.StateType;
+import org.game.tanks.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameStartState extends State {
+public class GameStartState extends ClientState {
 
   @Autowired
   GameDisplay display;
   
   public GameStartState(){
-    super(StateType.GAME_START);
+    super(ClientStateType.GAME_START);
   }
 
   @Override

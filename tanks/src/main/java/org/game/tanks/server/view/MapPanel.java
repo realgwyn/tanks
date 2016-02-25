@@ -2,7 +2,8 @@ package org.game.tanks.server.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -15,18 +16,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class MapPanel extends JPanel {
 
-  private ConcurrentLinkedQueue<PlayerServerModel> players;
+  private List<PlayerServerModel> players;
   private MapModel map;
 
   public MapPanel() {
-    players = new ConcurrentLinkedQueue<>();
+    players = new ArrayList<>();
     map = new MapModel();
     map.setHeight(1600);
     map.setWidth(1600);
     setBackground(Color.WHITE);
   }
 
-  public void setPlayers(ConcurrentLinkedQueue<PlayerServerModel> players) {
+  public void setPlayers(List<PlayerServerModel> players) {
     this.players = players;
   }
 

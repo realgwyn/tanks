@@ -8,15 +8,23 @@ import com.esotericsoftware.kryonet.Connection;
 
 public class PlayerServerModel {
 
+  public enum PlayerState {
+    ALIVE, DEAD
+  }
+
   public long sequenceNumber;
   public boolean sequenceFlipFlag;
   public PlayerPosition playerPosition;
+  public int recentX;
+  public int recentY;
   public Polygon shape;
   public long playerId;
 
   private Connection connection;
   private int rankNumber;
   private String playerName;
+  private PlayerState state;
+  private float health;
   private int kills;
   private int deaths;
   private int team;
@@ -134,6 +142,22 @@ public class PlayerServerModel {
 
   public void setTowerAngle(float towerAngle) {
     playerPosition.towerAngle = towerAngle;
+  }
+
+  public PlayerState getState() {
+    return state;
+  }
+
+  public void setState(PlayerState state) {
+    this.state = state;
+  }
+
+  public float getHealth() {
+    return health;
+  }
+
+  public void setHealth(float health) {
+    this.health = health;
   }
 
 }

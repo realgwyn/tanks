@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameLoadState extends State {
+public class GameLoadState extends ClientState {
 
   @Autowired
   GameDisplay display;
   
   public GameLoadState(){
-    super(StateType.GAME_LOAD);
+    super(ClientStateType.GAME_LOAD);
   }
 
   @Override

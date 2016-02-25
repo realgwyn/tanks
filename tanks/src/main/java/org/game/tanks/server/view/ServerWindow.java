@@ -2,7 +2,7 @@ package org.game.tanks.server.view;
 
 import java.awt.EventQueue;
 import java.beans.Beans;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.swing.JFrame;
@@ -38,7 +38,6 @@ public class ServerWindow extends JFrame {
   ServerController controller;
 
   private JPanel contentPane;
-
 
   /**
    * Launch the application.
@@ -90,7 +89,7 @@ public class ServerWindow extends JFrame {
     contentPane.add(serverLogPanel, "1, 5, 5, 1, fill, fill");
   }
 
-  public void setPlayers(ConcurrentLinkedQueue<PlayerServerModel> players) {
+  public void setPlayers(List<PlayerServerModel> players) {
     playersListPanel.setPlayers(players);
     mapPanel.setPlayers(players);
   }

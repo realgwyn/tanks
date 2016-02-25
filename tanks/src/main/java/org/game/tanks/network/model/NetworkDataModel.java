@@ -1,5 +1,7 @@
 package org.game.tanks.network.model;
 
+import java.awt.geom.Point2D;
+
 import org.game.tanks.network.model.command.ChangeName;
 import org.game.tanks.network.model.command.ChangeState;
 import org.game.tanks.network.model.command.Connect;
@@ -18,6 +20,7 @@ import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerPosition;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
+import org.game.tanks.server.state.ServerState.ServerStateType;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -29,6 +32,7 @@ public class NetworkDataModel {
     kryo.register(TCPMessage.class);
     kryo.register(Command.class);
     kryo.register(GameEvent.class);
+    kryo.register(CommunicationMessage.class);
     kryo.register(ChatMessage.class);
     kryo.register(ServerMessage.class);
     kryo.register(ShootEvent.class);
@@ -44,6 +48,8 @@ public class NetworkDataModel {
     kryo.register(PlayerStats.class);
     kryo.register(PlayerStatsAll.class);
     kryo.register(TimeEvent.class);
+    kryo.register(Point2D.class);
+    kryo.register(ServerStateType.class);
 
     kryo.register(UDPMessage.class);
     kryo.register(GameSnapshot.class);

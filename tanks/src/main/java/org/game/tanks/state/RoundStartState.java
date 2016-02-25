@@ -4,18 +4,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.core.GameDisplay;
-import org.game.tanks.state.State.StateType;
+import org.game.tanks.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoundStartState extends State {
+public class RoundStartState extends ClientState {
 
   @Autowired
   GameDisplay display;
   
   public RoundStartState(){
-    super(StateType.ROUND_START);
+    super(ClientStateType.ROUND_START);
   }
 
   @Override

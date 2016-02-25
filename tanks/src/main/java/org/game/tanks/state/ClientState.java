@@ -6,14 +6,14 @@ import java.awt.event.MouseEvent;
 import org.apache.log4j.Logger;
 import org.game.tanks.gui.widgets.Focusable;
 
-public abstract class State implements Focusable {
+public abstract class ClientState implements Focusable {
 
-  static final Logger logger = Logger.getLogger(State.class);
+  static final Logger logger = Logger.getLogger(ClientState.class);
   
-  public enum StateType {GAME_END, GAME_LOAD, GAME_PENDING, GAME_START, STARTUP, MAIN_MENU, ROUND_END, ROUND_START, ROUND}
-  private StateType type;
+  public enum ClientStateType {GAME_END, GAME_LOAD, GAME_PENDING, GAME_START, STARTUP, MAIN_MENU, ROUND_END, ROUND_START, ROUND}
+  private ClientStateType type;
   
-  public State(StateType type){
+  public ClientState(ClientStateType type){
     this.type = type;
   }
 
@@ -51,7 +51,7 @@ public abstract class State implements Focusable {
   public void mouseReleased(MouseEvent e) {
   }
 
-  public StateType getType() {
+  public ClientStateType getType() {
     return type;
   }
   

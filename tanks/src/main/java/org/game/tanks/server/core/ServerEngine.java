@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.game.tanks.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
-import org.game.tanks.network.ServerNetworkAdapter;
+import org.game.tanks.server.core.process.GameEventHandler;
 import org.game.tanks.server.state.LoadingMapState;
 import org.game.tanks.server.state.OfflineState;
 import org.game.tanks.server.state.ServerState;
@@ -32,6 +32,10 @@ public class ServerEngine extends Loop {
   ServerNetworkAdapter networkAdapter;
   @Autowired
   GameEventHandler gameEventHandler;
+  @Autowired
+  MessageSendingThread messageSendingThread;
+  @Autowired
+  PlayerConnectionThread playerConnectionThread;
 
   private NetworkServer server;
 
@@ -67,8 +71,9 @@ public class ServerEngine extends Loop {
     }
     currentState = loadingMapState;
     networkAdapter.setServer(server);
-    server.setTCPListener(gameEventHandler);
-    server.setUDPListener(gameEventHandler);
+    messageSendingThread.start();
+    playerConnectionThread.start();
+
     logger.debug("Server running...");
   }
 
@@ -77,6 +82,8 @@ public class ServerEngine extends Loop {
     logger.debug("Shutting down server threads...");
     currentState = offlineState;
     server.stop();
+    messageSendingThread.finish();
+    playerConnectionThread.finish();
     logger.debug("Server stopped...");
   }
 
@@ -96,6 +103,10 @@ public class ServerEngine extends Loop {
 
     currentState = state;
     currentState.onStateBegin();
+  }
+
+  public ServerState getState() {
+    return currentState;
   }
 
 }

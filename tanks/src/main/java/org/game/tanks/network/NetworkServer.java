@@ -1,6 +1,8 @@
 package org.game.tanks.network;
 
 import java.io.IOException;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.NetworkDataModel;
@@ -12,13 +14,18 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
+// TODO: implement adding and removing connections
 public class NetworkServer {
 
   Server server;
   UDPListener udpListener;
   TCPListener tcpListener;
+  Queue<Connection> incomingConnections;
+  Queue<Connection> closedConnections;
 
   public NetworkServer() {
+    incomingConnections = new ConcurrentLinkedQueue<>();
+    closedConnections = new ConcurrentLinkedQueue<>();
     server = new Server();
     NetworkDataModel.register(server);
     initActions();
@@ -40,8 +47,10 @@ public class NetworkServer {
       @Override
       public void received(Connection conn, Object object) {
         if (object instanceof UDPMessage) {
+          System.out.println("<UDP(id:" + conn.getID() + ")");
           udpListener.receivedUDPMessage(conn, (UDPMessage) object);
         } else if (object instanceof TCPMessage) {
+          System.out.println("<TCP(id:" + conn.getID() + ")");
           tcpListener.receivedTCPMessage(conn, (TCPMessage) object);
         }
       }
@@ -88,6 +97,14 @@ public class NetworkServer {
   public void sendToAllExceptUDP(int connectionID, UDPMessage msg) {
     System.out.println(">UDPxor(id:" + connectionID + ")");
     server.sendToAllExceptUDP(connectionID, msg);
+  }
+
+  public Queue<Connection> getIncommingConnections() {
+    return incomingConnections;
+  }
+
+  public Queue<Connection> getClosedConnections() {
+    return closedConnections;
   }
 
   public static void main(String[] args) throws NetworkException, InterruptedException {

@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.state.StartupState;
-import org.game.tanks.state.State;
+import org.game.tanks.state.ClientState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class GameEngine extends Loop {
 
   private final static Logger logger = Logger.getLogger(GameEngine.class);
-  private State currentState;
+  private ClientState currentState;
 
   @Autowired
   StartupState loadingState;
@@ -98,7 +98,7 @@ public class GameEngine extends Loop {
     display.render();
   }
 
-  public void setState(State state) {
+  public void setState(ClientState state) {
     logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
     currentState.onStateEnd();
 

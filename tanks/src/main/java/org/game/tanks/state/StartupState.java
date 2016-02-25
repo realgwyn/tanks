@@ -6,12 +6,12 @@ import java.awt.Graphics;
 import org.apache.log4j.Logger;
 import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
-import org.game.tanks.state.State.StateType;
+import org.game.tanks.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StartupState extends State {
+public class StartupState extends ClientState {
 
   final static Logger logger = Logger.getLogger(StartupState.class);
 
@@ -26,7 +26,7 @@ public class StartupState extends State {
   MainMenuState mainMenuState;
   
   public StartupState(){
-    super(StateType.STARTUP);
+    super(ClientStateType.STARTUP);
   }
 
   @Override

@@ -78,5 +78,6 @@ public class Config {
   public final static String SERVER_DEFAULT_UDP_PORT = "server.defaultUdpPort";
   public final static String SERVER_DEFAULT_SERVER_NAME = "server.defaultServerName";
   public final static String GAME_MAP_NAME = "game.map.names";
+  public final static String SERVER_PROCESS_SCHEDULER_ENABLED = "server.processSchedulerEnabled";
 
 }

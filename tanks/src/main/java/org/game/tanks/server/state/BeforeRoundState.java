@@ -1,6 +1,6 @@
 package org.game.tanks.server.state;
 
-import org.game.tanks.server.core.GameEventHandler;
+import org.game.tanks.server.core.process.ProcessScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +11,15 @@ import org.springframework.stereotype.Component;
 public class BeforeRoundState extends ServerState {
 
   @Autowired
-  private GameEventHandler gameEventHandler;
+  ProcessScheduler processScheduler;
+
+  public BeforeRoundState() {
+    super(ServerStateType.BEFORE_ROUND);
+  }
 
   @Override
   public void update() {
-    gameEventHandler.processGameEvents();
-    // ...
-    gameEventHandler.sendOutGameEvents();
+    processScheduler.runProcesses();
   }
 
 }

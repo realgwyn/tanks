@@ -12,12 +12,12 @@ import org.game.tanks.core.GuiManager;
 import org.game.tanks.core.PlayerInput;
 import org.game.tanks.gui.widgets.InGameChatWindow;
 import org.game.tanks.gui.widgets.InGameMenuWindow;
-import org.game.tanks.state.State.StateType;
+import org.game.tanks.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoundState extends State {
+public class RoundState extends ClientState {
   
   static final Logger logger = Logger.getLogger(RoundState.class);
 
@@ -37,7 +37,7 @@ public class RoundState extends State {
   GuiManager guiManager;
   
   public RoundState(){
-    super(StateType.ROUND);
+    super(ClientStateType.ROUND);
   }
 
   @Override
