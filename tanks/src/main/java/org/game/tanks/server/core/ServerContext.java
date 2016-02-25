@@ -8,6 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
@@ -33,6 +34,7 @@ public class ServerContext {
   private ConcurrentLinkedQueue<Command> outgoingCommands;
   private ConcurrentLinkedQueue<CommunicationMessage> incomingMessages;
   private ConcurrentLinkedQueue<CommunicationMessage> outgoingMessages;
+  private ConcurrentLinkedQueue<AdminCommand> incomingAdminCommands;
   private MapModel currentMap;
   private MapModel nextMap;
 
@@ -49,6 +51,7 @@ public class ServerContext {
     outgoingCommands = new ConcurrentLinkedQueue<>();
     incomingMessages = new ConcurrentLinkedQueue<>();
     outgoingMessages = new ConcurrentLinkedQueue<>();
+    incomingAdminCommands = new ConcurrentLinkedQueue<>();
     currentMap = new MapModel();
     nextMap = new MapModel();
   }
@@ -123,6 +126,10 @@ public class ServerContext {
 
   public ConcurrentLinkedQueue<CommunicationMessage> getOutgoingCommunicationMessages() {
     return outgoingMessages;
+  }
+
+  public ConcurrentLinkedQueue<AdminCommand> getIncomingAdminCommands() {
+    return incomingAdminCommands;
   }
 
   public ConcurrentLinkedQueue<Long> getLeavingPlayerIds() {

@@ -26,6 +26,8 @@ public class ProcessScheduler {
   CommunicationMessageHandler communicationHandler;
   @Autowired
   PlayerConnectionHandler playerConnectionHandler;
+  @Autowired
+  AdminCommandHandler adminCommandHandler;
 
   // Processes that must be executed in every loop
   private List<ScheduledProcess> mandatoryProcessSchedule;
@@ -37,6 +39,7 @@ public class ProcessScheduler {
   @PostConstruct
   private void initProcessSchedules() {
     mandatoryProcessSchedule = new ArrayList<>();
+    mandatoryProcessSchedule.add(adminCommandHandler);
     mandatoryProcessSchedule.add(playerConnectionHandler);
     mandatoryProcessSchedule.add(playerMovementsHandler);
     mandatoryProcessSchedule.add(gameEventHandler);
@@ -66,6 +69,7 @@ public class ProcessScheduler {
         }
       }
     } else {
+      adminCommandHandler.runProcess();
       playerConnectionHandler.runProcess();
       playerMovementsHandler.runProcess();
       gameEventHandler.runProcess();

@@ -53,13 +53,15 @@ public class GameCommandHandler extends ScheduledProcess {
   }
 
   private void processDisconnectCommand(Disconnect cmd) {
-
+    //TODO
   }
 
   private void processPingCommand(Ping cmd) {
+    //TODO
   }
 
   private void processPongCommand(Pong cmd) {
+    //TODO
   }
 
 }

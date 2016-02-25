@@ -2,6 +2,7 @@ package org.game.tanks.server.core;
 
 import org.game.tanks.network.NetworkAdapter;
 import org.game.tanks.network.NetworkServer;
+import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
@@ -64,6 +65,8 @@ public class ServerNetworkAdapter extends NetworkAdapter {
       ctx.getIncomingCommands().add((Command) message);
     } else if (message instanceof CommunicationMessage) {
       ctx.getIncomingCommunicationMessages().add((CommunicationMessage) message);
+    } else if (message instanceof AdminCommand) {
+      ctx.getIncomingAdminCommands().add((AdminCommand) message);
     } else {
       throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
     }
