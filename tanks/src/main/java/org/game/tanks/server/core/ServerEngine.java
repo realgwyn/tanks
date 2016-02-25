@@ -3,6 +3,7 @@ package org.game.tanks.server.core;
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
+import org.game.tanks.cfg.Config;
 import org.game.tanks.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
@@ -36,6 +37,8 @@ public class ServerEngine extends Loop {
   MessageSendingThread messageSendingThread;
   @Autowired
   PlayerConnectionThread playerConnectionThread;
+  @Autowired
+  Config config;
 
   private NetworkServer server;
 
@@ -46,7 +49,7 @@ public class ServerEngine extends Loop {
 
   @Override
   public void run() {
-    super.run(100);
+    super.run(config.getPropertyInt(Config.SERVER_UPDATE_RATE));
   }
 
   public synchronized void start() {

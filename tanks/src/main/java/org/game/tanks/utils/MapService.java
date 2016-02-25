@@ -22,7 +22,7 @@ public class MapService {
 
   @PostConstruct
   public void init() {
-    mapNames = config.getPropertyListString(Config.GAME_MAP_NAME);
+    mapNames = config.getPropertyListString(Config.MAP_NAMES);
   }
 
   public void loadNextMap() {

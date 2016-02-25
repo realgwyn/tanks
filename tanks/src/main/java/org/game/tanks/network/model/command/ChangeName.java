@@ -6,7 +6,7 @@ public class ChangeName extends Command {
 
   private static final long serialVersionUID = -8063453903578448944L;
   private long playerId;
-  private String playerName;
+  private String newPlayerName;
 
   public long getPlayerId() {
     return playerId;
@@ -16,12 +16,12 @@ public class ChangeName extends Command {
     this.playerId = playerId;
   }
 
-  public String getPlayerName() {
-    return playerName;
+  public String getNewPlayerName() {
+    return newPlayerName;
   }
 
-  public void setPlayerName(String playerName) {
-    this.playerName = playerName;
+  public void setNewPlayerName(String playerName) {
+    this.newPlayerName = playerName;
   }
 
 }

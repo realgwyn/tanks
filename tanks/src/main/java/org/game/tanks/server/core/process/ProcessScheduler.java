@@ -43,7 +43,7 @@ public class ProcessScheduler {
     processSchedule = new ArrayList<>();
     processSchedule.add(gameCommandHandler);
     processSchedule.add(communicationHandler);
-    schedulerEnabled = config.getPropertyBoolean(Config.SERVER_PROCESS_SCHEDULER_ENABLED);
+    schedulerEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_PROCESS_SCHEDULER);
   }
 
   public void runProcesses() {

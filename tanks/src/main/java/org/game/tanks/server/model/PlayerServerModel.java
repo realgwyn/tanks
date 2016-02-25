@@ -160,4 +160,9 @@ public class PlayerServerModel {
     this.health = health;
   }
 
+  @Override
+  public String toString() {
+    return "Player [id:" + playerId + ", name:" + playerName + "]";
+  }
+
 }

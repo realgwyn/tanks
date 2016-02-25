@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Processes Player & Server Messages
+ * Processes Player Chat Messages
  */
 @Component
 public class CommunicationMessageHandler extends ScheduledProcess {

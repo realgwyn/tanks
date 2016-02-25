@@ -8,29 +8,42 @@ public class PlayerStats implements Serializable {
   private long playerId;
   private int kills;
   private int deaths;
+  private int ping;
 
   public long getPlayerId() {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public PlayerStats setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
   public int getKills() {
     return kills;
   }
 
-  public void setKills(int kills) {
+  public PlayerStats setKills(int kills) {
     this.kills = kills;
+    return this;
   }
 
   public int getDeaths() {
     return deaths;
   }
 
-  public void setDeaths(int deaths) {
+  public PlayerStats setDeaths(int deaths) {
     this.deaths = deaths;
+    return this;
+  }
+
+  public int getPing() {
+    return ping;
+  }
+
+  public PlayerStats setPing(int ping) {
+    this.ping = ping;
+    return this;
   }
 
 }

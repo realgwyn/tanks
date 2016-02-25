@@ -66,18 +66,21 @@ public class Config {
     return new ArrayList<>(Arrays.asList(listString.split(LIST_DELIMITER)));
   }
 
+  public final static String MAP_NAMES = "map.names";
   public final static String GAME_NAME = "game.name";
   public final static String GAME_UPDATE_RATE = "game.updaterate";
   public final static String GAME_FULLSCREEN = "game.fullscreen";
-  public final static String RESOLUTION_WIDTH = "resolution.width";
-  public final static String RESOLUTION_HEIGHT = "resolution.height";
-  public final static String RESOLUTION_SCALE = "resolution.scale";
+  public final static String GAME_RESOLUTION_WIDTH = "game.resolution.width";
+  public final static String GAME_RESOLUTION_HEIGHT = "game.resolution.height";
+  public final static String GAME_RESOLUTION_SCALE = "game.resolution.scale";
   public final static String SERVER_MAX_PLAYERS = "server.maxPlayers";
   public final static String SERVER_MAX_PLAYERS_PER_TEAM = "server.maxPlayersPerTeam";
   public final static String SERVER_DEFAULT_TCP_PORT = "server.defaultTcpPort";
   public final static String SERVER_DEFAULT_UDP_PORT = "server.defaultUdpPort";
   public final static String SERVER_DEFAULT_SERVER_NAME = "server.defaultServerName";
-  public final static String GAME_MAP_NAME = "game.map.names";
-  public final static String SERVER_PROCESS_SCHEDULER_ENABLED = "server.processSchedulerEnabled";
+  public final static String SERVER_ENABLE_PROCESS_SCHEDULER = "server.enableProcessScheduler";
+  public final static String SERVER_ENABLE_ANTI_CHEAT = "server.enableAntiCheat";
+  public final static String SERVER_ENABLE_PLAYER_POSITION_CORRECTION = "server.enablePlayerPositionCorrection";
+  public final static String SERVER_UPDATE_RATE = "server.updaterate";
 
 }

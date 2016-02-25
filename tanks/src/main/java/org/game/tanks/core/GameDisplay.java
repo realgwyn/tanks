@@ -32,9 +32,9 @@ public class GameDisplay extends Canvas {
 
   @PostConstruct
   public void init() {
-    WIDTH = config.getPropertyInt(Config.RESOLUTION_WIDTH);
-    HEIGHT = config.getPropertyInt(Config.RESOLUTION_HEIGHT);
-    SCALE = config.getPropertyInt(Config.RESOLUTION_SCALE);
+    WIDTH = config.getPropertyInt(Config.GAME_RESOLUTION_WIDTH);
+    HEIGHT = config.getPropertyInt(Config.GAME_RESOLUTION_HEIGHT);
+    SCALE = config.getPropertyInt(Config.GAME_RESOLUTION_SCALE);
     image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     rasterPixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));

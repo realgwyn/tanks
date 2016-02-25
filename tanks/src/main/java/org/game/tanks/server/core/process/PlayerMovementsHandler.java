@@ -2,6 +2,9 @@ package org.game.tanks.server.core.process;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
+import org.game.tanks.cfg.Config;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerPosition;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
@@ -25,12 +28,21 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   ServerNetworkAdapter networkAdapter;
   @Autowired
   ServerEngine engine;
+  @Autowired
+  Config config;
+
+  private boolean playerPositionCorrectionEnabled;
 
   @Override
   public void runProcess() {
     updatePlayerPositions();
     playerPositionsCorrection();
     sendOutGameSnapshot();
+  }
+
+  @PostConstruct
+  public void init() {
+    playerPositionCorrectionEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_PLAYER_POSITION_CORRECTION);
   }
 
   private void updatePlayerPositions() {
@@ -73,7 +85,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
         }
         PlayerServerModel p1 = players.get(i);
         PlayerServerModel p2 = players.get(j);
-        if (p1.getShape().getBounds2D().intersects(p2.getShape().getBounds2D())) {
+        if (playerPositionCorrectionEnabled && p1.getShape().getBounds2D().intersects(p2.getShape().getBounds2D())) {
           // TODO implement recursive function for re-checking collisions with other players after changed position
           // This solution is naive, it just moves back the player, not checking if behind him is other player coliding
           correctPosition(p1, p2);
