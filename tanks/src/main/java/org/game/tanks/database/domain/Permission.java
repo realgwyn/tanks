@@ -1,4 +1,4 @@
-package org.game.tanks.database;
+package org.game.tanks.database.domain;
 
 public class Permission {
 
