@@ -3,9 +3,9 @@ package org.game.tanks.network.model;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
-import org.game.tanks.common.model.MapObject;
-import org.game.tanks.common.model.PlayerModel;
-import org.game.tanks.common.model.PlayerState;
+import org.game.tanks.model.MapObject;
+import org.game.tanks.model.PlayerModel;
+import org.game.tanks.model.PlayerState;
 import org.game.tanks.network.model.command.ChangeName;
 import org.game.tanks.network.model.command.ChangeState;
 import org.game.tanks.network.model.command.ChooseTeam;

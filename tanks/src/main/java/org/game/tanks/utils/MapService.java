@@ -7,8 +7,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
-import org.game.tanks.common.model.MapModel;
-import org.game.tanks.common.model.MapObject;
+import org.game.tanks.model.MapModel;
+import org.game.tanks.model.MapObject;
 import org.game.tanks.network.model.command.MapInfoData;
 import org.game.tanks.server.core.ServerContext;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package org.game.tanks.network.model.command;
 
-import org.game.tanks.common.model.MapObject;
+import org.game.tanks.model.MapObject;
 import org.game.tanks.network.model.TCPMessage;
 
 public class MapInfoData extends TCPMessage {

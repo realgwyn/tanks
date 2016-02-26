@@ -4,7 +4,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
-import org.game.tanks.core.Loop;
+import org.game.tanks.client.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
 import org.game.tanks.server.core.process.GameEventHandler;

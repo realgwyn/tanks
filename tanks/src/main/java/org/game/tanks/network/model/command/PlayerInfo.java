@@ -2,7 +2,7 @@ package org.game.tanks.network.model.command;
 
 import java.io.Serializable;
 
-import org.game.tanks.common.model.PlayerModel;
+import org.game.tanks.model.PlayerModel;
 
 public class PlayerInfo implements Serializable {
 

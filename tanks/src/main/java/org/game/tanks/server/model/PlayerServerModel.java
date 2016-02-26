@@ -1,6 +1,6 @@
 package org.game.tanks.server.model;
 
-import org.game.tanks.common.model.PlayerModel;
+import org.game.tanks.model.PlayerModel;
 
 import com.esotericsoftware.kryonet.Connection;
 

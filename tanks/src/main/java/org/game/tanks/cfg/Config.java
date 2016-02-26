@@ -8,7 +8,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.lang3.StringUtils;
-import org.game.tanks.core.Game;
+import org.game.tanks.client.core.Game;
 import org.game.tanks.server.core.Server;
 import org.game.tanks.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;

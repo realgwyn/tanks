@@ -1,6 +1,6 @@
 package org.game.tanks.server.core.process;
 
-import org.game.tanks.common.model.PlayerState;
+import org.game.tanks.model.PlayerState;
 import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.event.HitEvent;
 import org.game.tanks.network.model.event.KillEvent;

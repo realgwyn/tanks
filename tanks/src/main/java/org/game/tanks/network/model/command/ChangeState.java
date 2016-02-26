@@ -1,7 +1,7 @@
 package org.game.tanks.network.model.command;
 
+import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.game.tanks.network.model.Command;
-import org.game.tanks.state.ClientState.ClientStateType;
 
 public class ChangeState extends Command {
 
