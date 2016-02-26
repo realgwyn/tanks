@@ -1,6 +1,7 @@
 package org.game.tanks.server.core;
 
 import org.apache.log4j.Logger;
+import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +49,23 @@ public class MessageSendingThread implements Runnable {
       networkAdapter.sendToAllTCP(ctx.getOutgoingGameEvents().poll());
     }
     while (!ctx.getOutgoingCommands().isEmpty()) {
-      networkAdapter.sendToAllTCP(ctx.getOutgoingCommands().poll());
+      sendCommand(ctx.getOutgoingCommands().poll());
     }
     while (!ctx.getOutgoingCommunicationMessages().isEmpty()) {
       sendCommunicationMessage(ctx.getOutgoingCommunicationMessages().poll());
     }
+  }
+
+  private void sendCommand(Command cmd) {
+    if (cmd.getPlayerToId() != 0) {
+      PlayerServerModel player = ctx.getPlayerById(cmd.getPlayerToId());
+      if (player != null) {
+        networkAdapter.sendTCP(player, cmd);
+      }
+    } else {
+      networkAdapter.sendToAllTCP(cmd);
+    }
+
   }
 
   private void sendCommunicationMessage(CommunicationMessage msg) {

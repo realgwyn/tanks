@@ -58,12 +58,12 @@ public class PlayerMovementsHandler extends ScheduledProcess {
         if (player.getSequenceNumber() < snapshot.sequenceNumber || player.sequenceFlipFlag != snapshot.sequenceFlipFlag) {
           player.sequenceFlipFlag = snapshot.sequenceFlipFlag;
           player.sequenceNumber = snapshot.sequenceNumber;
-          player.recentX = player.playerPosition.x;
-          player.recentY = player.playerPosition.y;
-          player.playerPosition.x = snapshot.x;
-          player.playerPosition.y = snapshot.y;
-          player.playerPosition.bodyAngle = snapshot.bodyAngle;
-          player.playerPosition.towerAngle = snapshot.towerAngle;
+          player.recentX = player.x;
+          player.recentY = player.y;
+          player.x = snapshot.x;
+          player.y = snapshot.y;
+          player.bodyAngle = snapshot.bodyAngle;
+          player.towerAngle = snapshot.towerAngle;
           player.shape = GraphicsUtils.updatePlayerShape(player.shape, snapshot.x, snapshot.y, snapshot.bodyAngle,
               snapshot.towerAngle);
         }
@@ -95,15 +95,15 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   }
 
   private void correctPosition(PlayerServerModel p1, PlayerServerModel p2) {
-    float xScalar = p1.recentX - p1.playerPosition.x;
-    float yScalar = p1.recentY - p1.playerPosition.y;
+    float xScalar = p1.recentX - p1.x;
+    float yScalar = p1.recentY - p1.y;
 
-    p1.playerPosition.x += xScalar;
-    p1.playerPosition.y += yScalar;
+    p1.x += xScalar;
+    p1.y += yScalar;
 
     while (p1.getShape().getBounds2D().intersects(p2.getShape().getBounds2D())) {
-      p1.playerPosition.x += xScalar;
-      p1.playerPosition.y += yScalar;
+      p1.x += xScalar;
+      p1.y += yScalar;
     }
   }
 

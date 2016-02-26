@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.game.tanks.network.model.Handshake;
 import org.game.tanks.server.model.PlayerServerModel;
+import org.game.tanks.utils.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -54,8 +56,15 @@ public class PlayerConnectionThread implements Runnable {
   }
 
   public void processPlayerConnections() {
-    processIncomingPlayers();
+    processNewConnections();
+    processIncomingHandshakes();
     processLeavingPlayers();
+  }
+
+  private void processIncomingHandshakes() {
+    while (!ctx.getIncomingHandshakes().isEmpty()) {
+
+    }
   }
 
   private void processLeavingPlayers() {
@@ -69,12 +78,20 @@ public class PlayerConnectionThread implements Runnable {
     }
   }
 
-  private void processIncomingPlayers() {
+  private void processNewConnections() {
     while (networkAdapter.hasNewConnections()) {
 
       // TODO: check server new connections
-      Connection con = networkAdapter.pollNewConnection();
-      PlayerServerModel player = createPlayerServerModel();
+      Connection connection = networkAdapter.pollNewConnection();
+      long newId = generateNextId();
+      PlayerServerModel player = new PlayerServerModel(newId, connection);
+      Handshake handshake = new Handshake()
+          .setConnId(connection.getID())
+          .setPlayerId(newId)
+          .setPlayerName("");
+
+      networkAdapter.sendTCP(connection, handshake);
+      networkAdapter.sendTCP(connection, MapService.createMapInfoData(ctx.getCurrentMap()));
 
       // TODO handshake with new player
       // Send initialization commands to player
@@ -86,14 +103,8 @@ public class PlayerConnectionThread implements Runnable {
 
       // Broadcast to all about new incoming player
 
-      ctx.getIncomingPlayers().add(player);
+      ctx.getPendingPlayers().add(player);
     }
-  }
-
-  private PlayerServerModel createPlayerServerModel() {
-    PlayerServerModel p = new PlayerServerModel(generateNextId());
-    // TODO: set fields
-    return p;
   }
 
   private PlayerServerModel getPlayerByConnectionId(int connectionId) {

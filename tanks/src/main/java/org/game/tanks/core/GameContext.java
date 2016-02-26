@@ -2,14 +2,14 @@ package org.game.tanks.core;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.game.tanks.game.model.Player;
+import org.game.tanks.common.model.PlayerModel;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GameContext {
 
   private long serverTimeOffset;
-  ConcurrentLinkedQueue<Player> players;
+  ConcurrentLinkedQueue<PlayerModel> players;
   private String playerId;
   private String playerName;
   private int playerPosX;
@@ -47,11 +47,11 @@ public class GameContext {
     this.playerName = playerName;
   }
 
-  public ConcurrentLinkedQueue<Player> getPlayers() {
+  public ConcurrentLinkedQueue<PlayerModel> getPlayers() {
     return players;
   }
 
-  public void setPlayers(ConcurrentLinkedQueue<Player> players) {
+  public void setPlayers(ConcurrentLinkedQueue<PlayerModel> players) {
     this.players = players;
   }
 

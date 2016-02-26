@@ -1,12 +1,16 @@
 package org.game.tanks.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
+import org.game.tanks.common.model.MapModel;
+import org.game.tanks.common.model.MapObject;
+import org.game.tanks.network.model.command.MapInfoData;
 import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.model.MapModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,6 +53,22 @@ public class MapService {
     MapModel map = new MapModel();
     // TODO parse map file
     return map;
+  }
+
+  public static MapModel createMapModel(MapInfoData data) {
+    return new MapModel()
+        .setMapName(data.getMapName())
+        .setWidth(data.getWidth())
+        .setHeight(data.getHeight())
+        .setObjects(new ArrayList<>(Arrays.asList(data.getObjects())));
+  }
+
+  public static MapInfoData createMapInfoData(MapModel model) {
+    return new MapInfoData()
+        .setMapName(model.getMapName())
+        .setWidth(model.getWidth())
+        .setHeight(model.getHeight())
+        .setObjects(model.getObjects().toArray(new MapObject[0]));
   }
 
 }

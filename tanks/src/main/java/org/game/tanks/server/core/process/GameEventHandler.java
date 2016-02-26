@@ -1,12 +1,12 @@
 package org.game.tanks.server.core.process;
 
+import org.game.tanks.common.model.PlayerState;
 import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.event.HitEvent;
 import org.game.tanks.network.model.event.KillEvent;
 import org.game.tanks.network.model.event.ShootEvent;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.model.PlayerServerModel;
-import org.game.tanks.server.model.PlayerServerModel.PlayerState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

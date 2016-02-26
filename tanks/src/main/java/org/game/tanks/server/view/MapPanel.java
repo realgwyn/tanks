@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import org.game.tanks.server.model.MapModel;
-import org.game.tanks.server.model.MapObject;
+import org.game.tanks.common.model.MapModel;
+import org.game.tanks.common.model.MapObject;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.game.tanks.utils.GraphicsUtils;
 import org.springframework.stereotype.Component;

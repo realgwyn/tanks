@@ -48,6 +48,10 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     this.server.setUDPListener(this);
   }
 
+  public void sendTCP(Connection con, TCPMessage msg) {
+    con.sendTCP(msg);
+  }
+
   public void sendTCP(PlayerServerModel player, TCPMessage msg) {
     player.getConnection().sendTCP(msg);
   }
@@ -91,7 +95,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     }
   }
 
-  private void validateAndProcessIncomingMessage(Connection conn, TCPMessage message){
+  private void validateAndProcessIncomingMessage(Connection conn, TCPMessage message) {
     if (message instanceof GameEvent) {
       GameEvent gameEvent = (GameEvent) message;
       if (networkMessageValidator.isValid(conn, gameEvent)) {

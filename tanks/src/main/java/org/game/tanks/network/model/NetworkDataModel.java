@@ -1,15 +1,21 @@
 package org.game.tanks.network.model;
 
+import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
+import org.game.tanks.common.model.MapObject;
+import org.game.tanks.common.model.PlayerModel;
+import org.game.tanks.common.model.PlayerState;
 import org.game.tanks.network.model.command.ChangeName;
 import org.game.tanks.network.model.command.ChangeState;
+import org.game.tanks.network.model.command.ChooseTeam;
 import org.game.tanks.network.model.command.Connect;
 import org.game.tanks.network.model.command.Disconnect;
+import org.game.tanks.network.model.command.Latency;
+import org.game.tanks.network.model.command.MapInfoData;
 import org.game.tanks.network.model.command.Ping;
-import org.game.tanks.network.model.command.PlayerStats;
-import org.game.tanks.network.model.command.PlayerStatsAll;
-import org.game.tanks.network.model.command.Pong;
+import org.game.tanks.network.model.command.PlayerInfo;
+import org.game.tanks.network.model.command.PlayersLatency;
 import org.game.tanks.network.model.command.TimeEvent;
 import org.game.tanks.network.model.command.admin.BanPlayer;
 import org.game.tanks.network.model.command.admin.BanPlayer.BanReason;
@@ -39,16 +45,20 @@ public class NetworkDataModel {
   public static void register(EndPoint endpoint) {
     Kryo kryo = endpoint.getKryo();
     kryo.register(TCPMessage.class);
+    kryo.register(Handshake.class);
 
     kryo.register(Command.class);
     kryo.register(ChangeName.class);
     kryo.register(ChangeState.class);
+    kryo.register(ChooseTeam.class);
     kryo.register(Connect.class);
     kryo.register(Disconnect.class);
+    kryo.register(Latency.class);
+    kryo.register(MapInfoData.class);
+    kryo.register(MapObject.class);
+    kryo.register(PlayersLatency.class);
     kryo.register(Ping.class);
-    kryo.register(Pong.class);
-    kryo.register(PlayerStats.class);
-    kryo.register(PlayerStatsAll.class);
+    kryo.register(PlayerInfo.class);
     kryo.register(TimeEvent.class);
 
     kryo.register(AdminCommand.class);
@@ -79,6 +89,9 @@ public class NetworkDataModel {
     kryo.register(BanReason.class);
     kryo.register(SystemCommandName.class);
     kryo.register(Point2D.class);
+    kryo.register(Polygon.class);
+    kryo.register(PlayerState.class);
+    kryo.register(PlayerModel.class);
   }
 
 }

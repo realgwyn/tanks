@@ -83,5 +83,7 @@ public class Config {
   public final static String SERVER_ENABLE_PLAYER_POSITION_CORRECTION = "server.enablePlayerPositionCorrection";
   public final static String SERVER_ENABLE_PACKET_VALIDATION = "server.enablePacketValidation";
   public final static String SERVER_UPDATE_RATE = "server.updaterate";
+  public final static String SERVER_NETWORK_PING_SENDING_FREQUENCY = "server.network.pingSendingFrequency";
+  public final static String SERVER_NETWORK_STATS_SENDING_FREQUENCY = "server.network.statsSendingFrequency";
 
 }

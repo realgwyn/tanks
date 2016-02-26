@@ -3,7 +3,6 @@ package org.game.tanks.state;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,6 @@ import org.game.tanks.core.GameDisplay;
 import org.game.tanks.core.GameEngine;
 import org.game.tanks.core.ResourceManager;
 import org.game.tanks.game.model.Sprite;
-import org.game.tanks.utils.GraphicsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -87,8 +85,8 @@ public class MainMenuState extends ClientState {
     p.addPoint(10, 20);
     g.draw(p);
 
-    Shape p2 = GraphicsUtils.updatePlayerShape(p, 40, 40, 20, 0);
-    g.draw(p2);
+    // Shape p2 = GraphicsUtils.updatePlayerShape(p, 40, 40, 20, 0);
+    // g.draw(p2);
 
   }
 

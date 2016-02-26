@@ -4,16 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.common.model.MapModel;
 import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
+import org.game.tanks.network.model.Handshake;
+import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
-import org.game.tanks.server.model.MapModel;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.stereotype.Component;
 
@@ -24,27 +27,39 @@ public class ServerContext {
   private int udpPort;
   private int serverName;
   private List<PlayerServerModel> players;
-  private HashMap<Long, PlayerServerModel> playerById;
+  private List<PlayerServerModel> pendingPlayers;
+  private Map<Long, PlayerServerModel> playerById;
+  private Map<Long, PlayerInfo> playerStats;
+
+  private ConcurrentLinkedQueue<Handshake> incomingHandshakes;
   private ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers;
   private ConcurrentLinkedQueue<Long> leavingPlayerIds;
+
   private ConcurrentLinkedQueue<PlayerSnapshot> incomingPlayerSnapshots;
+
   private ConcurrentLinkedQueue<GameEvent> incomingGameEvents;
   private ConcurrentLinkedQueue<GameEvent> outgoingGameEvents;
+
   private ConcurrentLinkedQueue<Command> incomingCommands;
   private ConcurrentLinkedQueue<Command> outgoingCommands;
+
   private ConcurrentLinkedQueue<CommunicationMessage> incomingMessages;
   private ConcurrentLinkedQueue<CommunicationMessage> outgoingMessages;
+
   private ConcurrentLinkedQueue<AdminCommand> incomingAdminCommands;
+
   private MapModel currentMap;
   private MapModel nextMap;
 
   @PostConstruct
   public void init() {
     players = new ArrayList<>();
+    pendingPlayers = new ArrayList<>();
     playerById = new HashMap<>();
     incomingPlayers = new ConcurrentLinkedQueue<>();
     leavingPlayerIds = new ConcurrentLinkedQueue<>();
     incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
+    incomingHandshakes = new ConcurrentLinkedQueue<>();
     incomingGameEvents = new ConcurrentLinkedQueue<>();
     outgoingGameEvents = new ConcurrentLinkedQueue<>();
     incomingCommands = new ConcurrentLinkedQueue<>();
@@ -54,6 +69,7 @@ public class ServerContext {
     incomingAdminCommands = new ConcurrentLinkedQueue<>();
     currentMap = new MapModel();
     nextMap = new MapModel();
+    playerStats = new HashMap<>();
   }
 
   public MapModel getCurrentMap() {
@@ -132,12 +148,24 @@ public class ServerContext {
     return incomingAdminCommands;
   }
 
+  public ConcurrentLinkedQueue<Handshake> getIncomingHandshakes() {
+    return incomingHandshakes;
+  }
+
+  public List<PlayerServerModel> getPendingPlayers() {
+    return pendingPlayers;
+  }
+
   public ConcurrentLinkedQueue<Long> getLeavingPlayerIds() {
     return leavingPlayerIds;
   }
 
   public List<PlayerServerModel> getPlayers() {
     return players;
+  }
+
+  public Map<Long, PlayerInfo> getPlayerStatsAll() {
+    return playerStats;
   }
 
   public void addPlayer(PlayerServerModel newPlayer) {
@@ -160,7 +188,7 @@ public class ServerContext {
     }
 
     playerById.remove(playerId);
+    playerStats.remove(playerId);
   }
 
 }
-
