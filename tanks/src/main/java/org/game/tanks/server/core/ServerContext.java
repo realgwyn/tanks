@@ -46,7 +46,6 @@ public class ServerContext {
   private ConcurrentLinkedQueue<CommunicationMessage> outgoingMessages;
 
   private ConcurrentLinkedQueue<AdminCommand> incomingAdminCommands;
-private ConcurrentLinkedQueue<AdminCommandResponse>
 
   private List<ChatMessage> chatHistory;
   private ConcurrentLinkedQueue<Task> pendingTasks;

@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 import org.game.tanks.database.domain.MalformedPacketHistory;
 import org.game.tanks.database.domain.UnauthorizedActionHistory;
 import org.game.tanks.database.domain.User;
-import org.game.tanks.network.model.TCPMessage;
 import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
@@ -24,12 +23,9 @@ public class DatabaseService {
     gson = new Gson();
   }
 
-  public void saveMalformedPacket(MalformedPacketHistory) {
-    String json = gson.toJson(message);
-    MalformedPacketHistory entity = new MalformedPacketHistory()
-        .setSerializedObject(json)
-        .setTime(new Date())
-        .setIpAddress(ipAddress);
+  public void saveMalformedPacket(MalformedPacketHistory message) {
+    String json = gson.toJson(message.getObject());
+    message.setSerializedObject(json);
     //TODO: PERSIST
     throw new UnsupportedOperationException("Not implemented yet");
   }

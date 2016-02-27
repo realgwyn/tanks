@@ -1,21 +1,19 @@
-package org.game.tanks.server.core.task;
+package org.game.tanks.server.core;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.database.domain.MalformedPacketHistory;
-import org.game.tanks.database.domain.UnauthorizedActionHistory;
 import org.game.tanks.database.service.DatabaseService;
 import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.message.ServerMessage.ServerMessageType;
 import org.game.tanks.security.AuthenticationService;
-import org.game.tanks.server.core.MessageSendingThread;
-import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.core.ServerNetworkAdapter;
+import org.game.tanks.server.core.task.DatabaseTask;
+import org.game.tanks.server.core.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SlowTasksThread implements Runnable {
+public class DeferredTasksThread implements Runnable {
 
   private final static Logger logger = Logger.getLogger(MessageSendingThread.class);
   private boolean running = true;
@@ -94,10 +92,7 @@ public class SlowTasksThread implements Runnable {
 
   private void createDbObject(Object dataObject) {
     if (dataObject instanceof MalformedPacketHistory) {
-      dbService.saveMalformedPacket(ipAddress, message);
-    } else if (dataObject instanceof UnauthorizedActionHistory) {
-      String ipAddress = serverNetworkAdapter.getIpAddressByConectionId(msg.getConnectionIdFrom());
-      dbService.saveUnauthorizedAction(ipAddress, msg);
+      dbService.saveMalformedPacket((MalformedPacketHistory) dataObject);
     }else{
       throw new UnsupportedOperationException("Not supported database action object " + dataObject.getClass().getSimpleName());
     }
