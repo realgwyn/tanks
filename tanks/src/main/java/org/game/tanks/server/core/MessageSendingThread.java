@@ -69,7 +69,9 @@ public class MessageSendingThread implements Runnable {
   }
 
   private void sendCommunicationMessage(CommunicationMessage msg) {
-    if (msg.getPlayerIdTo() != 0) {
+    if (msg.getConnectionIdTo() != 0) {
+      networkAdapter.sendTCP(msg.getConnectionIdTo(), msg);
+    } else if (msg.getPlayerIdTo() != 0) {
       PlayerServerModel player = ctx.getPlayerById(msg.getPlayerIdTo());
       if (player != null) {
         networkAdapter.sendTCP(player, msg);

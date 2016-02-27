@@ -28,4 +28,28 @@ public class CommonUtils {
     return s;
   }
 
+  public Integer tryParseInt(String s) {
+    try {
+      return Integer.parseInt(s);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  public Double tryParseDouble(String s) {
+    try {
+      return Double.parseDouble(s);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  public Boolean tryParseBoolean(String s) {
+    try {
+      return Boolean.parseBoolean(s);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
 }

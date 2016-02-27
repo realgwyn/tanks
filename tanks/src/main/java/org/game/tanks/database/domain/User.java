@@ -1,19 +1,51 @@
 package org.game.tanks.database.domain;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+
+@Entity
 public class User {
 
-  private Long userId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @PrimaryKeyJoinColumn
+  private Stats stats;
+
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+  @JoinTable(name = "user_permission", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "permission_id") })
+  private Set<Permission> permissions;
+
+  @OneToMany(mappedBy = "player")
+  private Set<BanHistory> banHistory;
+
+  @OneToMany(mappedBy = "player")
+  private Set<BannedIp> bannedIps;
+
   private String username;
   private String hash;
   private String email;
   private Boolean banned;
 
-  public Long getUserId() {
-    return userId;
+  public Long getId() {
+    return id;
   }
 
-  public User setUserId(Long userId) {
-    this.userId = userId;
+  public User setId(Long id) {
+    this.id = id;
     return this;
   }
 
@@ -50,6 +82,24 @@ public class User {
 
   public User setBanned(Boolean banned) {
     this.banned = banned;
+    return this;
+  }
+
+  public Set<Permission> getPermissions() {
+    return permissions;
+  }
+
+  public User setPermissions(Set<Permission> permissions) {
+    this.permissions = permissions;
+    return this;
+  }
+  
+  public Set<BanHistory> getBanHistory() {
+    return banHistory;
+  }
+
+  public User setBanHistory(Set<BanHistory> banHistory) {
+    this.banHistory = banHistory;
     return this;
   }
 

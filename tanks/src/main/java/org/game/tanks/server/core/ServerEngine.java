@@ -8,7 +8,7 @@ import org.game.tanks.client.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
 import org.game.tanks.server.core.process.GameEventHandler;
-import org.game.tanks.server.state.LoadingMapState;
+import org.game.tanks.server.state.InitializingMatchState;
 import org.game.tanks.server.state.OfflineState;
 import org.game.tanks.server.state.ServerState;
 import org.game.tanks.server.view.ServerWindow;
@@ -24,7 +24,7 @@ public class ServerEngine extends Loop {
   @Autowired
   OfflineState offlineState;
   @Autowired
-  LoadingMapState loadingMapState;
+  InitializingMatchState loadingMapState;
   @Autowired
   ServerWindow serverWindow;
   @Autowired
@@ -49,6 +49,8 @@ public class ServerEngine extends Loop {
 
   @Override
   public void run() {
+    logger.debug("Initializing ServerContext...");
+    serverContext.init();
     super.run(config.getPropertyInt(Config.SERVER_UPDATE_RATE));
   }
 

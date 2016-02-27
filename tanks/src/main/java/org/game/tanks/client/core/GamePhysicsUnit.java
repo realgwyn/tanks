@@ -1,14 +1,11 @@
 package org.game.tanks.client.core;
 
-import org.game.tanks.cfg.EngineConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class GamePhysicsUnit {
 
-  @Autowired
-  EngineConstants gc;
   @Autowired
   GameDisplay display;
   @Autowired

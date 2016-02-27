@@ -16,16 +16,15 @@ import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.command.PlayerInfo;
+import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
+import org.game.tanks.server.core.task.Task;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServerContext {
 
-  private int tcpPort;
-  private int udpPort;
-  private int serverName;
   private List<PlayerServerModel> players;
   private List<PlayerServerModel> pendingPlayers;
   private Map<Long, PlayerServerModel> playerById;
@@ -47,29 +46,77 @@ public class ServerContext {
   private ConcurrentLinkedQueue<CommunicationMessage> outgoingMessages;
 
   private ConcurrentLinkedQueue<AdminCommand> incomingAdminCommands;
+private ConcurrentLinkedQueue<AdminCommandResponse>
 
+  private List<ChatMessage> chatHistory;
+  private ConcurrentLinkedQueue<Task> pendingTasks;
+
+  private int tcpPort;
+  private int udpPort;
+  private String serverName;
   private MapModel currentMap;
   private MapModel nextMap;
+  private long matchStartTime;
+  private long matchEndTime;
+  private long roundEndTime;
 
+  /**
+   * Used when starting the Server
+   */
   @PostConstruct
   public void init() {
-    players = new ArrayList<>();
     pendingPlayers = new ArrayList<>();
-    playerById = new HashMap<>();
-    incomingPlayers = new ConcurrentLinkedQueue<>();
-    leavingPlayerIds = new ConcurrentLinkedQueue<>();
-    incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
     incomingHandshakes = new ConcurrentLinkedQueue<>();
+
+    initDefaultValues();
+    initValuesFromConfig();
+    initCollections();
+  }
+
+  private void initCollections() {
+    players = new ArrayList<>();
+    playerById = new HashMap<>();
+    leavingPlayerIds = new ConcurrentLinkedQueue<>();
+    incomingPlayers = new ConcurrentLinkedQueue<>();
+    incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
+
     incomingGameEvents = new ConcurrentLinkedQueue<>();
     outgoingGameEvents = new ConcurrentLinkedQueue<>();
-    incomingCommands = new ConcurrentLinkedQueue<>();
-    outgoingCommands = new ConcurrentLinkedQueue<>();
+    incomingAdminCommands = new ConcurrentLinkedQueue<>();
     incomingMessages = new ConcurrentLinkedQueue<>();
     outgoingMessages = new ConcurrentLinkedQueue<>();
-    incomingAdminCommands = new ConcurrentLinkedQueue<>();
+    incomingCommands = new ConcurrentLinkedQueue<>();
+    outgoingCommands = new ConcurrentLinkedQueue<>();
     currentMap = new MapModel();
     nextMap = new MapModel();
     playerStats = new HashMap<>();
+    chatHistory = new ArrayList<>();
+    pendingTasks = new ConcurrentLinkedQueue<>();
+  }
+
+  private void initDefaultValues() {
+    private int tcpPort = 55555;
+    private int udpPort = 55556;
+    private String serverName = "Undefined";
+    private MapModel currentMap = new MapModel();
+    private MapModel nextMap = new MapModel();
+    private long matchStartTime = 0;
+    private long matchEndTime = 0;
+    private long roundEndTime = 0;
+  }
+
+  private void initValuesFromConfig() {
+
+  }
+
+  /**
+   * Used when starting new Match
+   */
+  public void reinitialize() {
+    //clear all data objects
+    //clear current player list
+    //handshake all players again
+
   }
 
   public MapModel getCurrentMap() {
@@ -104,11 +151,11 @@ public class ServerContext {
     this.udpPort = udpPort;
   }
 
-  public int getServerName() {
+  public String getServerName() {
     return serverName;
   }
 
-  public void setServerName(int serverName) {
+  public void setServerName(String serverName) {
     this.serverName = serverName;
   }
 
@@ -148,6 +195,10 @@ public class ServerContext {
     return incomingAdminCommands;
   }
 
+  public ConcurrentLinkedQueue<Task> getPendingTasks() {
+    return pendingTasks;
+  }
+
   public ConcurrentLinkedQueue<Handshake> getIncomingHandshakes() {
     return incomingHandshakes;
   }
@@ -166,6 +217,37 @@ public class ServerContext {
 
   public Map<Long, PlayerInfo> getPlayerStatsAll() {
     return playerStats;
+  }
+
+  public List<ChatMessage> getChatHistory() {
+    return chatHistory;
+  }
+
+  public long getMatchStartTime() {
+    return matchStartTime;
+  }
+
+  public ServerContext setMatchStartTime(long matchStartTime) {
+    this.matchStartTime = matchStartTime;
+    return this;
+  }
+
+  public long getMatchEndTime() {
+    return matchEndTime;
+  }
+
+  public ServerContext setMatchEndTime(long matchEndTime) {
+    this.matchEndTime = matchEndTime;
+    return this;
+  }
+
+  public long getRoundEndTime() {
+    return roundEndTime;
+  }
+
+  public ServerContext setRoundEndTime(long roundEndTime) {
+    this.roundEndTime = roundEndTime;
+    return this;
   }
 
   public void addPlayer(PlayerServerModel newPlayer) {

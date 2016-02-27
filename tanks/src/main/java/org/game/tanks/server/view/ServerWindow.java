@@ -76,6 +76,7 @@ public class ServerWindow extends JFrame {
       playersListPanel = new PlayersListPanel();
       chatPanel = new ChatPanel();
       serverLogPanel = new ServerLogPanel();
+      init();
     }
     UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
   }

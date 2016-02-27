@@ -1,18 +1,23 @@
 package org.game.tanks.database.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Stats {
 
-  private User user;
+  @Id
+  private Long id;
   private long totalGameSpent;
   private long kills;
   private long deaths;
 
-  public User getUser() {
-    return user;
+  public Long getId() {
+    return id;
   }
 
-  public Stats setUser(User user) {
-    this.user = user;
+  public Stats setId(Long id) {
+    this.id = id;
     return this;
   }
 

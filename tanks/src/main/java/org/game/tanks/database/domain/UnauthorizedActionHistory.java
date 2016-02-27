@@ -6,36 +6,33 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
-public class BannedIp {
+public class UnauthorizedActionHistory {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @ManyToOne
-  private User player;
-
-  private Date bannedUntil;
+  private Date time;
   private String ipAddress;
+  private String serializedObject;
 
   public Long getId() {
     return id;
   }
 
-  public BannedIp setId(Long id) {
+  public UnauthorizedActionHistory setId(Long id) {
     this.id = id;
     return this;
   }
 
-  public User getPlayer() {
-    return player;
+  public Date getTime() {
+    return time;
   }
 
-  public BannedIp setPlayer(User player) {
-    this.player = player;
+  public UnauthorizedActionHistory setTime(Date time) {
+    this.time = time;
     return this;
   }
 
@@ -43,17 +40,17 @@ public class BannedIp {
     return ipAddress;
   }
 
-  public BannedIp setIpAddress(String ipAddress) {
+  public UnauthorizedActionHistory setIpAddress(String ipAddress) {
     this.ipAddress = ipAddress;
     return this;
   }
 
-  public Date getBannedUntil() {
-    return bannedUntil;
+  public String getSerializedObject() {
+    return serializedObject;
   }
 
-  public BannedIp setBannedUntil(Date bannedUntil) {
-    this.bannedUntil = bannedUntil;
+  public UnauthorizedActionHistory setSerializedObject(String serializedObject) {
+    this.serializedObject = serializedObject;
     return this;
   }
 

@@ -1,5 +1,8 @@
 package org.game.tanks.utils;
 
+import java.util.Date;
+
+import org.game.tanks.database.domain.MalformedPacketHistory;
 import org.game.tanks.database.service.DatabaseService;
 import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
@@ -17,6 +20,16 @@ public class NetworkMessageValidator {
   DatabaseService dbService;
 
   public boolean isValid(Connection conn, GameEvent gameEvent) {
+    boolean valid = true;
+
+    if (!valid) {
+      MalformedPacketHistory entity = new MalformedPacketHistory()
+          .setSerializedObject(json)
+          .setTime(new Date())
+          .setIpAddress(ipAddress);
+    }
+    return valid;
+
     //TODO:
     //    if (invalid) {
     //      dbService.saveMalformedPacket(conn.getRemoteAddressTCP().toString(), gameEvent);

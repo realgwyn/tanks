@@ -20,6 +20,7 @@ public class NetworkServer {
   Server server;
   UDPListener udpListener;
   TCPListener tcpListener;
+
   Queue<Connection> incomingConnections;
   Queue<Connection> closedConnections;
 
@@ -30,6 +31,7 @@ public class NetworkServer {
     NetworkDataModel.register(server);
     initActions();
   }
+
 
   public void start(int tcpPort, int udpPort) throws NetworkException {
     System.out.println("Starting server at tcpPort: " + tcpPort + ", udpPort: " + udpPort);
@@ -69,6 +71,20 @@ public class NetworkServer {
     tcpListener = listener;
   }
 
+  public void sendTCP(int connectionID, TCPMessage msg) {
+    Connection conn = getConnectionById(connectionID);
+    if (conn != null) {
+      conn.sendTCP(msg);
+    }
+  }
+
+  public void sendUDP(int connectionID, TCPMessage msg) {
+    Connection conn = getConnectionById(connectionID);
+    if (conn != null) {
+      conn.sendUDP(msg);
+    }
+  }
+
   public void sendTCP(Connection conn, TCPMessage msg) {
     System.out.println(">TCP(id:" + conn.getID() + ")");
     conn.sendTCP(msg);
@@ -105,6 +121,16 @@ public class NetworkServer {
 
   public Queue<Connection> getClosedConnections() {
     return closedConnections;
+  }
+
+  public Connection getConnectionById(int id) {
+    Connection [] activeConnections = server.getConnections(); 
+    for(int i=0;i<activeConnections.length;i++){
+      if (activeConnections[i].getID() == id) {
+        return activeConnections[i];
+      }
+    }
+    return null;
   }
 
   public static void main(String[] args) throws NetworkException, InterruptedException {

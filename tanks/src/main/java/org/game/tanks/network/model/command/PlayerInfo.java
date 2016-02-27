@@ -48,8 +48,4 @@ public class PlayerInfo implements Serializable {
     return this;
   }
 
-  public static long getSerialversionuid() {
-    return serialVersionUID;
-  }
-
 }

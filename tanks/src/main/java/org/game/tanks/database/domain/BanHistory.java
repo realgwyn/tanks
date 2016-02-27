@@ -1,12 +1,34 @@
 package org.game.tanks.database.domain;
 
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class BanHistory {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  @ManyToOne
   private User player;
-  private Long bannedTime;
-  private Long bannedUntil;
+  private Date bannedTime;
+  private Date bannedUntil;
   private String reason;
   private String comment;
+
+  public Long getId() {
+    return id;
+  }
+
+  public BanHistory setId(Long id) {
+    this.id = id;
+    return this;
+  }
 
   public User getPlayer() {
     return player;
@@ -17,20 +39,20 @@ public class BanHistory {
     return this;
   }
 
-  public Long getBannedTime() {
+  public Date getBannedTime() {
     return bannedTime;
   }
 
-  public BanHistory setBannedTime(Long bannedTime) {
+  public BanHistory setBannedTime(Date bannedTime) {
     this.bannedTime = bannedTime;
     return this;
   }
 
-  public Long getBannedUntil() {
+  public Date getBannedUntil() {
     return bannedUntil;
   }
 
-  public BanHistory setBannedUntil(Long bannedUntil) {
+  public BanHistory setBannedUntil(Date bannedUntil) {
     this.bannedUntil = bannedUntil;
     return this;
   }

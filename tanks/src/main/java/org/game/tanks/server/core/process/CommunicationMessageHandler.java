@@ -1,5 +1,10 @@
 package org.game.tanks.server.core.process;
 
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.game.tanks.cfg.Config;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.server.core.ServerContext;
@@ -17,6 +22,15 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   ServerContext ctx;
   @Autowired
   ServerNetworkAdapter networkAdapter;
+  @Autowired
+  Config config;
+
+  private int maxChatHistorySize = 1000;
+
+  @PostConstruct
+  public void init() {
+    maxChatHistorySize = config.getPropertyInt(Config.SERVER_MAX_CHAT_HISTORY_SIZE);
+  }
 
   @Override
   public void runProcess() {
@@ -35,6 +49,11 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   }
 
   private void processChatMessage(ChatMessage msg) {
+    List<ChatMessage> chatHistory = ctx.getChatHistory();
+    chatHistory.add(msg);
+    if (chatHistory.size() > maxChatHistorySize && !chatHistory.isEmpty()) {
+      chatHistory.remove(0);
+    }
     ctx.getOutgoingCommunicationMessages().add(msg);
   }
 

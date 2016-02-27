@@ -12,6 +12,7 @@ import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
+import org.game.tanks.server.core.task.Task;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.game.tanks.utils.NetworkMessageValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,14 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     server.sendToAllExceptUDP(connectionID, msg);
   }
 
+  public void sendTCP(int connectionID, TCPMessage msg) {
+    server.sendTCP(connectionID, msg);
+  }
+
+  public void sendUDP(int connectionID, TCPMessage msg) {
+    server.sendUDP(connectionID, msg);
+  }
+
   @Override
   public void receivedTCPMessage(Connection conn, TCPMessage message) {
     if (packetValidatorEnabled) {
@@ -88,7 +97,9 @@ public class ServerNetworkAdapter extends NetworkAdapter {
       } else if (message instanceof CommunicationMessage) {
         ctx.getIncomingCommunicationMessages().add((CommunicationMessage) message);
       } else if (message instanceof AdminCommand) {
-        ctx.getIncomingAdminCommands().add((AdminCommand) message);
+        AdminCommand cmd = (AdminCommand) message;
+        cmd.setConnectionIdFrom(conn.getID());
+        ctx.getPendingTasks().add(new Task(cmd));
       } else {
         throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
       }
@@ -144,6 +155,14 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   public Connection pollClosedConnection() {
     return server.getClosedConnections().poll();
+  }
+
+  public String getIpAddressByConectionId(int connectionIdFrom) {
+    Connection conn = server.getConnectionById(connectionIdFrom);
+    if (conn != null) {
+      return conn.getRemoteAddressTCP().getHostName();
+    }
+    return null;
   }
 
 }

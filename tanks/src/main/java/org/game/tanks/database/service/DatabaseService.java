@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.database.domain.MalformedPacketHistory;
+import org.game.tanks.database.domain.UnauthorizedActionHistory;
+import org.game.tanks.database.domain.User;
 import org.game.tanks.network.model.TCPMessage;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +24,29 @@ public class DatabaseService {
     gson = new Gson();
   }
 
-  public void saveMalformedPacket(String ipAddress, TCPMessage message) {
+  public void saveMalformedPacket(MalformedPacketHistory) {
     String json = gson.toJson(message);
     MalformedPacketHistory entity = new MalformedPacketHistory()
         .setSerializedObject(json)
-        .setTime(new Date().getTime())
+        .setTime(new Date())
         .setIpAddress(ipAddress);
-    //TODO: persist
+    //TODO: PERSIST
+    throw new UnsupportedOperationException("Not implemented yet");
   }
+  
+  public void saveUnauthorizedAction(String ipAddress, Object commandObject) {
+    String json = gson.toJson(commandObject);
+    UnauthorizedActionHistory entity = new UnauthorizedActionHistory()
+        .setIpAddress(ipAddress)
+        .setSerializedObject(json)
+        .setTime(new Date());
+    //TODO: PERSIST
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+  
+  public User getUserByUsername(String username) {
+    throw new UnsupportedOperationException("Not implemented yet");
+  }
+
 
 }

@@ -1,4 +1,4 @@
-package org.game.tanks.utils;
+package org.game.tanks.server.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
