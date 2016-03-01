@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
+import org.game.tanks.model.PlayerModel;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerPosition;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
@@ -55,16 +56,17 @@ public class PlayerMovementsHandler extends ScheduledProcess {
     for (PlayerServerModel player : ctx.getPlayers()) {
       if (player.getConnection().getID() == snapshot.id) {
         // sequenceFlipFlag indicates that sequenceNumber exceeded long.MAX_VALUE
+        PlayerModel model = player.getModel();
         if (player.getSequenceNumber() < snapshot.sequenceNumber || player.sequenceFlipFlag != snapshot.sequenceFlipFlag) {
           player.sequenceFlipFlag = snapshot.sequenceFlipFlag;
           player.sequenceNumber = snapshot.sequenceNumber;
-          player.recentX = player.x;
-          player.recentY = player.y;
-          player.x = snapshot.x;
-          player.y = snapshot.y;
-          player.bodyAngle = snapshot.bodyAngle;
-          player.towerAngle = snapshot.towerAngle;
-          player.shape = GraphicsUtils.updatePlayerShape(player.shape, snapshot.x, snapshot.y, snapshot.bodyAngle,
+          model.recentX = model.x;
+          model.recentY = model.y;
+          model.x = snapshot.x;
+          model.y = snapshot.y;
+          model.bodyAngle = snapshot.bodyAngle;
+          model.towerAngle = snapshot.towerAngle;
+          model.shape = GraphicsUtils.updatePlayerShape(model.shape, snapshot.x, snapshot.y, snapshot.bodyAngle,
               snapshot.towerAngle);
         }
         break;
@@ -83,8 +85,8 @@ public class PlayerMovementsHandler extends ScheduledProcess {
         if (i == j) {
           continue;
         }
-        PlayerServerModel p1 = players.get(i);
-        PlayerServerModel p2 = players.get(j);
+        PlayerModel p1 = players.get(i).getModel();
+        PlayerModel p2 = players.get(j).getModel();
         if (playerPositionCorrectionEnabled && p1.getShape().getBounds2D().intersects(p2.getShape().getBounds2D())) {
           // TODO implement recursive function for re-checking collisions with other players after changed position
           // This solution is naive, it just moves back the player, not checking if behind him is other player coliding
@@ -94,7 +96,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
     }
   }
 
-  private void correctPosition(PlayerServerModel p1, PlayerServerModel p2) {
+  private void correctPosition(PlayerModel p1, PlayerModel p2) {
     float xScalar = p1.recentX - p1.x;
     float yScalar = p1.recentY - p1.y;
 

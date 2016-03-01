@@ -101,8 +101,8 @@ public class GameEngine extends Loop {
   public void setState(ClientState state) {
     logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
     currentState.onStateEnd();
-
     currentState = state;
+    input.setInputListener(currentState);
     currentState.onStateBegin();
   }
 

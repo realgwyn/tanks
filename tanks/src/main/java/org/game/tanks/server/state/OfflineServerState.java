@@ -3,9 +3,9 @@ package org.game.tanks.server.state;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OfflineState extends ServerState {
+public class OfflineServerState extends ServerState {
 
-  public OfflineState() {
+  public OfflineServerState() {
     super(ServerStateType.OFFLINE);
   }
 

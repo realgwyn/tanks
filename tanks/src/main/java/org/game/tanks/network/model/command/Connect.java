@@ -12,16 +12,18 @@ public class Connect extends Command {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public Connect setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
   public String getPlayerName() {
     return playerName;
   }
 
-  public void setPlayerName(String playerName) {
+  public Connect setPlayerName(String playerName) {
     this.playerName = playerName;
+    return this;
   }
 
 }

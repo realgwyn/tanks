@@ -38,16 +38,16 @@ public class GameEventHandler extends ScheduledProcess {
   private void processShootEvent(ShootEvent event) {
     context.getOutgoingGameEvents().add(event);
     for (PlayerServerModel player : context.getPlayers()) {
-      if (player.getPlayerId() != event.getPlayerId() && player.getState() == PlayerState.ALIVE
-          && player.getShape().contains(event.getPoint())) {
+      if (player.getPlayerId() != event.getPlayerId() && player.getModel().getState() == PlayerState.ALIVE
+          && player.getModel().getShape().contains(event.getPoint())) {
         context.getOutgoingGameEvents().add(new HitEvent()
             .setDamage(event.getDamage())
             .setPlayerId(event.getPlayerId()));
 
-        player.setHealth(player.getHealth() - event.getDamage());
+        player.getModel().setHealth(player.getModel().getHealth() - event.getDamage());
 
-        if (player.getHealth() <= 0) {
-          player.setState(PlayerState.DEAD);
+        if (player.getModel().getHealth() <= 0) {
+          player.getModel().setState(PlayerState.DEAD);
           context.getOutgoingGameEvents().add(new KillEvent()
               .setPlayerId(player.getPlayerId()));
         }

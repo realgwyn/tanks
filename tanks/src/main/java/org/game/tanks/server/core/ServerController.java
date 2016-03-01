@@ -10,9 +10,9 @@ public class ServerController {
   @Autowired
   ServerEngine engine;
   @Autowired
-  ServerContext serverContext;
-  @Autowired
   ServerWindow serverWindow;
+  @Autowired
+  ServerContext ctx;
 
   public void actionKickPlayer(long playerId) {
     // TODO Auto-generated method stub
@@ -26,8 +26,8 @@ public class ServerController {
 
   public void startServer(String serverName, String tcpPort, String udpPort) {
     try {
-      serverContext.setTcpPort(Integer.parseInt(tcpPort));
-      serverContext.setUdpPort(Integer.parseInt(udpPort));
+      ctx.setTcpPort(Integer.parseInt(tcpPort));
+      ctx.setUdpPort(Integer.parseInt(udpPort));
     } catch (Exception e) {
       serverWindow.setStatus("Invalid port");
       e.printStackTrace();
@@ -46,6 +46,25 @@ public class ServerController {
   public void sendChatMessage(String message) {
     // TODO Auto-generated method stub
 
+  }
+
+  // TODO
+  public void initNewMatch() {
+    int matchDuration = ctx.getMatchDuration();
+    int roundDuration = ctx.getRoundDuration();
+
+    // setup context data
+    // send some events to players
+    // reconnect players from last match if any exists
+    // reinitialize context
+  }
+
+  // TODO
+  public void initNewRound() {
+    int roundDuration = ctx.getRoundDuration();
+    // setup context data
+    // setup players positions
+    // send some time sync data to players
   }
 
 }

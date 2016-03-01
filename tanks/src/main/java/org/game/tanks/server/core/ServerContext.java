@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.cfg.Config;
 import org.game.tanks.model.MapModel;
 import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
@@ -20,10 +21,14 @@ import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.core.task.Task;
 import org.game.tanks.server.model.PlayerServerModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ServerContext {
+
+  @Autowired
+  Config cfg;
 
   private List<PlayerServerModel> players;
   private List<PlayerServerModel> pendingPlayers;
@@ -53,8 +58,12 @@ public class ServerContext {
   private int tcpPort;
   private int udpPort;
   private String serverName;
+
   private MapModel currentMap;
   private MapModel nextMap;
+
+  private int matchDuration;
+  private int roundDuration;
   private long matchStartTime;
   private long matchEndTime;
   private long roundEndTime;
@@ -66,10 +75,19 @@ public class ServerContext {
   public void init() {
     pendingPlayers = new ArrayList<>();
     incomingHandshakes = new ConcurrentLinkedQueue<>();
+    incomingAdminCommands = new ConcurrentLinkedQueue<>();
+    pendingTasks = new ConcurrentLinkedQueue<>();
 
-    initDefaultValues();
     initValuesFromConfig();
     initCollections();
+  }
+
+  private void initValuesFromConfig() {
+    tcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT, 55555);
+    udpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT, 55556);
+    serverName = cfg.getProperty(Config.SERVER_DEFAULT_SERVER_NAME, "Tanks Game Server");
+    matchDuration = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION, 15);
+    roundDuration = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION, 2);
   }
 
   private void initCollections() {
@@ -81,40 +99,28 @@ public class ServerContext {
 
     incomingGameEvents = new ConcurrentLinkedQueue<>();
     outgoingGameEvents = new ConcurrentLinkedQueue<>();
-    incomingAdminCommands = new ConcurrentLinkedQueue<>();
+
     incomingMessages = new ConcurrentLinkedQueue<>();
     outgoingMessages = new ConcurrentLinkedQueue<>();
+
     incomingCommands = new ConcurrentLinkedQueue<>();
     outgoingCommands = new ConcurrentLinkedQueue<>();
-    currentMap = new MapModel();
-    nextMap = new MapModel();
+
     playerStats = new HashMap<>();
     chatHistory = new ArrayList<>();
-    pendingTasks = new ConcurrentLinkedQueue<>();
-  }
-
-  private void initDefaultValues() {
-    private int tcpPort = 55555;
-    private int udpPort = 55556;
-    private String serverName = "Undefined";
-    private MapModel currentMap = new MapModel();
-    private MapModel nextMap = new MapModel();
-    private long matchStartTime = 0;
-    private long matchEndTime = 0;
-    private long roundEndTime = 0;
-  }
-
-  private void initValuesFromConfig() {
-
   }
 
   /**
    * Used when starting new Match
    */
   public void reinitialize() {
-    //clear all data objects
-    //clear current player list
-    //handshake all players again
+    initCollections();
+    matchStartTime = 0;
+    matchEndTime = 0;
+    roundEndTime = 0;
+    // clear all data objects
+    // clear current player list
+    // handshake all players again
 
   }
 
@@ -220,6 +226,14 @@ public class ServerContext {
 
   public List<ChatMessage> getChatHistory() {
     return chatHistory;
+  }
+
+  public int getMatchDuration() {
+    return matchDuration;
+  }
+
+  public int getRoundDuration() {
+    return roundDuration;
   }
 
   public long getMatchStartTime() {

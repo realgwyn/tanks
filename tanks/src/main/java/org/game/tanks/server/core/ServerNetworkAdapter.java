@@ -12,7 +12,6 @@ import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
-import org.game.tanks.server.core.task.Task;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.game.tanks.utils.NetworkMessageValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,8 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   Config config;
   @Autowired
   NetworkMessageValidator networkMessageValidator;
+  @Autowired
+  TaskManager taskManager;
 
   private boolean packetValidatorEnabled;
 
@@ -99,7 +100,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
       } else if (message instanceof AdminCommand) {
         AdminCommand cmd = (AdminCommand) message;
         cmd.setConnectionIdFrom(conn.getID());
-        ctx.getPendingTasks().add(new Task(cmd));
+        taskManager.createTask(cmd);
       } else {
         throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
       }

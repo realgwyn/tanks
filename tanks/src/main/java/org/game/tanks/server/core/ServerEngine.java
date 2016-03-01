@@ -8,8 +8,8 @@ import org.game.tanks.client.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
 import org.game.tanks.server.core.process.GameEventHandler;
-import org.game.tanks.server.state.InitializingMatchState;
-import org.game.tanks.server.state.OfflineState;
+import org.game.tanks.server.state.InitializingMatchServerState;
+import org.game.tanks.server.state.OfflineServerState;
 import org.game.tanks.server.state.ServerState;
 import org.game.tanks.server.view.ServerWindow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ public class ServerEngine extends Loop {
   private ServerState currentState;
 
   @Autowired
-  OfflineState offlineState;
+  OfflineServerState offlineState;
   @Autowired
-  InitializingMatchState loadingMapState;
+  InitializingMatchServerState loadingMapState;
   @Autowired
   ServerWindow serverWindow;
   @Autowired

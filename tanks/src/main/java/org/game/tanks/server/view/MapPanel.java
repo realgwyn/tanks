@@ -70,7 +70,7 @@ public class MapPanel extends JPanel {
       g.drawPolygon(GraphicsUtils.scale(object.getShape(), widthRatio, heightRatio));
     }
     for (PlayerServerModel player : players) {
-      g.drawPolygon(GraphicsUtils.scale(player.getShape(), widthRatio, heightRatio));
+      g.drawPolygon(GraphicsUtils.scale(player.getModel().getShape(), widthRatio, heightRatio));
     }
 
   }

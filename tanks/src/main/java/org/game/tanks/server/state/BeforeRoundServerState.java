@@ -4,14 +4,17 @@ import org.game.tanks.server.core.process.ProcessScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author rafal.kojta
+ */
 @Component
-public class RoundState extends ServerState {
+public class BeforeRoundServerState extends ServerState {
 
   @Autowired
-  private ProcessScheduler processScheduler;
+  ProcessScheduler processScheduler;
 
-  public RoundState() {
-    super(ServerStateType.ROUND);
+  public BeforeRoundServerState() {
+    super(ServerStateType.BEFORE_ROUND);
   }
 
   @Override

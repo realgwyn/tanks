@@ -4,9 +4,15 @@ import org.game.tanks.model.PlayerModel;
 
 import com.esotericsoftware.kryonet.Connection;
 
-public class PlayerServerModel extends PlayerModel {
+public class PlayerServerModel {
 
   private static final long serialVersionUID = 5787415399283390781L;
+
+  private long playerId;
+  private String playerName = "Unknown";
+  private PlayerModel model;
+  private Connection connection;
+
   public long sequenceNumber;
   public boolean sequenceFlipFlag;
   private int latency;
@@ -15,14 +21,29 @@ public class PlayerServerModel extends PlayerModel {
   private int kills;
   private int deaths;
 
-  private Connection connection;
   private boolean connectionEstablished;
-  public int recentX;
-  public int recentY;
 
   public PlayerServerModel(long playerId, Connection connection) {
     this.playerId = playerId;
     this.connection = connection;
+  }
+
+  public long getPlayerId() {
+    return playerId;
+  }
+
+  public PlayerServerModel setPlayerId(long playerId) {
+    this.playerId = playerId;
+    return this;
+  }
+
+  public String getPlayerName() {
+    return playerName;
+  }
+
+  public PlayerServerModel setPlayerName(String playerName) {
+    this.playerName = playerName;
+    return this;
   }
 
   public Connection getConnection() {
@@ -85,6 +106,15 @@ public class PlayerServerModel extends PlayerModel {
 
   public PlayerServerModel setConnectionEstablished(boolean connectionEstablished) {
     this.connectionEstablished = connectionEstablished;
+    return this;
+  }
+
+  public PlayerModel getModel() {
+    return model;
+  }
+
+  public PlayerServerModel setModel(PlayerModel model) {
+    this.model = model;
     return this;
   }
 

@@ -1,8 +1,8 @@
 package org.game.tanks.server.state;
 
-public class IdleState extends ServerState {
+public class IdleServerState extends ServerState {
 
-  public IdleState() {
+  public IdleServerState() {
     super(ServerStateType.IDLE);
   }
 

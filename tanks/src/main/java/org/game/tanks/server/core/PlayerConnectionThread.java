@@ -47,7 +47,7 @@ public class PlayerConnectionThread implements Runnable {
   public void processPlayerConnections() {
     processNewConnections();
     processIncomingHandshakes();
-    processLeavingPlayers();
+    processClosedConnections();
   }
 
   private void processNewConnections() {
@@ -64,7 +64,7 @@ public class PlayerConnectionThread implements Runnable {
     }
   }
 
-  private void processLeavingPlayers() {
+  private void processClosedConnections() {
     while (networkAdapter.hasClosedConnections()) {
       Connection connection = networkAdapter.pollClosedConnection();
       playerConnectionService.removePlayerConnection(connection);

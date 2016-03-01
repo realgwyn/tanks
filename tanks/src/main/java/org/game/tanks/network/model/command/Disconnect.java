@@ -11,8 +11,9 @@ public class Disconnect extends Command {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public Disconnect setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
 }

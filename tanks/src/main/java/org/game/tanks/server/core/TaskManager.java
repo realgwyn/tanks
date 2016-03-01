@@ -8,12 +8,13 @@ import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.message.ServerMessage.ServerMessageType;
 import org.game.tanks.security.AuthenticationService;
 import org.game.tanks.server.core.task.DatabaseTask;
+import org.game.tanks.server.core.task.DatabaseTask.DatabaseAction;
 import org.game.tanks.server.core.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DeferredTasksThread implements Runnable {
+public class TaskManager implements Runnable {
 
   private final static Logger logger = Logger.getLogger(MessageSendingThread.class);
   private boolean running = true;
@@ -44,20 +45,21 @@ public class DeferredTasksThread implements Runnable {
     }
   }
 
-
   public void finish() {
     logger.debug("Stopping...");
     running = false;
   }
 
   private void processSlowTasks() {
-    while(!ctx.getPendingTasks().isEmpty()){
+    while (!ctx.getPendingTasks().isEmpty()) {
       Task task = ctx.getPendingTasks().poll();
       Object cmd = task.getCommand();
-      if(cmd instanceof AdminCommand){
+      if (cmd instanceof AdminCommand) {
         processAdminCommand((AdminCommand) cmd);
       } else if (cmd instanceof DatabaseTask) {
         processDbTask((DatabaseTask) cmd);
+      } else {
+        throw new UnsupportedOperationException("Unable to process task " + task.getCommand().getClass().getSimpleName());
       }
     }
   }
@@ -79,13 +81,13 @@ public class DeferredTasksThread implements Runnable {
   private void processDbTask(DatabaseTask dbTask) {
     switch (dbTask.getAction()) {
     case CREATE:
-      createDbObject(dbTask.getDataObject());
+      createDbObject(dbTask.getCommand());
       break;
     case UPDATE:
-      updateDbObject(dbTask.getDataObject());
+      updateDbObject(dbTask.getCommand());
       break;
     case DELETE:
-      deleteDbObject(dbTask.getDataObject());
+      deleteDbObject(dbTask.getCommand());
       break;
     }
   }
@@ -93,7 +95,7 @@ public class DeferredTasksThread implements Runnable {
   private void createDbObject(Object dataObject) {
     if (dataObject instanceof MalformedPacketHistory) {
       dbService.saveMalformedPacket((MalformedPacketHistory) dataObject);
-    }else{
+    } else {
       throw new UnsupportedOperationException("Not supported database action object " + dataObject.getClass().getSimpleName());
     }
   }
@@ -104,6 +106,14 @@ public class DeferredTasksThread implements Runnable {
 
   private void deleteDbObject(Object dataObject) {
     throw new UnsupportedOperationException("Not implemented yet");
+  }
+
+  public void createTask(AdminCommand command) {
+    ctx.getPendingTasks().add(new Task(command));
+  }
+
+  public void createDbTask(MalformedPacketHistory entity, DatabaseAction action) {
+    ctx.getPendingTasks().add(new DatabaseTask(entity, action));
   }
 
 }

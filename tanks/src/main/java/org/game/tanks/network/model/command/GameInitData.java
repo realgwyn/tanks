@@ -7,36 +7,18 @@ import org.game.tanks.network.model.TCPMessage;
 public class GameInitData extends TCPMessage {
 
   private static final long serialVersionUID = -5388071508719254864L;
-  private int mapTimeLeft;
-  private int roundTimeLeft;
-  private List<PlayerInfo> playersStats;
+  private long matchEndTime;
+  private long roundEndTime;
+  private List<PlayerInfo> playersInfo;
   private MapInfoData currentMap;
   private MapInfoData nextMap;
 
-  public int getMapTimeLeft() {
-    return mapTimeLeft;
+  public List<PlayerInfo> getPlayersInfo() {
+    return playersInfo;
   }
 
-  public GameInitData setMapTimeLeft(int mapTimeLeft) {
-    this.mapTimeLeft = mapTimeLeft;
-    return this;
-  }
-
-  public int getRoundTimeLeft() {
-    return roundTimeLeft;
-  }
-
-  public GameInitData setRoundTimeLeft(int roundTimeLeft) {
-    this.roundTimeLeft = roundTimeLeft;
-    return this;
-  }
-
-  public List<PlayerInfo> getPlayersStats() {
-    return playersStats;
-  }
-
-  public GameInitData setPlayersStats(List<PlayerInfo> playersStats) {
-    this.playersStats = playersStats;
+  public GameInitData setPlayersInfo(List<PlayerInfo> playersStats) {
+    this.playersInfo = playersStats;
     return this;
   }
 
@@ -55,6 +37,24 @@ public class GameInitData extends TCPMessage {
 
   public GameInitData setNextMap(MapInfoData nextMap) {
     this.nextMap = nextMap;
+    return this;
+  }
+
+  public long getMatchEndTime() {
+    return matchEndTime;
+  }
+
+  public GameInitData setMatchEndTime(long matchEndTime) {
+    this.matchEndTime = matchEndTime;
+    return this;
+  }
+
+  public long getRoundEndTime() {
+    return roundEndTime;
+  }
+
+  public GameInitData setRoundEndTime(long roundEndTime) {
+    this.roundEndTime = roundEndTime;
     return this;
   }
 

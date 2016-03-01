@@ -7,8 +7,10 @@ import javax.annotation.PostConstruct;
 
 import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.command.ChatHistory;
+import org.game.tanks.network.model.command.Connect;
+import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.GameInitData;
-import org.game.tanks.network.model.command.SyncTime;
+import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerNetworkAdapter;
 import org.game.tanks.server.model.PlayerServerModel;
@@ -24,6 +26,8 @@ public class PlayerConnectionService {
   ServerContext ctx;
   @Autowired
   ServerNetworkAdapter networkAdapter;
+  @Autowired
+  SyncTimeService syncTimeService;
 
   private List<Long> generatedIds;
   private long idCount;
@@ -34,6 +38,9 @@ public class PlayerConnectionService {
     idCount = 0;
   }
 
+  /**
+   * Entry point for new Player Connection
+   */
   public void initializeNewPlayerConnection(Connection connection) {
     long newId = generateNextId();
     PlayerServerModel player = new PlayerServerModel(newId, connection);
@@ -42,51 +49,64 @@ public class PlayerConnectionService {
         .setPlayerId(newId)
         .setPlayerName("");
 
-    //Send handshake and initialization commands to player
+    // Send handshake and initialization commands to player
     networkAdapter.sendTCP(connection, handshake);
     networkAdapter.sendTCP(connection, createGameInitData());
     networkAdapter.sendTCP(connection, new ChatHistory().setChatHistory(ctx.getChatHistory()));
-    networkAdapter.sendTCP(connection, createSyncTimeCommand());
-
-    // Send game progress info
-    // Send players info
-    // Send stats info
-
-    // Broadcast to all about new incoming player
+    networkAdapter.sendTCP(connection, syncTimeService.createNewSyncTimeEvent());
 
     ctx.getPendingPlayers().add(player);
   }
 
-  public void removePlayerConnection(Connection connection) {
-    PlayerServerModel player = getPlayerByConnectionId(connection.getID());
-    if (player != null) {
-      // TODO finalize connection with player - Send some packets related with disconnecting
-      ctx.getLeavingPlayerIds().add(player.getPlayerId());
-      generatedIds.remove(player.getPlayerId());
+  /**
+   * When new Player Connection sends back ACK handshake
+   */
+  public void addNewPlayerToTheGame(Handshake handshake) {
+    for (PlayerServerModel player : ctx.getPendingPlayers()) {
+      if (player.getPlayerId() == handshake.getPlayerId()) {
+        player.setPlayerName(handshake.getPlayerName());
+        Connect connect = new Connect()
+            .setPlayerId(player.getPlayerId())
+            .setPlayerName(player.getPlayerName());
+        // Broadcast to other players about new connection
+        networkAdapter.sendToAllExceptTCP(player.getConnection().getID(), connect);
+        ctx.getIncomingPlayers().add(player);
+        break;
+      }
     }
   }
 
-
-  public void addNewPlayerToTheGame(Handshake handshake) {
-    ctx.getPendingPlayers()
-    
-    //TODO set player name handshake.getPlayerName()
-  }
-
-  private SyncTime createSyncTimeCommand() {
-    SyncTime syncTime = new SyncTime()
+  public GameInitData createGameInitData() {
+    GameInitData data = new GameInitData()
+        .setPlayersInfo(createPlayersInfo(ctx.getPlayers()))
         .setMatchEndTime(ctx.getMatchEndTime())
-        .setMatchStartTime(ctx.getMatchStartTime())
-        .setRoundEndTime(ctx.getRoundEndTime());
-    return syncTime;
-  }
-
-  private GameInitData createGameInitData() {
-    GameInitData data = new GameInitData();
-    data.setCurrentMap(MapService.createMapInfoData(ctx.getCurrentMap()));
-    data.setNextMap(MapService.createMapInfoData(ctx.getNextMap()));
+        .setRoundEndTime(ctx.getRoundEndTime())
+        .setCurrentMap(MapService.createMapInfoData(ctx.getCurrentMap()))
+        .setNextMap(MapService.createMapInfoData(ctx.getNextMap()));
 
     return data;
+  }
+
+  public List<PlayerInfo> createPlayersInfo(List<PlayerServerModel> players) {
+    List<PlayerInfo> playersInfo = new ArrayList<>();
+    for (PlayerServerModel player : players) {
+
+    }
+    return playersInfo;
+  }
+
+  /**
+   * When Player Connection ended
+   */
+  public void removePlayerConnection(Connection connection) {
+    PlayerServerModel player = getPlayerByConnectionId(connection.getID());
+    if (player != null) {
+      Disconnect disconnect = new Disconnect()
+          .setPlayerId(player.getPlayerId());
+      networkAdapter.sendToAllTCP(disconnect);
+      ctx.getLeavingPlayerIds().add(player.getPlayerId());
+      generatedIds.remove(player.getPlayerId());
+    }
   }
 
   private PlayerServerModel getPlayerByConnectionId(int connectionId) {
@@ -99,6 +119,7 @@ public class PlayerConnectionService {
   }
 
   private long generateNextId() {
+    idCount++;
     while (generatedIds.contains(idCount)) {
       idCount++;
     }

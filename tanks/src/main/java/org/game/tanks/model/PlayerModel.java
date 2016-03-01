@@ -6,34 +6,16 @@ import java.io.Serializable;
 public class PlayerModel implements Serializable {
 
   private static final long serialVersionUID = 5516126738056813345L;
-  public long playerId;
-  public String playerName = "Unknown";
   public int x;
   public int y;
+  public int recentX;
+  public int recentY;
   public float bodyAngle;
   public float towerAngle;
   public Polygon shape;
   public PlayerState state = PlayerState.UNDEFINED;
   public float health;
   public int team;
-
-  public long getPlayerId() {
-    return playerId;
-  }
-
-  public PlayerModel setPlayerId(long playerId) {
-    this.playerId = playerId;
-    return this;
-  }
-
-  public String getPlayerName() {
-    return playerName;
-  }
-
-  public PlayerModel setPlayerName(String playerName) {
-    this.playerName = playerName;
-    return this;
-  }
 
   public int getX() {
     return x;

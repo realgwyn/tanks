@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import com.esotericsoftware.kryonet.Connection;
 
 @Component
-public class InitializingMatchState extends ServerState {
+public class InitializingMatchServerState extends ServerState {
 
   @Autowired
   ServerEngine engine;
@@ -24,7 +24,7 @@ public class InitializingMatchState extends ServerState {
   @Autowired
   MapService mapService;
   @Autowired
-  WaitingForPlayersState waitingForPlayersState;
+  WaitingForPlayersServerState waitingForPlayersState;
   @Autowired
   ProcessScheduler processScheduler;
   @Autowired
@@ -33,7 +33,7 @@ public class InitializingMatchState extends ServerState {
   private Long startTime;
   private Long waitTime = 3000l;
 
-  public InitializingMatchState() {
+  public InitializingMatchServerState() {
     super(ServerStateType.LOADING_MAP);
   }
 
