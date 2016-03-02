@@ -3,6 +3,7 @@ package org.game.tanks.database.domain;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 public class User {
@@ -26,7 +30,8 @@ public class User {
   private Stats stats;
 
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-  @JoinTable(name = "user_permission", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "permission_id") })
+  @JoinTable(name = "user_permission", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+      @JoinColumn(name = "permission_id") })
   private Set<Permission> permissions;
 
   @OneToMany(mappedBy = "player")
@@ -35,18 +40,22 @@ public class User {
   @OneToMany(mappedBy = "player")
   private Set<BannedIp> bannedIps;
 
+  @NotNull
   private String username;
+
+  @NotNull
   private String hash;
+
+  @NotNull
+  @Email
+  @Column(unique = true)
   private String email;
-  private Boolean banned;
+
+  @NotNull
+  private Boolean banned = true;
 
   public Long getId() {
     return id;
-  }
-
-  public User setId(Long id) {
-    this.id = id;
-    return this;
   }
 
   public String getUsername() {
@@ -93,7 +102,7 @@ public class User {
     this.permissions = permissions;
     return this;
   }
-  
+
   public Set<BanHistory> getBanHistory() {
     return banHistory;
   }

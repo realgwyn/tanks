@@ -8,42 +8,47 @@ public class Stats {
 
   @Id
   private Long id;
-  private long totalGameSpent;
-  private long kills;
-  private long deaths;
+  private Integer totalTimeSpent = 0;
+  private Integer gamesPlayed = 0;
+  private Integer kills = 0;
+  private Integer deaths = 0;
 
   public Long getId() {
     return id;
   }
 
-  public Stats setId(Long id) {
-    this.id = id;
+  public Integer getTotalTimeSpent() {
+    return totalTimeSpent;
+  }
+
+  public Stats setTotalTimeSpent(Integer totalTimeSpent) {
+    this.totalTimeSpent = totalTimeSpent;
     return this;
   }
 
-  public long getTotalGameSpent() {
-    return totalGameSpent;
+  public Integer getGamesPlayed() {
+    return gamesPlayed;
   }
 
-  public Stats setTotalGameSpent(long totalGameSpent) {
-    this.totalGameSpent = totalGameSpent;
+  public Stats setGamesPlayed(Integer gamesPlayed) {
+    this.gamesPlayed = gamesPlayed;
     return this;
   }
 
-  public long getKills() {
+  public Integer getKills() {
     return kills;
   }
 
-  public Stats setKills(long kills) {
+  public Stats setKills(Integer kills) {
     this.kills = kills;
     return this;
   }
 
-  public long getDeaths() {
+  public Integer getDeaths() {
     return deaths;
   }
 
-  public Stats setDeaths(long deaths) {
+  public Stats setDeaths(Integer deaths) {
     this.deaths = deaths;
     return this;
   }

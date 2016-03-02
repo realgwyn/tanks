@@ -7,6 +7,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class BanHistory {
@@ -14,11 +17,20 @@ public class BanHistory {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
+
   @ManyToOne
   private User player;
+
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
   private Date bannedTime;
+
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
   private Date bannedUntil;
+
   private String reason;
+
   private String comment;
 
   public Long getId() {

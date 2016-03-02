@@ -6,7 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class MalformedPacketHistory {
@@ -15,8 +18,12 @@ public class MalformedPacketHistory {
   @GeneratedValue(strategy = GenerationType.AUTO)
   Long id;
 
+  @NotNull
+  @Temporal(TemporalType.TIMESTAMP)
   Date time;
+
   String ipAddress;
+  @NotNull
   String serializedObject;
 
   @Transient
