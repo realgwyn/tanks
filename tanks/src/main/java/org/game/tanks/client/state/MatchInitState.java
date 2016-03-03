@@ -4,18 +4,20 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
-import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Loading map, players, initializing game context, syncing with the server
+ */
 @Component
-public class GamePendingState extends ClientState {
+public class MatchInitState extends ClientState {
 
   @Autowired
   GameDisplay display;
-  
-  public GamePendingState(){
-    super(ClientStateType.GAME_PENDING);
+
+  public MatchInitState() {
+    super(ClientStateType.MATCH_INIT);
   }
 
   @Override
@@ -29,6 +31,7 @@ public class GamePendingState extends ClientState {
     g.setColor(Color.BLACK);
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
-    g.drawString("GamePendingState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+    g.drawString("MatchInitState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
+
 }

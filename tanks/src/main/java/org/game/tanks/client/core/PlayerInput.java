@@ -19,7 +19,7 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
 
   private Map<Integer, Integer> keyboardBinding;
   private Map<Integer, Integer> mouseBinding;
-  
+
   private int mouseX;
   private int mouseY;
 
@@ -102,16 +102,16 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
     mouseY = e.getY();
     inputListener.mouseMoved(e);
   }
-  
+
   public boolean[] getKeyFlags() {
     return keyFlags;
   }
-  
-  public int getMouseX(){
+
+  public int getMouseX() {
     return mouseX;
   }
 
-  public int getMouseY(){
+  public int getMouseY() {
     return mouseY;
   }
 

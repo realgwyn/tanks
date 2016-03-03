@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @SuppressWarnings("serial")
-public class InGameConsoleWindow extends GuiComponent {
+public class PlayerStatsWindow extends GuiComponent {
 
   @PostConstruct
   @Override

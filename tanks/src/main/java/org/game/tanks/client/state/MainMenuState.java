@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.game.tanks.cfg.SpriteName;
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GameEngine;
+import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.core.ResourceManager;
 import org.game.tanks.client.model.Sprite;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class MainMenuState extends ClientState {
   RoundState roundState;
   @Autowired
   ResourceManager res;
+  @Autowired
+  GuiManager guiManager;
 
   public MainMenuState() {
     super(ClientStateType.MAIN_MENU);
@@ -38,6 +41,7 @@ public class MainMenuState extends ClientState {
 
   @Override
   public void onStateBegin() {
+    guiManager.showMainMenuComponents();
     display.requestFocus();
   }
 

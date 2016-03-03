@@ -9,11 +9,14 @@ import org.game.tanks.client.gui.widgets.Focusable;
 public abstract class ClientState implements Focusable {
 
   static final Logger logger = Logger.getLogger(ClientState.class);
-  
-  public enum ClientStateType {GAME_END, GAME_LOAD, GAME_PENDING, GAME_START, STARTUP, MAIN_MENU, ROUND_END, ROUND_START, ROUND}
+
+  public enum ClientStateType {
+    LOADING_GAME, MAIN_MENU, MATCH_END, MATCH_INIT, GAME_PENDING, MATCH_START, ROUND_END, ROUND_START, ROUND
+  }
+
   private ClientStateType type;
-  
-  public ClientState(ClientStateType type){
+
+  public ClientState(ClientStateType type) {
     this.type = type;
   }
 
@@ -27,32 +30,40 @@ public abstract class ClientState implements Focusable {
   public void onStateEnd() {
   }
 
+  @Override
   public void onFocus() {
   }
 
+  @Override
   public void onFocusLost() {
   }
 
+  @Override
   public void keyPressed(KeyEvent e) {
   }
 
+  @Override
   public void keyReleased(KeyEvent e) {
   }
 
+  @Override
   public void mouseMoved(MouseEvent e) {
   }
 
+  @Override
   public void mouseDragged(MouseEvent e) {
   }
 
+  @Override
   public void mousePressed(MouseEvent e) {
   }
 
+  @Override
   public void mouseReleased(MouseEvent e) {
   }
 
   public ClientStateType getType() {
     return type;
   }
-  
+
 }

@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StartupState extends ClientState {
+public class LoadingGameState extends ClientState {
 
-  final static Logger logger = Logger.getLogger(StartupState.class);
+  final static Logger logger = Logger.getLogger(LoadingGameState.class);
 
   private int count;
   private int percent=0;
@@ -25,8 +25,8 @@ public class StartupState extends ClientState {
   @Autowired
   MainMenuState mainMenuState;
   
-  public StartupState(){
-    super(ClientStateType.STARTUP);
+  public LoadingGameState(){
+    super(ClientStateType.LOADING_GAME);
   }
 
   @Override

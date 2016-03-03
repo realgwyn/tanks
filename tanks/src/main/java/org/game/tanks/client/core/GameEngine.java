@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.client.state.ClientState;
-import org.game.tanks.client.state.StartupState;
+import org.game.tanks.client.state.LoadingGameState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +24,7 @@ public class GameEngine extends Loop {
   private ClientState currentState;
 
   @Autowired
-  StartupState loadingState;
+  LoadingGameState loadingState;
   @Autowired
   GameDisplay display;
   @Autowired
@@ -37,7 +37,7 @@ public class GameEngine extends Loop {
   @PostConstruct
   public void init() {
     currentState = loadingState;
-    input.setInputListener(currentState);
+    input.setInputListener(guiManager);
   }
 
   public synchronized void start() {
@@ -89,6 +89,7 @@ public class GameEngine extends Loop {
   @Override
   public void update() {
     currentState.update();
+    guiManager.update();
   }
 
   @Override
@@ -102,8 +103,11 @@ public class GameEngine extends Loop {
     logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
     currentState.onStateEnd();
     currentState = state;
-    input.setInputListener(currentState);
     currentState.onStateBegin();
+  }
+
+  public ClientState getCurrentState() {
+    return currentState;
   }
 
 }

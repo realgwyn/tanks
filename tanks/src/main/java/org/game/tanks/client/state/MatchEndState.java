@@ -4,22 +4,27 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
-import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Display End Match Players Score
+ */
 @Component
-public class GameStartState extends ClientState {
+public class MatchEndState extends ClientState {
 
   @Autowired
   GameDisplay display;
-  
-  public GameStartState(){
-    super(ClientStateType.GAME_START);
+
+  public MatchEndState() {
+    super(ClientStateType.MATCH_END);
   }
 
   @Override
   public void update() {
+
+    // TODO: Show statswindow
+    // TODO: show which team has won
 
   }
 
@@ -29,6 +34,7 @@ public class GameStartState extends ClientState {
     g.setColor(Color.BLACK);
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
-    g.drawString("GameStartState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+    g.drawString("MatchEndState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
+
 }
