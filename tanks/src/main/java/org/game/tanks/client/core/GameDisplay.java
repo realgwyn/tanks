@@ -15,6 +15,7 @@ import org.game.tanks.cfg.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// TODO: implement method for clearing all pixels for double buffering
 @Component
 public class GameDisplay extends Canvas {
 
@@ -35,7 +36,8 @@ public class GameDisplay extends Canvas {
     WIDTH = config.getPropertyInt(Config.GAME_RESOLUTION_WIDTH);
     HEIGHT = config.getPropertyInt(Config.GAME_RESOLUTION_HEIGHT);
     SCALE = config.getPropertyInt(Config.GAME_RESOLUTION_SCALE);
-    image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+    // XXX image resized by +1 width and height:
+    image = new BufferedImage(WIDTH + 1, HEIGHT + 1, BufferedImage.TYPE_INT_RGB);
     rasterPixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
     setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
     setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));

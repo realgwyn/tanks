@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import org.game.tanks.client.gui.widgets.GuiComponent;
 
+@SuppressWarnings("serial")
 public class Button extends GuiComponent {
 
   private Label label;

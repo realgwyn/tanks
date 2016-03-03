@@ -5,35 +5,32 @@ import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.gui.widgets.HudWindow;
+import org.game.tanks.client.gui.widgets.CreateGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * Waiting for other players at the beginning of the match
- */
 @Component
-public class MatchStartState extends ClientState {
+public class CreateGameMenuState extends ClientState {
 
   @Autowired
   GameDisplay display;
   @Autowired
   GuiManager guiManager;
   @Autowired
-  HudWindow hudWindow;
+  CreateGameMenuWindow createGameMenuWindow;
 
-  public MatchStartState() {
-    super(ClientStateType.MATCH_START);
+  public CreateGameMenuState() {
+    super(ClientStateType.CREATE_GAME_MENU);
   }
 
   @Override
   public void onStateBegin() {
-    guiManager.showComponent(hudWindow);
+    guiManager.showAndFocusComponent(createGameMenuWindow);
   }
 
   @Override
   public void update() {
-    // TODO: scores will not be counted
+
   }
 
   @Override
@@ -42,7 +39,7 @@ public class MatchStartState extends ClientState {
     g.setColor(Color.BLACK);
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
-    g.drawString("MatchStartState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+    g.drawString("CreateGameMenuState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
 
 }

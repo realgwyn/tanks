@@ -7,15 +7,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.game.tanks.client.gui.widgets.ChatWindow;
-import org.game.tanks.client.gui.widgets.ConsoleWindow;
 import org.game.tanks.client.gui.widgets.Focusable;
 import org.game.tanks.client.gui.widgets.GuiComponent;
-import org.game.tanks.client.gui.widgets.HudWindow;
-import org.game.tanks.client.gui.widgets.InGameChatWindow;
-import org.game.tanks.client.gui.widgets.InGameConsoleWindow;
-import org.game.tanks.client.gui.widgets.InGameMenuWindow;
-import org.game.tanks.client.gui.widgets.PlayerStatsWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -23,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class GuiManager implements Focusable {
 
-  private List<GuiComponent> components;
+  private List<GuiComponent> visibleComponents;
 
   @Autowired
   GameDisplay display;
@@ -34,37 +27,17 @@ public class GuiManager implements Focusable {
   @Autowired
   GameEngine engine;
 
-  @Autowired
-  ChatWindow chatWindow;
-  @Autowired
-  ConsoleWindow consoleWindow;
-  @Autowired
-  HudWindow hudWindow;
-  @Autowired
-  InGameChatWindow inGameChatWindow;
-  @Autowired
-  InGameConsoleWindow inGameConsoleWindow;
-  @Autowired
-  InGameMenuWindow inGameMenuWindow;
-  @Autowired
-  PlayerStatsWindow playerStatsWindow;
-
   GuiComponent focusedGuiComponent = null;
 
   @PostConstruct
   public void init() {
     playerInput.setInputListener(this);
-    components = new ArrayList<>();
-    components.add(chatWindow);
-    components.add(consoleWindow);
-    components.add(inGameChatWindow);
-    components.add(inGameConsoleWindow);
-    components.add(inGameMenuWindow);
-    components.add(playerStatsWindow);
+    visibleComponents = new ArrayList<>();
+
   }
 
   public void draw() {
-    for (GuiComponent component : components) {
+    for (GuiComponent component : visibleComponents) {
       if (component.isVisible()) {
         component.draw(display.getGraphics());
       }
@@ -85,29 +58,57 @@ public class GuiManager implements Focusable {
     // TeamStats windows should be updated with new data, other player pings, kills, deaths, team etc
   }
 
-  public void registerGuiComponent(GuiComponent component) {
-    components.add(component);
+  public void showComponent(GuiComponent component) {
+    if (!visibleComponents.contains(component)) {
+      visibleComponents.add(component);
+    }
+    component.setVisible(true);
   }
 
-  public void showComponent(GuiComponent component) {
+  public void showAndFocusComponent(GuiComponent component) {
+    if (!visibleComponents.contains(component)) {
+      visibleComponents.add(component);
+    }
     component.setVisible(true);
+
+    if (focusedGuiComponent == null) {
+      focusedGuiComponent = component;
+      focusedGuiComponent.onFocus();
+    } else if (!focusedGuiComponent.equals(component)) {
+      focusedGuiComponent.onFocusLost();
+      focusedGuiComponent = component;
+      focusedGuiComponent.onFocus();
+    } else {
+      return;// Do nothing, component already focused
+    }
   }
 
   public void hideComponent(GuiComponent component) {
     component.setVisible(false);
-    if (focusedGuiComponent.getId().equals(component.getId())) {
-      focusedGuiComponent = null;
+    visibleComponents.remove(component);
+    if (focusedGuiComponent.equals(component)) {
+      focusedGuiComponent.onFocusLost();
+      if (!visibleComponents.isEmpty()) {
+        focusedGuiComponent = visibleComponents.get(visibleComponents.size() - 1);// Focus last component from the list
+                                                                                  // - it was rendered last so its in
+                                                                                  // front of other ones
+        focusedGuiComponent.onFocus();
+      } else {
+        focusedGuiComponent = null;
+      }
     }
   }
 
   public void hideAllComponents() {
-    for (GuiComponent comp : components) {
-      comp.setVisible(true);
+    for (GuiComponent comp : visibleComponents) {
+      comp.setVisible(false);
     }
+    focusedGuiComponent.onFocusLost();
     focusedGuiComponent = null;
   }
 
   private GuiComponent requestFocusAt(int x, int y) {
+    // If mouse click was outside currently focused component - loose focus
     if (focusedGuiComponent != null) {
       if (focusedGuiComponent.contains(x, y)) {
         return focusedGuiComponent;
@@ -116,8 +117,8 @@ public class GuiManager implements Focusable {
       }
     }
     // Iterate from the end because this is the order of rendering from back to front - focus on component most in front
-    for (int i = components.size() - 1; i >= 0; i--) {
-      GuiComponent comp = components.get(i);
+    for (int i = visibleComponents.size() - 1; i >= 0; i--) {
+      GuiComponent comp = visibleComponents.get(i);
       if (comp.isVisible() && comp.contains(x, y)) {
         focusedGuiComponent = comp;
         focusedGuiComponent.onFocus();
@@ -191,16 +192,6 @@ public class GuiManager implements Focusable {
   @Override
   public void onFocus() {
     // TODO Auto-generated method stub
-  }
-
-  public void showMainMenuComponents() {
-    hideAllComponents();
-
-  }
-
-  public void showInGameComponents() {
-    hideAllComponents();
-
   }
 
 }

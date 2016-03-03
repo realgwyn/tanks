@@ -8,7 +8,11 @@ import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.game.tanks.cfg.Config;
 import org.game.tanks.client.gui.widgets.Focusable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -20,10 +24,16 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
   private Map<Integer, Integer> keyboardBinding;
   private Map<Integer, Integer> mouseBinding;
 
+  @Autowired
+  Config cfg;
+
+  private int displayScale;
   private int mouseX;
   private int mouseY;
 
-  public PlayerInput() {
+  @PostConstruct
+  public void init() {
+    displayScale = cfg.getPropertyInt(Config.GAME_RESOLUTION_SCALE);
     keyboardBinding = new HashMap<Integer, Integer>();
     keyboardBinding.put(KeyEvent.VK_W, GameButtons.UP);
     keyboardBinding.put(KeyEvent.VK_S, GameButtons.DOWN);
@@ -70,12 +80,14 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
 
   @Override
   public void mousePressed(MouseEvent mouseEvent) {
+    mouseEvent = scaleMouseEvent(mouseEvent);
     keyFlags[mouseBinding.get(mouseEvent.getButton())] = true;
     inputListener.mousePressed(mouseEvent);
   }
 
   @Override
   public void mouseReleased(MouseEvent mouseEvent) {
+    mouseEvent = scaleMouseEvent(mouseEvent);
     keyFlags[mouseBinding.get(mouseEvent.getButton())] = false;
     inputListener.mouseReleased(mouseEvent);
   }
@@ -97,10 +109,11 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
   }
 
   @Override
-  public void mouseMoved(MouseEvent e) {
-    mouseX = e.getX();
-    mouseY = e.getY();
-    inputListener.mouseMoved(e);
+  public void mouseMoved(MouseEvent mouseEvent) {
+    mouseEvent = scaleMouseEvent(mouseEvent);
+    mouseX = mouseEvent.getX();
+    mouseY = mouseEvent.getY();
+    inputListener.mouseMoved(mouseEvent);
   }
 
   public boolean[] getKeyFlags() {
@@ -113,6 +126,14 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
 
   public int getMouseY() {
     return mouseY;
+  }
+
+  private MouseEvent scaleMouseEvent(MouseEvent e) {
+    if (displayScale != 0) {
+      return new MouseEvent((java.awt.Component) e.getSource(), e.getID(), 0, 0, e.getX() / displayScale, e.getY() / displayScale,
+          e.getClickCount(), false, e.getButton());
+    }
+    return e;
   }
 
 }

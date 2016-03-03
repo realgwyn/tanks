@@ -12,15 +12,24 @@ public class Game {
 
   public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
     AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+    try {
 
-    ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(true);
-    for (BeanDefinition bd : scanner.findCandidateComponents("org.game.tanks")) {
-      ctx.register(Class.forName(bd.getBeanClassName()));
+      ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(true);
+      for (BeanDefinition bd : scanner.findCandidateComponents("org.game.tanks")) {
+        ctx.register(Class.forName(bd.getBeanClassName()));
+      }
+      ctx.refresh();
+
+      Game runner = (Game) ctx.getBean("gameRunner");
+      runner.run();
+    } catch (Exception e) {
+      e.printStackTrace();
+
+      // XXX: game crashed, ask user if he wants to send crash report (email)
+      ctx.close();
+      ctx.destroy();
+      System.exit(-1);
     }
-    ctx.refresh();
-
-    Game runner = (Game) ctx.getBean("gameRunner");
-    runner.run();
   }
 
   public void run() {

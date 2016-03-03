@@ -27,12 +27,17 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   private List<GuiComponent> children;
 
+  private int relativeX;
+  private int relativeY;
+
   public void setParent(GuiComponent parent) {
     this.parent = parent;
   }
 
   public void add(GuiComponent child, int relativeX, int relativeY) {
-    child.setLocation((int) parent.getX() + relativeX, (int) parent.getY() + relativeY);
+    this.relativeX = relativeX;
+    this.relativeY = relativeY;
+    child.setLocation(getAbsoluteX(relativeX), getAbsoluteY(relativeY));
     if (children == null) {
       children = new ArrayList<>();
     }
@@ -40,8 +45,43 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
     children.add(child);
   }
 
-  public void setLocation() {
+  private int getAbsoluteX(int relativeX) {
+    if (parent != null) {
+      return (int) parent.getX() + relativeX;
+    }
+    return relativeX;
+  }
 
+  private int getAbsoluteY(int relativeY) {
+    if (parent != null) {
+      return (int) parent.getY() + relativeY;
+    }
+    return relativeY;
+  }
+
+  @Override
+  public void setLocation(int newX, int newY) {
+    this.x = newX;
+    this.y = newY;
+    if (children != null) {
+      for (GuiComponent child : children) {
+        child.setLocation(newX + child.getRelativeX(), newY + getRelativeY());
+      }
+    }
+  }
+
+  public int getRelativeX() {
+    return relativeX;
+  }
+
+  public int getRelativeY() {
+    return relativeY;
+  }
+
+  @Override
+  public void setSize(int newWidth, int newHeight) {
+    this.width = newWidth;
+    this.height = newHeight;
   }
 
   public boolean isVisible() {
@@ -105,6 +145,36 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   @Override
   public void onFocusLost() {
+  }
+
+  @Override
+  @Deprecated
+  public void add(Rectangle r) {
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = super.hashCode();
+    result = prime * result + ((id == null) ? 0 : id.hashCode());
+    return result;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (!super.equals(obj))
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    GuiComponent other = (GuiComponent) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
   }
 
 }
