@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets;
+package org.game.tanks.client.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -29,7 +29,6 @@ public class HudWindow extends GuiComponent {
   private Label lblFpsValue;
 
   @PostConstruct
-  @Override
   public void initialize() {
     width = cfg.getPropertyInt(Config.GAME_RESOLUTION_WIDTH);
     height = DEFAULT_HEIGHT;
@@ -39,22 +38,15 @@ public class HudWindow extends GuiComponent {
     Label lblAmmo;
     Label lblFps;
     // TODO Auto-generated method stub
-    super.initialize();
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void paintComponent(Graphics g) {
     g.setColor(Color.black);
     g.fillRect(x, y, width, height);
     g.setColor(Color.green);
     g.drawRect(x, y - 60, width, height);
-    super.draw(g);
-  }
-
-  @Override
-  public void setVisible(boolean visible) {
-    // TODO Auto-generated method stub
-    super.setVisible(visible);
+    super.paintComponent(g);
   }
 
 }

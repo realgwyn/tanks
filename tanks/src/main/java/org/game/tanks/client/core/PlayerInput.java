@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
-import org.game.tanks.client.gui.widgets.Focusable;
+import org.game.tanks.cfg.GameButtons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class PlayerInput implements KeyListener, MouseListener, MouseMotionListener {
 
   private boolean[] keyFlags = new boolean[10];
-  Focusable inputListener;
+  PlayerInputListener inputListener;
 
   private Map<Integer, Integer> keyboardBinding;
   private Map<Integer, Integer> mouseBinding;
@@ -48,7 +48,7 @@ public class PlayerInput implements KeyListener, MouseListener, MouseMotionListe
     mouseBinding.put(MouseEvent.BUTTON3, GameButtons.MOUSE_RIGHT);
   }
 
-  public void setInputListener(Focusable listener) {
+  public void setInputListener(PlayerInputListener listener) {
     this.inputListener = listener;
   }
 

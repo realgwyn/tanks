@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.gui.widgets.FindGameMenuWindow;
+import org.game.tanks.client.view.FindGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +40,11 @@ public class FindGameMenuState extends ClientState {
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
     g.drawString("FindGameMenuState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+  }
+
+  @Override
+  public void onStateEnd() {
+    guiManager.hideAllComponents();
   }
 
 }

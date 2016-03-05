@@ -1,6 +1,6 @@
 package org.game.tanks.server.core.process;
 
-import java.util.List;
+import java.util.Queue;
 
 import javax.annotation.PostConstruct;
 
@@ -49,10 +49,10 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   }
 
   private void processChatMessage(ChatMessage msg) {
-    List<ChatMessage> chatHistory = ctx.getChatHistory();
+    Queue<ChatMessage> chatHistory = ctx.getChatHistory();
     chatHistory.add(msg);
-    if (chatHistory.size() > maxChatHistorySize && !chatHistory.isEmpty()) {
-      chatHistory.remove(0);
+    if (chatHistory.size() > maxChatHistorySize) {
+      chatHistory.poll();
     }
     ctx.getOutgoingCommunicationMessages().add(msg);
   }

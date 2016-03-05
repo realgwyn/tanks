@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets;
+package org.game.tanks.client.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,29 +7,25 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * Main Menu Chat window for talking with friends
+ */
 @Component
 @SuppressWarnings("serial")
-public class FindGameMenuWindow extends GuiComponent {
+public class ChatWindow extends GuiComponent {
 
   @PostConstruct
-  @Override
   public void initialize() {
     // TODO Auto-generated method stub
-    super.initialize();
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void paintComponent(Graphics g) {
     g.setColor(Color.black);
     g.fillRect(x, y, width, height);
     g.setColor(Color.green);
     g.drawRect(x, y, width, height);
-    super.draw(g);
+    super.paintComponent(g);
   }
 
-  @Override
-  public void setVisible(boolean visible) {
-    // TODO Auto-generated method stub
-    super.setVisible(visible);
-  }
 }

@@ -3,7 +3,8 @@ package org.game.tanks.client.gui.widgets.components;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.game.tanks.client.gui.widgets.GuiComponent;
+import org.game.tanks.cfg.GameStyle;
+import org.game.tanks.client.view.GuiComponent;
 
 @SuppressWarnings("serial")
 public class Button extends GuiComponent {
@@ -14,7 +15,7 @@ public class Button extends GuiComponent {
   private Color borderColor;
 
   public Button(String text) {
-    this(new Label(text), Color.white);
+    this(new Label(text), GameStyle.WHITE);
   }
 
   public Button(String text, Color borderColor) {
@@ -29,10 +30,10 @@ public class Button extends GuiComponent {
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void paintComponent(Graphics g) {
     g.setColor(borderColor);
     g.drawRect(x, y, width, height);
-    label.draw(g);
+    label.paintComponent(g);
   }
 
 }

@@ -1,39 +1,37 @@
 package org.game.tanks.network.model.command;
 
-import java.util.Date;
-
 import org.game.tanks.network.model.TCPMessage;
 
 public class SyncTime extends TCPMessage {
 
   private static final long serialVersionUID = -3802970318039173341L;
-  private Date matchStartTime;
-  private Date matchEndTime;
-  private Date roundEndTime;
+  private long matchStartTime;
+  private long matchEndTime;
+  private long roundEndTime;
 
-  public Date getMatchStartTime() {
+  public long getMatchStartTime() {
     return matchStartTime;
   }
 
-  public SyncTime setMatchStartTime(Date matchStartTime) {
+  public SyncTime setMatchStartTime(long matchStartTime) {
     this.matchStartTime = matchStartTime;
     return this;
   }
 
-  public Date getMatchEndTime() {
+  public long getMatchEndTime() {
     return matchEndTime;
   }
 
-  public SyncTime setMatchEndTime(Date matchEndTime) {
+  public SyncTime setMatchEndTime(long matchEndTime) {
     this.matchEndTime = matchEndTime;
     return this;
   }
 
-  public Date getRoundEndTime() {
+  public long getRoundEndTime() {
     return roundEndTime;
   }
 
-  public SyncTime setRoundEndTime(Date roundEndTime) {
+  public SyncTime setRoundEndTime(long roundEndTime) {
     this.roundEndTime = roundEndTime;
     return this;
   }

@@ -2,35 +2,17 @@ package org.game.tanks.client.model;
 
 import org.game.tanks.model.PlayerModel;
 
-public class PlayerGameModel extends PlayerModel {
+public class PlayerGameModel {
 
   private static final long serialVersionUID = -1688914743444679357L;
-  public long sequenceNumber;
-  public boolean sequenceFlipFlag;
+  private long playerID;
+  private String playerName;
+  private PlayerModel model;
   private int latency;
 
   private int rankNumber;
   private int kills;
   private int deaths;
-  private int team;
-
-  public long getSequenceNumber() {
-    return sequenceNumber;
-  }
-
-  public PlayerGameModel setSequenceNumber(long sequenceNumber) {
-    this.sequenceNumber = sequenceNumber;
-    return this;
-  }
-
-  public boolean isSequenceFlipFlag() {
-    return sequenceFlipFlag;
-  }
-
-  public PlayerGameModel setSequenceFlipFlag(boolean sequenceFlipFlag) {
-    this.sequenceFlipFlag = sequenceFlipFlag;
-    return this;
-  }
 
   public int getLatency() {
     return latency;
@@ -68,14 +50,30 @@ public class PlayerGameModel extends PlayerModel {
     return this;
   }
 
-  @Override
-  public int getTeam() {
-    return team;
+  public long getPlayerID() {
+    return playerID;
   }
 
-  @Override
-  public PlayerGameModel setTeam(int team) {
-    this.team = team;
+  public PlayerGameModel setPlayerID(long playerID) {
+    this.playerID = playerID;
+    return this;
+  }
+
+  public String getPlayerName() {
+    return playerName;
+  }
+
+  public PlayerGameModel setPlayerName(String playerName) {
+    this.playerName = playerName;
+    return this;
+  }
+
+  public PlayerModel getModel() {
+    return model;
+  }
+
+  public PlayerGameModel setModel(PlayerModel model) {
+    this.model = model;
     return this;
   }
 

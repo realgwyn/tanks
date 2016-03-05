@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.gui.widgets.HudWindow;
+import org.game.tanks.client.view.HudWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

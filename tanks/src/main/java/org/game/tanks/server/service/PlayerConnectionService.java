@@ -11,6 +11,7 @@ import org.game.tanks.network.model.command.Connect;
 import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.GameInitData;
 import org.game.tanks.network.model.command.PlayerInfo;
+import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerNetworkAdapter;
 import org.game.tanks.server.model.PlayerServerModel;
@@ -52,7 +53,7 @@ public class PlayerConnectionService {
     // Send handshake and initialization commands to player
     networkAdapter.sendTCP(connection, handshake);
     networkAdapter.sendTCP(connection, createGameInitData());
-    networkAdapter.sendTCP(connection, new ChatHistory().setChatHistory(ctx.getChatHistory()));
+    networkAdapter.sendTCP(connection, new ChatHistory().setChatHistory(ctx.getChatHistory().toArray(new ChatMessage[0])));
     networkAdapter.sendTCP(connection, syncTimeService.createNewSyncTimeEvent());
 
     ctx.getPendingPlayers().add(player);
@@ -69,7 +70,7 @@ public class PlayerConnectionService {
             .setPlayerId(player.getPlayerId())
             .setPlayerName(player.getPlayerName());
         // Broadcast to other players about new connection
-        networkAdapter.sendToAllExceptTCP(player.getConnection().getID(), connect);
+        networkAdapter.sendToAllTCP(connect);
         ctx.getIncomingPlayers().add(player);
         break;
       }
@@ -78,7 +79,7 @@ public class PlayerConnectionService {
 
   public GameInitData createGameInitData() {
     GameInitData data = new GameInitData()
-        .setPlayersInfo(createPlayersInfo(ctx.getPlayers()))
+        .setPlayersInfo(createPlayersInfo(ctx.getPlayers()))// XXX concurrent modification exception
         .setMatchEndTime(ctx.getMatchEndTime())
         .setRoundEndTime(ctx.getRoundEndTime())
         .setCurrentMap(MapService.createMapInfoData(ctx.getCurrentMap()))
@@ -125,5 +126,52 @@ public class PlayerConnectionService {
     }
     return idCount;
   }
+
+  // public static void main(String[] args) {
+  // List<String> players = new ArrayList<>();
+  //
+  // Runnable thread1 = new Runnable() {
+  //
+  // @Override
+  // public void run() {
+  // while (true) {
+  // players.add("S");
+  // try {
+  // Thread.sleep(5);
+  // } catch (InterruptedException e) {
+  // e.printStackTrace();
+  // }
+  // }
+  //
+  // }
+  // };
+  //
+  // Gson gson = new Gson();
+  //
+  // Runnable thread2 = new Runnable() {
+  //
+  // @Override
+  // public void run() {
+  // int count = 0;
+  // while (true) {
+  // count++;
+  // try {
+  // String json = gson.toJson(l.toArray());
+  // if (count % 100 == 0) {
+  // System.out.println(json);
+  // }
+  //
+  // Thread.sleep(3);
+  // } catch (InterruptedException e) {
+  // e.printStackTrace();
+  // }
+  // }
+  // }
+  // };
+  //
+  // new Thread(thread1).start();
+  // new Thread(thread2).start();
+  //
+  // }
 
 }

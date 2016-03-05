@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
@@ -31,29 +32,30 @@ public class ServerContext {
   Config cfg;
 
   private List<PlayerServerModel> players;
+  private List<PlayerServerModel> concurrentPlayers;// Slow but safe CopyOnWriteArrayList
   private List<PlayerServerModel> pendingPlayers;
   private Map<Long, PlayerServerModel> playerById;
   private Map<Long, PlayerInfo> playerStats;
 
-  private ConcurrentLinkedQueue<Handshake> incomingHandshakes;
-  private ConcurrentLinkedQueue<PlayerServerModel> incomingPlayers;
-  private ConcurrentLinkedQueue<Long> leavingPlayerIds;
+  private Queue<Handshake> incomingHandshakes;
+  private Queue<PlayerServerModel> incomingPlayers;
+  private Queue<Long> leavingPlayerIds;
 
-  private ConcurrentLinkedQueue<PlayerSnapshot> incomingPlayerSnapshots;
+  private Queue<PlayerSnapshot> incomingPlayerSnapshots;
 
-  private ConcurrentLinkedQueue<GameEvent> incomingGameEvents;
-  private ConcurrentLinkedQueue<GameEvent> outgoingGameEvents;
+  private Queue<GameEvent> incomingGameEvents;
+  private Queue<GameEvent> outgoingGameEvents;
 
-  private ConcurrentLinkedQueue<Command> incomingCommands;
-  private ConcurrentLinkedQueue<Command> outgoingCommands;
+  private Queue<Command> incomingCommands;
+  private Queue<Command> outgoingCommands;
 
-  private ConcurrentLinkedQueue<CommunicationMessage> incomingMessages;
-  private ConcurrentLinkedQueue<CommunicationMessage> outgoingMessages;
+  private Queue<CommunicationMessage> incomingMessages;
+  private Queue<CommunicationMessage> outgoingMessages;
 
-  private ConcurrentLinkedQueue<AdminCommand> incomingAdminCommands;
+  private Queue<AdminCommand> incomingAdminCommands;
 
-  private List<ChatMessage> chatHistory;
-  private ConcurrentLinkedQueue<Task> pendingTasks;
+  private Queue<ChatMessage> chatHistory;
+  private Queue<Task> pendingTasks;
 
   private int tcpPort;
   private int udpPort;
@@ -107,7 +109,7 @@ public class ServerContext {
     outgoingCommands = new ConcurrentLinkedQueue<>();
 
     playerStats = new HashMap<>();
-    chatHistory = new ArrayList<>();
+    chatHistory = new ConcurrentLinkedQueue<>();
   }
 
   /**
@@ -164,47 +166,47 @@ public class ServerContext {
     this.serverName = serverName;
   }
 
-  public ConcurrentLinkedQueue<PlayerServerModel> getIncomingPlayers() {
+  public Queue<PlayerServerModel> getIncomingPlayers() {
     return incomingPlayers;
   }
 
-  public ConcurrentLinkedQueue<GameEvent> getIncomingGameEvents() {
+  public Queue<GameEvent> getIncomingGameEvents() {
     return incomingGameEvents;
   }
 
-  public ConcurrentLinkedQueue<GameEvent> getOutgoingGameEvents() {
+  public Queue<GameEvent> getOutgoingGameEvents() {
     return outgoingGameEvents;
   }
 
-  public ConcurrentLinkedQueue<PlayerSnapshot> getIncomingPlayerSnapshots() {
+  public Queue<PlayerSnapshot> getIncomingPlayerSnapshots() {
     return incomingPlayerSnapshots;
   }
 
-  public ConcurrentLinkedQueue<Command> getIncomingCommands() {
+  public Queue<Command> getIncomingCommands() {
     return incomingCommands;
   }
 
-  public ConcurrentLinkedQueue<Command> getOutgoingCommands() {
+  public Queue<Command> getOutgoingCommands() {
     return outgoingCommands;
   }
 
-  public ConcurrentLinkedQueue<CommunicationMessage> getIncomingCommunicationMessages() {
+  public Queue<CommunicationMessage> getIncomingCommunicationMessages() {
     return incomingMessages;
   }
 
-  public ConcurrentLinkedQueue<CommunicationMessage> getOutgoingCommunicationMessages() {
+  public Queue<CommunicationMessage> getOutgoingCommunicationMessages() {
     return outgoingMessages;
   }
 
-  public ConcurrentLinkedQueue<AdminCommand> getIncomingAdminCommands() {
+  public Queue<AdminCommand> getIncomingAdminCommands() {
     return incomingAdminCommands;
   }
 
-  public ConcurrentLinkedQueue<Task> getPendingTasks() {
+  public Queue<Task> getPendingTasks() {
     return pendingTasks;
   }
 
-  public ConcurrentLinkedQueue<Handshake> getIncomingHandshakes() {
+  public Queue<Handshake> getIncomingHandshakes() {
     return incomingHandshakes;
   }
 
@@ -212,7 +214,7 @@ public class ServerContext {
     return pendingPlayers;
   }
 
-  public ConcurrentLinkedQueue<Long> getLeavingPlayerIds() {
+  public Queue<Long> getLeavingPlayerIds() {
     return leavingPlayerIds;
   }
 
@@ -224,7 +226,7 @@ public class ServerContext {
     return playerStats;
   }
 
-  public List<ChatMessage> getChatHistory() {
+  public Queue<ChatMessage> getChatHistory() {
     return chatHistory;
   }
 

@@ -5,29 +5,31 @@ import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
+import org.game.tanks.client.view.OptionsMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * Display End Match Players Score
- */
 @Component
-public class MatchEndState extends ClientState {
+public class OptionsMenuState extends ClientState {
 
   @Autowired
   GameDisplay display;
   @Autowired
   GuiManager guiManager;
+  @Autowired
+  OptionsMenuWindow optionsMenuWindow;
 
-  public MatchEndState() {
-    super(ClientStateType.MATCH_END);
+  public OptionsMenuState() {
+    super(ClientStateType.OPTIONS_MENU);
+  }
+
+  @Override
+  public void onStateBegin() {
+    guiManager.showAndFocusComponent(optionsMenuWindow);
   }
 
   @Override
   public void update() {
-
-    // TODO: Show statswindow
-    // TODO: show which team has won
 
   }
 
@@ -37,7 +39,7 @@ public class MatchEndState extends ClientState {
     g.setColor(Color.BLACK);
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
-    g.drawString("MatchEndState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+    g.drawString("OptionsMenuState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
 
   @Override

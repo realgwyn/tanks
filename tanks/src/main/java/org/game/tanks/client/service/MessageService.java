@@ -1,4 +1,4 @@
-package org.game.tanks.client.core;
+package org.game.tanks.client.service;
 
 import org.game.tanks.network.model.message.ChatMessage;
 import org.springframework.stereotype.Component;

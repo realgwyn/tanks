@@ -1,4 +1,4 @@
-package org.game.tanks.client.core;
+package org.game.tanks.cfg;
 
 public class GameButtons {
 

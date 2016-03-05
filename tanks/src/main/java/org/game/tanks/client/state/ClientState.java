@@ -4,14 +4,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import org.apache.log4j.Logger;
-import org.game.tanks.client.gui.widgets.Focusable;
+import org.game.tanks.client.view.Focusable;
 
 public abstract class ClientState implements Focusable {
 
   static final Logger logger = Logger.getLogger(ClientState.class);
 
   public enum ClientStateType {
-    LOADING_GAME, MAIN_MENU, CREATE_GAME_MENU, FIND_GAME_MENU, MATCH_END, MATCH_INIT, GAME_PENDING, MATCH_START, ROUND_END, ROUND_START, ROUND
+    LOADING_GAME, MAIN_MENU, OPTIONS_MENU, CREATE_GAME_MENU, FIND_GAME_MENU, MATCH_END, MATCH_INIT, GAME_PENDING, MATCH_START, ROUND_END, ROUND_START, ROUND
   }
 
   private ClientStateType type;

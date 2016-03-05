@@ -1,9 +1,10 @@
-package org.game.tanks.client.gui.widgets;
+package org.game.tanks.client.view;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,9 +24,12 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   protected GuiComponent parent;
 
-  protected boolean visible;
+  protected boolean visible = true;
+  protected boolean focusable = true;
 
   private List<GuiComponent> children;
+
+  private MouseListener mouseActionListener;
 
   private int relativeX;
   private int relativeY;
@@ -97,19 +101,11 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
     }
   }
 
-  public void initialize() {
-    if (children != null) {
-      for (GuiComponent child : children) {
-        child.initialize();
-      }
-    }
-  }
-
-  public void draw(Graphics g) {
+  public void paintComponent(Graphics g) {
     if (children != null) {
       for (GuiComponent child : children) {
         if (child.isVisible()) {
-          child.draw(g);
+          child.paintComponent(g);
         }
       }
     }
@@ -133,6 +129,18 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   @Override
   public void mousePressed(MouseEvent e) {
+    if (children != null && !children.isEmpty()) {
+      for (GuiComponent child : children) {
+        if (child.contains(e.getX(), e.getY())) {
+          child.mousePressed(e);
+          return;
+        }
+      }
+    }
+
+    if (mouseActionListener != null) {
+      mouseActionListener.mouseClicked(e);
+    }
   }
 
   @Override
@@ -145,6 +153,24 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   @Override
   public void onFocusLost() {
+  }
+
+  public boolean isFocusable() {
+    return focusable;
+  }
+
+  public void setFocusable(boolean focusable) {
+    this.focusable = focusable;
+  }
+
+  /**
+   * Update GuiComponent values (Busy Spinner, HUD Panel, MapPanel)
+   */
+  public void update() {
+  }
+
+  public void setMouseActionListener(MouseListener a) {
+    this.mouseActionListener = a;
   }
 
   @Override

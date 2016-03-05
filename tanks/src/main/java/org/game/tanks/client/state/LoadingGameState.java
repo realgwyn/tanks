@@ -29,12 +29,17 @@ public class LoadingGameState extends ClientState {
   }
 
   @Override
+  public void onStateBegin() {
+    display.requestFocus();
+  }
+
+  @Override
   public void update() {
     count++;
-    if (count <= 100) {
+    if (count <= 10) {
       percent = count;
     }
-    if (count >= 150) {
+    if (count >= 15) {
       engine.setState(mainMenuState);
     }
   }

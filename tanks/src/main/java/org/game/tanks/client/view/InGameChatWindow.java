@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets;
+package org.game.tanks.client.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import org.game.tanks.client.core.GameContext;
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.core.MessageService;
+import org.game.tanks.client.service.MessageService;
 import org.game.tanks.network.model.message.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,19 +28,17 @@ public class InGameChatWindow extends GuiComponent {
   GameContext gameContext;
 
   @PostConstruct
-  @Override
   public void initialize() {
     // TODO Auto-generated method stub
-    super.initialize();
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void paintComponent(Graphics g) {
     g.setColor(Color.black);
     g.fillRect(x, y, width, height);
     g.setColor(Color.green);
     g.drawRect(x, y, width, height);
-    super.draw(g);
+    super.paintComponent(g);
   }
 
   @Override
@@ -57,12 +55,6 @@ public class InGameChatWindow extends GuiComponent {
 
       break;
     }
-  }
-
-  @Override
-  public void setVisible(boolean visible) {
-    // TODO Auto-generated method stub
-    super.setVisible(visible);
   }
 
   private void sendChatMessage(String chatMessage) {

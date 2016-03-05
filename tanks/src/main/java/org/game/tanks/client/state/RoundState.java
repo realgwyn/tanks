@@ -10,9 +10,9 @@ import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.core.GamePhysicsUnit;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.core.PlayerInput;
-import org.game.tanks.client.gui.widgets.InGameChatWindow;
-import org.game.tanks.client.gui.widgets.InGameMenuWindow;
 import org.game.tanks.client.state.ClientState.ClientStateType;
+import org.game.tanks.client.view.InGameChatWindow;
+import org.game.tanks.client.view.InGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets;
+package org.game.tanks.client.view;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -26,21 +26,19 @@ public class InGameMenuWindow extends GuiComponent {
   GuiManager guiManager;
 
   @PostConstruct
-  @Override
   public void initialize() {
     // TODO Auto-generated method stub
-    super.initialize();
   }
 
   @Override
-  public void draw(Graphics g) {
+  public void paintComponent(Graphics g) {
     // g.setColor(Color.BLACK);
     // g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 40, 160, 80);
     // g.setColor(Color.WHITE);
     // g.drawString("Game Menu", display.WIDTH / 2 - 75, display.HEIGHT / 2 - 10);
     // g.drawString(" Exit - E", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 5);
     // g.drawString(" Resume - ESC", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 20);
-    super.draw(g);
+    super.paintComponent(g);
   }
 
   @Override

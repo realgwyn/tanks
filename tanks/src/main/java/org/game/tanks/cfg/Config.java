@@ -23,6 +23,9 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+// TODO: saving config values back to config.properties file when exiting the game
+// TODO: restoring config.properties values from default_config.properties - just copy file content and load
+// fileUtils.readPropertiesFromResource("config.properties");
 @Configuration
 @PropertySource(value = { "classpath:application.properties" })
 @EnableTransactionManagement

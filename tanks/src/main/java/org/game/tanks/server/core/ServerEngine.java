@@ -103,9 +103,14 @@ public class ServerEngine extends Loop {
   }
 
   public void setState(ServerState state) {
-    logger.debug("Changing Server State to: " + state.getClass().getSimpleName());
-    currentState.onStateEnd();
+    logger.debug("Changing Server State from " + currentState.getClass().getSimpleName()
+        + " to: " + state.getClass().getSimpleName());
 
+    if (currentState.getType().equals(state.getType())) {
+      throw new UnsupportedOperationException("Flow error - its prohibited for state to change to itself");
+    }
+
+    currentState.onStateEnd();
     currentState = state;
     currentState.onStateBegin();
   }

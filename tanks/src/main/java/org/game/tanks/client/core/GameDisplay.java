@@ -61,6 +61,13 @@ public class GameDisplay extends Canvas {
     bs.show();
   }
 
+  public void clearScreen() {
+    for (int i = 0; i < rasterPixels.length; i++) {
+      rasterPixels[i] = 0;
+    }
+
+  }
+
   public int[] getRasterPixels() {
     return rasterPixels;
   }

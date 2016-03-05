@@ -94,13 +94,20 @@ public class GameEngine extends Loop {
 
   @Override
   public void render() {
+    display.clearScreen();
     currentState.draw();
     guiManager.draw();
     display.render();
   }
 
   public void setState(ClientState state) {
-    logger.debug("Changing Game State to: " + state.getClass().getSimpleName());
+    logger.debug("Changing Game State from " + currentState.getClass().getSimpleName()
+        + " to: " + state.getClass().getSimpleName());
+
+    if (currentState.getType().equals(state.getType())) {
+      throw new UnsupportedOperationException("Flow error - its prohibited for state to change to itself");
+    }
+
     currentState.onStateEnd();
     currentState = state;
     currentState.onStateBegin();
