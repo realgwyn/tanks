@@ -13,7 +13,6 @@ import org.game.tanks.network.model.command.Latency;
 import org.game.tanks.network.model.command.Ping;
 import org.game.tanks.network.model.command.PlayersLatency;
 import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.core.ServerNetworkAdapter;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,7 +28,7 @@ public class GameCommandHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
-  ServerNetworkAdapter networkAdapter;
+  SchedulerContext schedulerCtx;
   @Autowired
   Config config;
 
@@ -63,7 +62,7 @@ public class GameCommandHandler extends ScheduledProcess {
       }
     }
 
-    if (ctx.getPlayers().size() > 0) {
+    if (schedulerCtx.getPlayers().size() > 0) {
       sendPingToPlayers();
       sendLatencyStatsToPlayers();
     }
@@ -86,11 +85,11 @@ public class GameCommandHandler extends ScheduledProcess {
     if (sendingFrequencyCount > latencyStatsSendingFrequency) {
       sendingFrequencyCount = 0;
 
-      List<PlayerServerModel> players = ctx.getPlayers();
+      List<PlayerServerModel> players = schedulerCtx.getPlayers();
       Latency[] latencies = new Latency[players.size()];
       for (int i = 0; i < players.size(); i++) {
         PlayerServerModel player = players.get(i);
-        latencies[i] = new Latency().setPlayerId(player.getPlayerId()).setLatency(player.getLatency());
+        latencies[i] = new Latency().setPlayerId(player.getConnectionId()).setLatency(player.getLatency());
       }
       PlayersLatency playersLatency = new PlayersLatency().setPlayersLatency(latencies);
 
@@ -100,7 +99,7 @@ public class GameCommandHandler extends ScheduledProcess {
 
   private void processChangeNameCommand(ChangeName cmd) {
     if (!cmd.getNewPlayerName().isEmpty()) {
-      PlayerServerModel player = ctx.getPlayerById(cmd.getPlayerId());
+      PlayerServerModel player = schedulerCtx.getPlayerById(cmd.getPlayerId());
       if (player != null) {
         logger.debug(player + " changed name to: " + cmd.getNewPlayerName());
         player.setPlayerName(cmd.getNewPlayerName());
@@ -110,16 +109,16 @@ public class GameCommandHandler extends ScheduledProcess {
   }
 
   private void processDisconnectCommand(Disconnect cmd) {
-    PlayerServerModel player = ctx.getPlayerById(cmd.getPlayerId());
+    PlayerServerModel player = schedulerCtx.getPlayerById(cmd.getPlayerId());
     if (player != null) {
       logger.debug(player + " disconnecting");
-      ctx.getLeavingPlayerIds().add(player.getPlayerId());
+      ctx.getLeavingPlayerIds().add(player.getConnectionId());
     }
   }
 
   // XXX: performance: vulnerable to DDoS
   private void processPingCommand(Ping ping) {
-    PlayerServerModel player = ctx.getPlayerById(ping.getPlayerId());
+    PlayerServerModel player = schedulerCtx.getPlayerById(ping.getPlayerId());
     if (player != null) {
       int latency = (int) (currentTime - ping.getSentTime());
       player.setLatency(latency);

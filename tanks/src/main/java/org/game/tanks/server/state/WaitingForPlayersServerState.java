@@ -3,10 +3,10 @@ package org.game.tanks.server.state;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
-import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerController;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.process.ProcessScheduler;
+import org.game.tanks.server.core.process.SchedulerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class WaitingForPlayersServerState extends ServerState {
 
   @Autowired
-  ServerContext ctx;
+  SchedulerContext schedulerCtx;
   @Autowired
   ProcessScheduler processScheduler;
   @Autowired
@@ -44,7 +44,7 @@ public class WaitingForPlayersServerState extends ServerState {
   public void update() {
     processScheduler.runProcesses();
 
-    if (ctx.getPlayers().size() > 1) {
+    if (schedulerCtx.getPlayers().size() > 1) {
       engine.setState(beforeRoundState);
     }
   }

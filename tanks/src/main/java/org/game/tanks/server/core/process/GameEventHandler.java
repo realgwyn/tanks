@@ -18,6 +18,8 @@ public class GameEventHandler extends ScheduledProcess {
 
   @Autowired
   private ServerContext context;
+  @Autowired
+  private SchedulerContext schedulerCtx;
 
   @Override
   public void runProcess() {
@@ -37,8 +39,8 @@ public class GameEventHandler extends ScheduledProcess {
 
   private void processShootEvent(ShootEvent event) {
     context.getOutgoingGameEvents().add(event);
-    for (PlayerServerModel player : context.getPlayers()) {
-      if (player.getPlayerId() != event.getPlayerId() && player.getModel().getState() == PlayerState.ALIVE
+    for (PlayerServerModel player : schedulerCtx.getPlayers()) {
+      if (player.getConnectionId() != event.getPlayerId() && player.getModel().getState() == PlayerState.ALIVE
           && player.getModel().getShape().contains(event.getPoint())) {
         context.getOutgoingGameEvents().add(new HitEvent()
             .setDamage(event.getDamage())
@@ -49,7 +51,7 @@ public class GameEventHandler extends ScheduledProcess {
         if (player.getModel().getHealth() <= 0) {
           player.getModel().setState(PlayerState.DEAD);
           context.getOutgoingGameEvents().add(new KillEvent()
-              .setPlayerId(player.getPlayerId()));
+              .setPlayerId(player.getConnectionId()));
         }
         break;
       }

@@ -8,7 +8,6 @@ import org.game.tanks.cfg.Config;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.core.ServerNetworkAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +19,6 @@ public class CommunicationMessageHandler extends ScheduledProcess {
 
   @Autowired
   ServerContext ctx;
-  @Autowired
-  ServerNetworkAdapter networkAdapter;
   @Autowired
   Config config;
 

@@ -6,18 +6,8 @@ public class CommunicationMessage extends TCPMessage {
 
   private static final long serialVersionUID = 7368498129812636388L;
 
-  protected long playerIdTo;
   protected Date time;
   protected String text;
-
-  public long getPlayerIdTo() {
-    return playerIdTo;
-  }
-
-  public CommunicationMessage setPlayerIdTo(long playerIdTo) {
-    this.playerIdTo = playerIdTo;
-    return this;
-  }
 
   public Date getTime() {
     return time;

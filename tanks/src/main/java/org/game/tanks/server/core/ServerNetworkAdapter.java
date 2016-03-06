@@ -13,7 +13,7 @@ import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
-import org.game.tanks.server.model.PlayerServerModel;
+import org.game.tanks.server.model.ConnectionInfo;
 import org.game.tanks.utils.NetworkMessageValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +22,8 @@ import com.esotericsoftware.kryonet.Connection;
 
 @Component
 public class ServerNetworkAdapter extends NetworkAdapter {
+
+  private NetworkServer server;
 
   @Autowired
   ServerContext ctx;
@@ -39,8 +41,6 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     packetValidatorEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_PACKET_VALIDATION);
   }
 
-  private NetworkServer server;
-
   public NetworkServer getServer() {
     return server;
   }
@@ -49,18 +49,6 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     this.server = server;
     this.server.setTCPListener(this);
     this.server.setUDPListener(this);
-  }
-
-  public void sendTCP(Connection con, TCPMessage msg) {
-    con.sendTCP(msg);
-  }
-
-  public void sendTCP(PlayerServerModel player, TCPMessage msg) {
-    player.getConnection().sendTCP(msg);
-  }
-
-  public void sendUDP(PlayerServerModel player, UDPMessage msg) {
-    player.getConnection().sendUDP(msg);
   }
 
   public void sendToAllTCP(TCPMessage msg) {
@@ -149,7 +137,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     return !server.getIncommingConnections().isEmpty();
   }
 
-  public Connection pollNewConnection() {
+  public ConnectionInfo pollNewConnection() {
     return server.getIncommingConnections().poll();
   }
 
@@ -157,7 +145,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     return !server.getClosedConnections().isEmpty();
   }
 
-  public Connection pollClosedConnection() {
+  public Integer pollClosedConnectionId() {
     return server.getClosedConnections().poll();
   }
 

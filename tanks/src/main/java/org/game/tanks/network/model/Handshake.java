@@ -3,25 +3,15 @@ package org.game.tanks.network.model;
 public class Handshake extends TCPMessage {
 
   private static final long serialVersionUID = -7858479077369194127L;
-  private long connectionID;
-  private long playerId;
+  private long playerConnectionId;
   private String playerName;
 
-  public long getConnId() {
-    return connectionID;
+  public long getPlayerConnectionId() {
+    return playerConnectionId;
   }
 
-  public Handshake setConnId(long connId) {
-    this.connectionID = connId;
-    return this;
-  }
-
-  public long getPlayerId() {
-    return playerId;
-  }
-
-  public Handshake setPlayerId(long playerId) {
-    this.playerId = playerId;
+  public Handshake setPlayerConnectionId(long playerId) {
+    this.playerConnectionId = playerId;
     return this;
   }
 

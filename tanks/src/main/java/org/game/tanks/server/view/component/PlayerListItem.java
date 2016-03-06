@@ -33,11 +33,16 @@ public class PlayerListItem extends JPanel {
     this.playerServerModel = playerServerModel;
     this.controller = controller;
     setLayout(
-        new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("160px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormFactory.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC,
-            FormFactory.DEFAULT_COLSPEC, }, new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+        new FormLayout(
+            new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC,
+                ColumnSpec.decode("160px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"),
+                FormFactory.RELATED_GAP_COLSPEC,
+                ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("40px"),
+                FormFactory.RELATED_GAP_COLSPEC,
+                ColumnSpec.decode("40px"), FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC,
+                FormFactory.RELATED_GAP_COLSPEC,
+                FormFactory.DEFAULT_COLSPEC, },
+            new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
 
     lblRankNumber = new JLabel();
     add(lblRankNumber, "2, 2");
@@ -71,13 +76,13 @@ public class PlayerListItem extends JPanel {
     btnKick.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        controller.actionKickPlayer(playerServerModel.getPlayerId());
+        controller.actionKickPlayer(playerServerModel.getConnectionId());
       }
     });
     btnBan.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        controller.actionBanPlayer(playerServerModel.getPlayerId());
+        controller.actionBanPlayer(playerServerModel.getConnectionId());
       }
     });
   }
@@ -85,7 +90,7 @@ public class PlayerListItem extends JPanel {
   private void setModel(PlayerServerModel model) {
     lblRankNumber.setText(Integer.toString(model.getRankNumber()));
     lblName.setText(model.getPlayerName());
-    lblId.setText(Long.toString(model.getPlayerId()));
+    lblId.setText(Long.toString(model.getConnectionId()));
     lblKills.setText(Integer.toString(model.getKills()));
     lblDeaths.setText(Integer.toString(model.getDeaths()));
     lblLatency.setText(Integer.toString(model.getLatency()));

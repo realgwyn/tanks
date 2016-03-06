@@ -31,7 +31,6 @@ public class Server {
 
   public void run() {
     serverWindow.setVisible(true);
-    serverWindow.setPlayers(serverContext.getPlayers());
     serverWindow.setServerName(config.getProperty(Config.SERVER_DEFAULT_SERVER_NAME));
     serverWindow.setTcpPort(config.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT));
     serverWindow.setUdpPort(config.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT));

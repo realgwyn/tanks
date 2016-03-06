@@ -15,6 +15,8 @@ public class ProcessScheduler {
   private boolean schedulerEnabled;
 
   @Autowired
+  SchedulerContext scheduleContext;
+  @Autowired
   Config config;
   @Autowired
   PlayerMovementsHandler playerMovementsHandler;
@@ -47,6 +49,10 @@ public class ProcessScheduler {
     processSchedule.add(gameCommandHandler);
     processSchedule.add(communicationHandler);
     schedulerEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_PROCESS_SCHEDULER);
+  }
+
+  public void reinitialize() {
+    scheduleContext.reinitialize();
   }
 
   public void runProcesses() {

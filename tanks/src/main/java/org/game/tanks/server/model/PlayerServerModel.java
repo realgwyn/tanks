@@ -2,16 +2,11 @@ package org.game.tanks.server.model;
 
 import org.game.tanks.model.PlayerModel;
 
-import com.esotericsoftware.kryonet.Connection;
-
 public class PlayerServerModel {
 
-  private static final long serialVersionUID = 5787415399283390781L;
-
-  private long playerId;
   private String playerName = "Unknown";
+  private ConnectionInfo connectionInfo;
   private PlayerModel model;
-  private Connection connection;
 
   public long sequenceNumber;
   public boolean sequenceFlipFlag;
@@ -23,18 +18,12 @@ public class PlayerServerModel {
 
   private boolean connectionEstablished;
 
-  public PlayerServerModel(long playerId, Connection connection) {
-    this.playerId = playerId;
-    this.connection = connection;
+  public PlayerServerModel(ConnectionInfo connectionInfo) {
+    this.connectionInfo = connectionInfo;
   }
 
-  public long getPlayerId() {
-    return playerId;
-  }
-
-  public PlayerServerModel setPlayerId(long playerId) {
-    this.playerId = playerId;
-    return this;
+  public int getConnectionId() {
+    return connectionInfo.getConnectionId();
   }
 
   public String getPlayerName() {
@@ -43,15 +32,6 @@ public class PlayerServerModel {
 
   public PlayerServerModel setPlayerName(String playerName) {
     this.playerName = playerName;
-    return this;
-  }
-
-  public Connection getConnection() {
-    return connection;
-  }
-
-  public PlayerServerModel setConnection(Connection connection) {
-    this.connection = connection;
     return this;
   }
 
@@ -118,9 +98,17 @@ public class PlayerServerModel {
     return this;
   }
 
+  public ConnectionInfo getConnectionInfo() {
+    return connectionInfo;
+  }
+
+  public void setConnectionInfo(ConnectionInfo connectionInfo) {
+    this.connectionInfo = connectionInfo;
+  }
+
   @Override
   public String toString() {
-    return "Player [id:" + playerId + ", name:" + playerName + "]";
+    return "Player [id:" + connectionInfo.getConnectionId() + ", name:" + playerName + "]";
   }
 
 }

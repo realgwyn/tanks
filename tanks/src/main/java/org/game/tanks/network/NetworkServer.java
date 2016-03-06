@@ -9,29 +9,29 @@ import org.game.tanks.network.model.NetworkDataModel;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
 import org.game.tanks.network.model.message.ChatMessage;
+import org.game.tanks.server.model.ConnectionInfo;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
-// TODO: implement adding and removing connections
 public class NetworkServer {
 
   Server server;
   UDPListener udpListener;
   TCPListener tcpListener;
 
-  Queue<Connection> incomingConnections;
-  Queue<Connection> closedConnections;
+  // TODO: implement adding and removing connections
+  Queue<ConnectionInfo> incomingConnections;
+  Queue<Integer> closedConnectionIDs;
 
   public NetworkServer() {
     incomingConnections = new ConcurrentLinkedQueue<>();
-    closedConnections = new ConcurrentLinkedQueue<>();
+    closedConnectionIDs = new ConcurrentLinkedQueue<>();
     server = new Server();
     NetworkDataModel.register(server);
     initActions();
   }
-
 
   public void start(int tcpPort, int udpPort) throws NetworkException {
     System.out.println("Starting server at tcpPort: " + tcpPort + ", udpPort: " + udpPort);
@@ -72,36 +72,22 @@ public class NetworkServer {
   }
 
   public void sendTCP(int connectionID, TCPMessage msg) {
-    Connection conn = getConnectionById(connectionID);
-    if (conn != null) {
-      conn.sendTCP(msg);
-    }
+    System.out.println(">TCP(id:" + connectionID + ")");
+    server.sendToTCP(connectionID, msg);
   }
 
   public void sendUDP(int connectionID, TCPMessage msg) {
-    Connection conn = getConnectionById(connectionID);
-    if (conn != null) {
-      conn.sendUDP(msg);
-    }
-  }
-
-  public void sendTCP(Connection conn, TCPMessage msg) {
-    System.out.println(">TCP(id:" + conn.getID() + ")");
-    conn.sendTCP(msg);
-  }
-
-  public void sendUDP(Connection conn, UDPMessage msg) {
-    System.out.println(">UDP(id:" + conn.getID() + ")");
-    conn.sendUDP(msg);
+    System.out.println(">UDP(id:" + connectionID + ")");
+    server.sendToUDP(connectionID, msg);
   }
 
   public void sendToAllTCP(TCPMessage msg) {
-    System.out.println(">TCPall");
+    System.out.println(">TCPtoAll");
     server.sendToAllTCP(msg);
   }
 
   public void sendToAllUDP(UDPMessage msg) {
-    System.out.println(">UDPall)");
+    System.out.println(">UDPtoAll)");
     server.sendToAllUDP(msg);
   }
 
@@ -115,17 +101,17 @@ public class NetworkServer {
     server.sendToAllExceptUDP(connectionID, msg);
   }
 
-  public Queue<Connection> getIncommingConnections() {
+  public Queue<ConnectionInfo> getIncommingConnections() {
     return incomingConnections;
   }
 
-  public Queue<Connection> getClosedConnections() {
-    return closedConnections;
+  public Queue<Integer> getClosedConnections() {
+    return closedConnectionIDs;
   }
 
   public Connection getConnectionById(int id) {
-    Connection [] activeConnections = server.getConnections(); 
-    for(int i=0;i<activeConnections.length;i++){
+    Connection[] activeConnections = server.getConnections();
+    for (int i = 0; i < activeConnections.length; i++) {
       if (activeConnections[i].getID() == id) {
         return activeConnections[i];
       }
@@ -146,7 +132,7 @@ public class NetworkServer {
           System.out.println("Sending response");
           ChatMessage response = new ChatMessage();
           response.setText("hello " + conn.getRemoteAddressTCP().getHostName());
-          server.sendTCP(conn, response);
+          server.sendTCP(conn.getID(), response);
         } else if (request instanceof Command) {
           System.out.println("received Command packet " + request.getClass().getSimpleName());
         }

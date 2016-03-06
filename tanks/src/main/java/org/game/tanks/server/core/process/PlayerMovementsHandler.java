@@ -26,11 +26,13 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
-  ServerNetworkAdapter networkAdapter;
+  SchedulerContext schedulerCtx;
   @Autowired
   ServerEngine engine;
   @Autowired
   Config config;
+  @Autowired
+  ServerNetworkAdapter networkAdapter;
 
   private boolean playerPositionCorrectionEnabled;
 
@@ -53,8 +55,8 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   }
 
   private void updatePlayerPosition(PlayerSnapshot snapshot) {
-    for (PlayerServerModel player : ctx.getPlayers()) {
-      if (player.getConnection().getID() == snapshot.id) {
+    for (PlayerServerModel player : schedulerCtx.getPlayers()) {
+      if (player.getConnectionId() == snapshot.playerId) {
         // sequenceFlipFlag indicates that sequenceNumber exceeded long.MAX_VALUE
         PlayerModel model = player.getModel();
         if (player.getSequenceNumber() < snapshot.sequenceNumber || player.sequenceFlipFlag != snapshot.sequenceFlipFlag) {
@@ -79,7 +81,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
    * each sector and with adjacent ones
    */
   private void playerPositionsCorrection() {
-    List<PlayerServerModel> players = ctx.getPlayers();
+    List<PlayerServerModel> players = schedulerCtx.getPlayers();
     for (int i = 0; i < players.size(); i++) {
       for (int j = 0; j < players.size(); j++) {
         if (i == j) {
@@ -110,7 +112,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   }
 
   private void sendOutGameSnapshot() {
-    networkAdapter.getServer().sendToAllUDP(generateGameSnapshot());
+    ctx.getOutgoingGameSnapshots().add(generateGameSnapshot());
   }
 
   private GameSnapshot generateGameSnapshot() {
@@ -120,8 +122,17 @@ public class PlayerMovementsHandler extends ScheduledProcess {
     }
     gameSnapshot.sequenceNumber++;
 
-    gameSnapshot.positions = new PlayerPosition[ctx.getPlayers().size()];
-    gameSnapshot.state = engine.getState().getType();
+    gameSnapshot.positions = new PlayerPosition[schedulerCtx.getPlayers().size()];
+    for (int i = 0; i < schedulerCtx.getPlayers().size(); i++) {
+      PlayerServerModel player = schedulerCtx.getPlayers().get(i);
+      PlayerPosition playerPosition = new PlayerPosition();
+      playerPosition.playerId = player.getConnectionId();
+      playerPosition.x = player.getModel().x;
+      playerPosition.y = player.getModel().y;
+      playerPosition.bodyAngle = player.getModel().bodyAngle;
+      playerPosition.towerAngle = player.getModel().towerAngle;
+      gameSnapshot.positions[i] = playerPosition;
+    }
     return gameSnapshot;
   }
 

@@ -5,11 +5,9 @@ import org.game.tanks.client.core.GameContext;
 import org.game.tanks.client.model.PlayerGameModel;
 import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.TCPMessage;
-import org.game.tanks.network.model.command.ChatHistory;
 import org.game.tanks.network.model.command.GameInitData;
 import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.network.model.command.SyncTime;
-import org.game.tanks.network.model.message.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,12 +19,11 @@ public class ServerConnectionService {
   @Autowired
   ClientNetworkAdapter networkAdapter;
 
-  private final int MATCH_INIT_FINISHED = 0x1111;
-  private final int HANDSHAKE = 0x0001;
-  private final int GAME_INIT_DATA = 0x0010;
-  private final int CHAT_HISTORY_DATA = 0x0100;
-  private final int SYNC_TIME_DATA = 0x1000;
-  private int connectionStatusFlag = 0x0000;
+  private final int MATCH_INIT_FINISHED = 0x111;
+  private final int HANDSHAKE = 0x001;
+  private final int GAME_INIT_DATA = 0x010;
+  private final int SYNC_TIME_DATA = 0x100;
+  private int connectionStatusFlag = 0x000;
   private boolean connectionReady = false;
 
   public void processMatchInitCommands() {
@@ -36,9 +33,6 @@ public class ServerConnectionService {
       if (cmd instanceof GameInitData) {
         processGameInitData((GameInitData) cmd);
         connectionStatusFlag |= GAME_INIT_DATA;
-      } else if (cmd instanceof ChatHistory) {
-        processChatHistory((ChatHistory) cmd);
-        connectionStatusFlag |= CHAT_HISTORY_DATA;
       } else if (cmd instanceof SyncTime) {
         processSyncTime((SyncTime) cmd);
         connectionStatusFlag |= SYNC_TIME_DATA;
@@ -61,9 +55,9 @@ public class ServerConnectionService {
   }
 
   private void processHandshake(Handshake handshake) {
-    ctx.setPlayerId(handshake.getPlayerId());
+    ctx.setPlayerId(handshake.getPlayerConnectionId());
     Handshake handshakeAck = new Handshake()
-        .setPlayerId(handshake.getPlayerId())
+        .setPlayerConnectionId(handshake.getPlayerConnectionId())
         .setPlayerName(ctx.getPlayerName());
     networkAdapter.sendTCP(handshakeAck);
   }
@@ -73,12 +67,6 @@ public class ServerConnectionService {
       PlayerGameModel player = new PlayerGameModel();
       // TODO: init player properties
       ctx.addPlayer(player);
-    }
-  }
-
-  private void processChatHistory(ChatHistory chatHistory) {
-    for (ChatMessage msg : chatHistory.getChatHistory()) {
-      ctx.getChatHistory().add(msg);
     }
   }
 

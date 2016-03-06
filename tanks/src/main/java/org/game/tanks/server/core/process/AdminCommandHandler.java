@@ -11,6 +11,7 @@ import org.game.tanks.server.core.ServerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+// TODO XXX: those commands should be invoked in ServerController, not in time critical loop
 @Component
 public class AdminCommandHandler extends ScheduledProcess {
 
@@ -44,27 +45,27 @@ public class AdminCommandHandler extends ScheduledProcess {
   }
 
   private void processPanPlayerCommand(BanPlayer cmd) {
-    //TODO
+    // TODO
   }
 
   private void processChangeMapCommand(ChangeMap cmd) {
-    //TODO
+    // TODO
   }
 
   private void processChangeNextMapCommand(ChangeNextMap cmd) {
-    //TODO
+    // TODO
   }
 
   private void processKickPlayerCommand(KickPlayer cmd) {
-    //TODO
+    // TODO
   }
 
   private void processRestartMapCommand(RestartMap cmd) {
-    //TODO
+    // TODO
   }
 
   private void processSystemCommand(SystemCommand cmd) {
-    //TODO
+    // TODO
   }
 
 }

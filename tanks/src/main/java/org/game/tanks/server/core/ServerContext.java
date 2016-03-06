@@ -1,10 +1,5 @@
 package org.game.tanks.server.core;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -17,31 +12,34 @@ import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.Handshake;
-import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.network.model.message.ChatMessage;
+import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.core.task.Task;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Contains thread-safe collections
+ * 
+ * @author rafal.kojta
+ *
+ */
 @Component
 public class ServerContext {
 
   @Autowired
   Config cfg;
 
-  private List<PlayerServerModel> players;
-  private List<PlayerServerModel> concurrentPlayers;// Slow but safe CopyOnWriteArrayList
-  private List<PlayerServerModel> pendingPlayers;
-  private Map<Long, PlayerServerModel> playerById;
-  private Map<Long, PlayerInfo> playerStats;
+  private Queue<PlayerServerModel> syncPlayersQueue;
 
   private Queue<Handshake> incomingHandshakes;
   private Queue<PlayerServerModel> incomingPlayers;
-  private Queue<Long> leavingPlayerIds;
+  private Queue<Integer> leavingPlayerIds;
 
   private Queue<PlayerSnapshot> incomingPlayerSnapshots;
+  private Queue<GameSnapshot> outgoingGameSnapshots;
 
   private Queue<GameEvent> incomingGameEvents;
   private Queue<GameEvent> outgoingGameEvents;
@@ -56,6 +54,8 @@ public class ServerContext {
 
   private Queue<ChatMessage> chatHistory;
   private Queue<Task> pendingTasks;
+
+  // TODO: use object pool in synchronization with player stats from scheduler thread??
 
   private int tcpPort;
   private int udpPort;
@@ -75,7 +75,6 @@ public class ServerContext {
    */
   @PostConstruct
   public void init() {
-    pendingPlayers = new ArrayList<>();
     incomingHandshakes = new ConcurrentLinkedQueue<>();
     incomingAdminCommands = new ConcurrentLinkedQueue<>();
     pendingTasks = new ConcurrentLinkedQueue<>();
@@ -93,11 +92,11 @@ public class ServerContext {
   }
 
   private void initCollections() {
-    players = new ArrayList<>();
-    playerById = new HashMap<>();
     leavingPlayerIds = new ConcurrentLinkedQueue<>();
     incomingPlayers = new ConcurrentLinkedQueue<>();
+
     incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
+    outgoingGameSnapshots = new ConcurrentLinkedQueue<>();
 
     incomingGameEvents = new ConcurrentLinkedQueue<>();
     outgoingGameEvents = new ConcurrentLinkedQueue<>();
@@ -108,7 +107,6 @@ public class ServerContext {
     incomingCommands = new ConcurrentLinkedQueue<>();
     outgoingCommands = new ConcurrentLinkedQueue<>();
 
-    playerStats = new HashMap<>();
     chatHistory = new ConcurrentLinkedQueue<>();
   }
 
@@ -210,20 +208,12 @@ public class ServerContext {
     return incomingHandshakes;
   }
 
-  public List<PlayerServerModel> getPendingPlayers() {
-    return pendingPlayers;
-  }
-
-  public Queue<Long> getLeavingPlayerIds() {
+  public Queue<Integer> getLeavingPlayerIds() {
     return leavingPlayerIds;
   }
 
-  public List<PlayerServerModel> getPlayers() {
-    return players;
-  }
-
-  public Map<Long, PlayerInfo> getPlayerStatsAll() {
-    return playerStats;
+  public Queue<GameSnapshot> getOutgoingGameSnapshots() {
+    return outgoingGameSnapshots;
   }
 
   public Queue<ChatMessage> getChatHistory() {
@@ -264,28 +254,15 @@ public class ServerContext {
     this.roundEndTime = roundEndTime;
     return this;
   }
-
-  public void addPlayer(PlayerServerModel newPlayer) {
-    players.add(newPlayer);
-    playerById.put(newPlayer.getPlayerId(), newPlayer);
-  }
-
-  public PlayerServerModel getPlayerById(long id) {
-    return playerById.get(id);
-  }
-
-  public void removePlayer(long playerId) {
-    Iterator<PlayerServerModel> it = players.iterator();
-    while (it.hasNext()) {
-      PlayerServerModel player = it.next();
-      if (player.getPlayerId() == playerId) {
-        players.remove(player);
-        break;
-      }
-    }
-
-    playerById.remove(playerId);
-    playerStats.remove(playerId);
-  }
-
+  //
+  // public PlayerServerModel getPlayerById(long id) {
+  // return playerById.get(id);
+  // }
+  // public List<PlayerServerModel> getPlayers() {
+  // return players;
+  // }
+  //
+  // public Map<Long, PlayerInfo> getPlayerStatsAll() {
+  // return playerStats;
+  // }
 }

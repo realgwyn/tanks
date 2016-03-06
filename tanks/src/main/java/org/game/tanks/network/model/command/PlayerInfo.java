@@ -9,7 +9,7 @@ public class PlayerInfo implements Serializable {
   private static final long serialVersionUID = -5527049409093060600L;
   private PlayerModel model;
   private int name;
-  private long playerId;
+  private int playerId;
   private int kills;
   private int deaths;
   private int latency;
@@ -59,11 +59,11 @@ public class PlayerInfo implements Serializable {
     return this;
   }
 
-  public long getPlayerId() {
+  public int getPlayerId() {
     return playerId;
   }
 
-  public PlayerInfo setPlayerId(long playerId) {
+  public PlayerInfo setPlayerId(int playerId) {
     this.playerId = playerId;
     return this;
   }
