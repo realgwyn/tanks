@@ -68,7 +68,6 @@ public class PlayerConnectionThread implements Runnable {
   }
 
   public void processPlayerConnections() {
-
     processNewConnections();
     processIncomingHandshakes();
     processClosedConnections();

@@ -1,7 +1,5 @@
 package org.game.tanks.server.state;
 
-import javax.annotation.PostConstruct;
-
 import org.game.tanks.cfg.Config;
 import org.game.tanks.server.core.ServerController;
 import org.game.tanks.server.core.ServerEngine;
@@ -20,7 +18,7 @@ public class WaitingForPlayersServerState extends ServerState {
   @Autowired
   ServerEngine engine;
   @Autowired
-  BeforeRoundServerState beforeRoundState;
+  RoundStartServerState roundStartState;
   @Autowired
   Config config;
   @Autowired
@@ -30,28 +28,22 @@ public class WaitingForPlayersServerState extends ServerState {
     super(ServerStateType.WAITING_FOR_PLAYERS);
   }
 
-  @PostConstruct
-  public void init() {
-
-  }
-
   @Override
   public void onStateBegin() {
-
   }
 
   @Override
   public void update() {
     processScheduler.runProcesses();
 
+    // Wait until there are at least 2 players in the game
     if (schedulerCtx.getPlayers().size() > 1) {
-      engine.setState(beforeRoundState);
+      engine.setState(roundStartState);
     }
   }
 
   @Override
   public void onStateEnd() {
-    controller.initNewMatch();
   }
 
 }

@@ -8,7 +8,8 @@ import org.game.tanks.client.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
 import org.game.tanks.server.core.process.GameEventHandler;
-import org.game.tanks.server.state.InitializingMatchServerState;
+import org.game.tanks.server.service.SyncStateService;
+import org.game.tanks.server.state.MatchInitServerState;
 import org.game.tanks.server.state.OfflineServerState;
 import org.game.tanks.server.state.ServerState;
 import org.game.tanks.server.view.ServerWindow;
@@ -24,7 +25,7 @@ public class ServerEngine extends Loop {
   @Autowired
   OfflineServerState offlineState;
   @Autowired
-  InitializingMatchServerState loadingMapState;
+  MatchInitServerState loadingMapState;
   @Autowired
   ServerWindow serverWindow;
   @Autowired
@@ -37,6 +38,8 @@ public class ServerEngine extends Loop {
   MessageSendingThread messageSendingThread;
   @Autowired
   PlayerConnectionThread playerConnectionThread;
+  @Autowired
+  SyncStateService syncStateService;
   @Autowired
   Config config;
 
@@ -110,9 +113,9 @@ public class ServerEngine extends Loop {
       throw new UnsupportedOperationException("Flow error - its prohibited for state to change to itself");
     }
 
-    currentState.onStateEnd();
+    currentState.endState();
     currentState = state;
-    currentState.onStateBegin();
+    currentState.beginState();
   }
 
   public ServerState getState() {

@@ -1,6 +1,7 @@
 package org.game.tanks.server.service;
 
 import org.game.tanks.client.state.ClientState.ClientStateType;
+import org.game.tanks.network.model.command.ChangeState;
 import org.game.tanks.network.model.command.SyncTime;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.state.ServerState.ServerStateType;
@@ -11,18 +12,39 @@ import org.springframework.stereotype.Component;
 public class SyncStateService {
 
   @Autowired
-  ServerContext ctx;
+  ServerContext serverCtx;
 
   public SyncTime createNewSyncTimeEvent() {
     return new SyncTime()
-        .setMatchStartTime(ctx.getMatchStartTime())
-        .setMatchEndTime(ctx.getMatchEndTime())
-        .setRoundEndTime(ctx.getRoundEndTime());
+        .setMatchStartTime(serverCtx.getMatchStartTime())
+        .setMatchEndTime(serverCtx.getMatchEndTime())
+        .setRoundEndTime(serverCtx.getRoundEndTime());
   }
 
-  public ClientStateType resolveClientState(ServerStateType serverState) {
-    // TODO: implement this
-    return null;
+  public static ClientStateType resolveClientState(ServerStateType serverState) {
+    switch (serverState) {
+    case MATCH_INIT:
+      return ClientStateType.MATCH_INIT;
+    case WAITING_FOR_PLAYERS:
+      return ClientStateType.WAITING_FOR_PLAYERS;
+    case ROUND_START:
+      return ClientStateType.ROUND_START;
+    case ROUND:
+      return ClientStateType.ROUND;
+    case ROUND_END:
+      return ClientStateType.ROUND_END;
+    case MATCH_END:
+      return ClientStateType.MATCH_END;
+    default:
+      return ClientStateType.FIND_GAME_MENU;
+    }
   }
 
+  public void syncClients(ServerStateType nextStateType, long timeUntilNextState) {
+    long nextStateStartTime = System.currentTimeMillis() + timeUntilNextState;
+    ChangeState changeStateRequest = new ChangeState()
+        .setType(SyncStateService.resolveClientState(nextStateType))
+        .setChangeStateTime(nextStateStartTime);
+    serverCtx.getOutgoingCommands().add(changeStateRequest);
+  }
 }

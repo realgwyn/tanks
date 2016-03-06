@@ -16,6 +16,8 @@ import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.core.task.Task;
+import org.game.tanks.server.gameplay.GameType;
+import org.game.tanks.server.gameplay.TeamDeathmatch;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,6 +66,7 @@ public class ServerContext {
   private MapModel currentMap;
   private MapModel nextMap;
 
+  private GameType gameType;
   private int matchDuration;
   private int roundDuration;
   private long matchStartTime;
@@ -78,6 +81,7 @@ public class ServerContext {
     incomingHandshakes = new ConcurrentLinkedQueue<>();
     incomingAdminCommands = new ConcurrentLinkedQueue<>();
     pendingTasks = new ConcurrentLinkedQueue<>();
+    gameType = new TeamDeathmatch();
 
     initValuesFromConfig();
     initCollections();
@@ -120,8 +124,6 @@ public class ServerContext {
     roundEndTime = 0;
     // clear all data objects
     // clear current player list
-    // handshake all players again
-
   }
 
   public MapModel getCurrentMap() {
@@ -220,11 +222,11 @@ public class ServerContext {
     return chatHistory;
   }
 
-  public int getMatchDuration() {
+  public int getMatchDurationMinutes() {
     return matchDuration;
   }
 
-  public int getRoundDuration() {
+  public int getRoundDurationMinutes() {
     return roundDuration;
   }
 
@@ -248,6 +250,10 @@ public class ServerContext {
 
   public long getRoundEndTime() {
     return roundEndTime;
+  }
+
+  public GameType getGameType() {
+    return gameType;
   }
 
   public ServerContext setRoundEndTime(long roundEndTime) {

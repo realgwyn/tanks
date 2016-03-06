@@ -26,29 +26,50 @@ public class NetworkMessageValidator {
     // TODO: some validation
 
     if (!valid) {
-      MalformedPacketHistory entity = new MalformedPacketHistory()
-          .setObject(gameEvent)
-          .setTime(new Date())
-          .setIpAddress(conn.getRemoteAddressTCP().getHostName());
-
-      taskManager.createDbTask(entity, DatabaseAction.CREATE);
+      saveMalformedPacket(conn, gameEvent);
     }
     return valid;
   }
 
   public boolean isValid(Connection conn, Command command) {
-    // TODO
-    return true;
+    boolean valid = true;
+
+    // TODO: some validation
+
+    if (!valid) {
+      saveMalformedPacket(conn, command);
+    }
+    return valid;
   }
 
   public boolean isValid(Connection conn, CommunicationMessage comMsg) {
-    // TODO
-    return true;
+    boolean valid = true;
+
+    // TODO: some validation
+
+    if (!valid) {
+      saveMalformedPacket(conn, comMsg);
+    }
+    return valid;
   }
 
   public boolean isValid(Connection conn, AdminCommand admCmd) {
-    // TODO
-    return true;
+    boolean valid = true;
+
+    // TODO: some validation
+
+    if (!valid) {
+      saveMalformedPacket(conn, admCmd);
+    }
+    return valid;
+  }
+
+  private void saveMalformedPacket(Connection conn, Object message) {
+    MalformedPacketHistory entity = new MalformedPacketHistory()
+        .setObject(message)
+        .setTime(new Date())
+        .setIpAddress(conn.getRemoteAddressTCP().getHostName());
+    taskManager.createDbTask(entity, DatabaseAction.CREATE);
   }
 
 }

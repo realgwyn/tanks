@@ -34,10 +34,6 @@ public class GamePhysicsUnit {
     sprites.add(res.getSprite(SpriteName.UPGRADE_AMMO));
   }
 
-  public void generateConstantsValues() {
-    // TODO Auto-generated method stub
-  }
-
   private int count;
 
   public void update() {

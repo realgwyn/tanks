@@ -12,16 +12,18 @@ public class ChangeName extends Command {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public ChangeName setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
   public String getNewPlayerName() {
     return newPlayerName;
   }
 
-  public void setNewPlayerName(String playerName) {
+  public ChangeName setNewPlayerName(String playerName) {
     this.newPlayerName = playerName;
+    return this;
   }
 
 }

@@ -15,24 +15,27 @@ public class ShootEvent extends GameEvent {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public ShootEvent setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
   public Point2D getPoint() {
     return point;
   }
 
-  public void setPoint(Point2D point) {
+  public ShootEvent setPoint(Point2D point) {
     this.point = point;
+    return this;
   }
 
   public float getDamage() {
     return damage;
   }
 
-  public void setDamage(float damage) {
+  public ShootEvent setDamage(float damage) {
     this.damage = damage;
+    return this;
   }
 
 }

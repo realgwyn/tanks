@@ -15,7 +15,6 @@ import org.game.tanks.cfg.Config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-// TODO: implement method for clearing all pixels for double buffering
 @Component
 public class GameDisplay extends Canvas {
 
@@ -65,7 +64,6 @@ public class GameDisplay extends Canvas {
     for (int i = 0; i < rasterPixels.length; i++) {
       rasterPixels[i] = 0;
     }
-
   }
 
   public int[] getRasterPixels() {

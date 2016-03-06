@@ -23,7 +23,7 @@ public class MatchStartState extends ClientState {
   HudWindow hudWindow;
 
   public MatchStartState() {
-    super(ClientStateType.MATCH_START);
+    super(ClientStateType.WAITING_FOR_PLAYERS);
   }
 
   @Override

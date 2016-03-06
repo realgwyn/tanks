@@ -29,19 +29,19 @@ public class ServerController {
 
   public void startServer(String serverName, String tcpPort, String udpPort) {
 
-//    dbService.createUser("username", "password", "username@com.pl");
-//    System.out.println(dbService.getUserByUsername("username").getUsername());
-     try {
-     ctx.setTcpPort(Integer.parseInt(tcpPort));
-     ctx.setUdpPort(Integer.parseInt(udpPort));
-     } catch (Exception e) {
-     serverWindow.setStatus("Invalid port");
-     e.printStackTrace();
-     return;
-     }
-    
-     engine.start();
-     serverWindow.setStatus("Running");
+    // dbService.createUser("username", "password", "username@com.pl");
+    // System.out.println(dbService.getUserByUsername("username").getUsername());
+    try {
+      ctx.setTcpPort(Integer.parseInt(tcpPort));
+      ctx.setUdpPort(Integer.parseInt(udpPort));
+    } catch (Exception e) {
+      serverWindow.setStatus("Invalid port");
+      e.printStackTrace();
+      return;
+    }
+
+    engine.start();
+    serverWindow.setStatus("Running");
   }
 
   public void stopServer() {
@@ -52,25 +52,6 @@ public class ServerController {
   public void sendChatMessage(String message) {
     // TODO Auto-generated method stub
 
-  }
-
-  // TODO
-  public void initNewMatch() {
-    int matchDuration = ctx.getMatchDuration();
-    int roundDuration = ctx.getRoundDuration();
-
-    // setup context data
-    // send some events to players
-    // reconnect players from last match if any exists
-    // reinitialize context
-  }
-
-  // TODO
-  public void initNewRound() {
-    int roundDuration = ctx.getRoundDuration();
-    // setup context data
-    // setup players positions
-    // send some time sync data to players
   }
 
 }

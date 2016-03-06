@@ -13,24 +13,27 @@ public class RespawnEvent extends GameEvent {
     return playerId;
   }
 
-  public void setPlayerId(long playerId) {
+  public RespawnEvent setPlayerId(long playerId) {
     this.playerId = playerId;
+    return this;
   }
 
   public int getPosX() {
     return posX;
   }
 
-  public void setPosX(int posX) {
+  public RespawnEvent setPosX(int posX) {
     this.posX = posX;
+    return this;
   }
 
   public int getPosY() {
     return posY;
   }
 
-  public void setPosY(int posY) {
+  public RespawnEvent setPosY(int posY) {
     this.posY = posY;
+    return this;
   }
 
 }

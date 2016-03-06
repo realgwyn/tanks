@@ -12,16 +12,18 @@ public class MoveEvent extends GameEvent {
     return newX;
   }
 
-  public void setNewX(int newX) {
+  public MoveEvent setNewX(int newX) {
     this.newX = newX;
+    return this;
   }
 
   public int getNewY() {
     return newY;
   }
 
-  public void setNewY(int newY) {
+  public MoveEvent setNewY(int newY) {
     this.newY = newY;
+    return this;
   }
 
 }

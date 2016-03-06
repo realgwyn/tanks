@@ -3,10 +3,11 @@ package org.game.tanks.server.state;
 public abstract class ServerState {
 
   public enum ServerStateType {
-    BEFORE_ROUND, ROUND, AFTER_ROUND, LOADING_MAP, OFFLINE, WAITING_FOR_PLAYERS, IDLE
+    MATCH_INIT, WAITING_FOR_PLAYERS, ROUND_START, ROUND, ROUND_END, MATCH_END, OFFLINE
   }
 
   private ServerStateType type;
+  private long startTime;
 
   public ServerState(ServerStateType type) {
     this.type = type;
@@ -18,10 +19,26 @@ public abstract class ServerState {
 
   public abstract void update();
 
-  public void onStateBegin() {
+  public void beginState() {
+    startTime = System.currentTimeMillis();
+    onStateBegin();
   }
 
-  public void onStateEnd() {
+  public abstract void onStateBegin();
+
+  public void endState() {
+
+    onStateEnd();
+  }
+
+  public abstract void onStateEnd();
+
+  /**
+   * @returns true - if time passed since state started is greater than timeDelta (milliseconds)
+   */
+  public boolean timePassed(long timeDelta) {
+    long currentTime = System.currentTimeMillis();
+    return currentTime - startTime > timeDelta;
   }
 
 }

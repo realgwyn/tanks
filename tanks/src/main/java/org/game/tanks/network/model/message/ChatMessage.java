@@ -11,8 +11,9 @@ public class ChatMessage extends CommunicationMessage {
     return playerIdFrom;
   }
 
-  public void setPlayerIdFrom(String playerIdFrom) {
+  public ChatMessage setPlayerIdFrom(String playerIdFrom) {
     this.playerIdFrom = playerIdFrom;
+    return this;
   }
 
 }
