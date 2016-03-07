@@ -26,4 +26,9 @@ public class Ping extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "Ping [playerId=" + playerId + ", sentTime=" + sentTime + "]";
+  }
+
 }

@@ -26,4 +26,9 @@ public class HitEvent extends GameEvent {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "HitEvent [playerId=" + playerId + ", damage=" + damage + "]";
+  }
+
 }

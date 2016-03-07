@@ -5,14 +5,14 @@ import org.game.tanks.network.model.AdminCommand;
 public class KickPlayer extends AdminCommand {
 
   private static final long serialVersionUID = 5454280950113353346L;
-  private long playerId;
+  private int playerId;
   private String reason;
 
-  public long getPlayerId() {
+  public int getPlayerId() {
     return playerId;
   }
 
-  public KickPlayer setPlayerId(long playerId) {
+  public KickPlayer setPlayerId(int playerId) {
     this.playerId = playerId;
     return this;
   }

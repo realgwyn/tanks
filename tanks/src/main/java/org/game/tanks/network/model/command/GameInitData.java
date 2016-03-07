@@ -58,4 +58,10 @@ public class GameInitData extends TCPMessage {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "GameInitData [matchEndTime=" + matchEndTime + ", roundEndTime=" + roundEndTime + ", players=" + playersInfo.size()
+        + ", currentMap=" + currentMap + ", nextMap=" + nextMap + "]";
+  }
+
 }

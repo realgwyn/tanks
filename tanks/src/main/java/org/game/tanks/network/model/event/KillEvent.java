@@ -16,4 +16,9 @@ public class KillEvent extends GameEvent {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "KillEvent [playerId=" + playerId + "]";
+  }
+
 }

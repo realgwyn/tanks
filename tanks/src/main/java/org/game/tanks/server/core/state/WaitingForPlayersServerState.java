@@ -1,4 +1,4 @@
-package org.game.tanks.server.state;
+package org.game.tanks.server.core.state;
 
 import org.game.tanks.cfg.Config;
 import org.game.tanks.server.core.ServerController;
@@ -18,7 +18,7 @@ public class WaitingForPlayersServerState extends ServerState {
   @Autowired
   ServerEngine engine;
   @Autowired
-  RoundStartServerState roundStartState;
+  RoundStartServerState nextState;
   @Autowired
   Config config;
   @Autowired
@@ -37,9 +37,12 @@ public class WaitingForPlayersServerState extends ServerState {
     processScheduler.runProcesses();
 
     // Wait until there are at least 2 players in the game
-    if (schedulerCtx.getPlayers().size() > 1) {
-      engine.setState(roundStartState);
-    }
+    // XXX: uncomment this
+    // if (schedulerCtx.getPlayers().size() > 1) {
+    // engine.setState(nextState);
+    // }
+    // XXX:
+    engine.setState(nextState);
   }
 
   @Override

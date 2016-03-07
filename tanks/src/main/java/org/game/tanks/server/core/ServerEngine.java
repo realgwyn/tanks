@@ -8,10 +8,10 @@ import org.game.tanks.client.core.Loop;
 import org.game.tanks.network.NetworkException;
 import org.game.tanks.network.NetworkServer;
 import org.game.tanks.server.core.process.GameEventHandler;
+import org.game.tanks.server.core.state.MatchInitServerState;
+import org.game.tanks.server.core.state.OfflineServerState;
+import org.game.tanks.server.core.state.ServerState;
 import org.game.tanks.server.service.SyncStateService;
-import org.game.tanks.server.state.MatchInitServerState;
-import org.game.tanks.server.state.OfflineServerState;
-import org.game.tanks.server.state.ServerState;
 import org.game.tanks.server.view.ServerWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +25,7 @@ public class ServerEngine extends Loop {
   @Autowired
   OfflineServerState offlineState;
   @Autowired
-  MatchInitServerState loadingMapState;
+  MatchInitServerState matchInitState;
   @Autowired
   ServerWindow serverWindow;
   @Autowired
@@ -69,20 +69,24 @@ public class ServerEngine extends Loop {
   @Override
   public void startup() {
     logger.debug("Starting server threads...");
-    server = new NetworkServer();
     try {
+      if (server != null) {// If server was already running - shut down
+        shutdown();
+      }
+      server = new NetworkServer();
       server.start(serverContext.getTcpPort(), serverContext.getUdpPort());
+      networkAdapter.setServer(server);
     } catch (NetworkException e) {
       serverWindow.setStatus("Network error");
       e.printStackTrace();
       return;
     }
-    currentState = loadingMapState;
-    networkAdapter.setServer(server);
+
+    setState(matchInitState);
     messageSendingThread.start();
     playerConnectionThread.start();
 
-    logger.debug("Server running...");
+    logger.debug("Server running.");
   }
 
   @Override
@@ -92,7 +96,7 @@ public class ServerEngine extends Loop {
     server.stop();
     messageSendingThread.finish();
     playerConnectionThread.finish();
-    logger.debug("Server stopped...");
+    logger.debug("Server stopped.");
   }
 
   @Override
@@ -108,10 +112,6 @@ public class ServerEngine extends Loop {
   public void setState(ServerState state) {
     logger.debug("Changing Server State from " + currentState.getClass().getSimpleName()
         + " to: " + state.getClass().getSimpleName());
-
-    if (currentState.getType().equals(state.getType())) {
-      throw new UnsupportedOperationException("Flow error - its prohibited for state to change to itself");
-    }
 
     currentState.endState();
     currentState = state;

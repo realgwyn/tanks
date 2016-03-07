@@ -1,4 +1,10 @@
-package org.game.tanks.server.core;
+package org.game.tanks.server.core.task;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.database.domain.MalformedPacketHistory;
@@ -7,17 +13,23 @@ import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.message.ServerMessage.ServerMessageType;
 import org.game.tanks.security.AuthenticationService;
-import org.game.tanks.server.core.task.DatabaseTask;
+import org.game.tanks.server.core.MessageSendingThread;
+import org.game.tanks.server.core.ServerContext;
+import org.game.tanks.server.core.ServerNetworkAdapter;
 import org.game.tanks.server.core.task.DatabaseTask.DatabaseAction;
-import org.game.tanks.server.core.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Invokes task in separate thread
+ * 
+ * @author rafal.kojta
+ *
+ */
 @Component
-public class TaskManager implements Runnable {
+public class TaskManager {
 
   private final static Logger logger = Logger.getLogger(MessageSendingThread.class);
-  private boolean running = true;
 
   @Autowired
   ServerContext ctx;
@@ -28,40 +40,30 @@ public class TaskManager implements Runnable {
   @Autowired
   ServerNetworkAdapter serverNetworkAdapter;
 
-  public synchronized void start() {
-    new Thread(this).start();
+  ExecutorService executor;
+
+  @PostConstruct
+  public void init() {
+    executor = Executors.newFixedThreadPool(1);
   }
 
-  @Override
-  public void run() {
-    logger.debug("Running...");
-    running = true;
-    while (running) {
-      processSlowTasks();
-      try {
-        Thread.sleep(50);// Sleep a little bit
-      } catch (InterruptedException e) {
-      }
+  private void submitTask(Object command) {
+    Callable<Void> task;
+    if (command instanceof AdminCommand) {
+      task = () -> {
+        processAdminCommand((AdminCommand) command);
+        return null;
+      };
+    } else if (command instanceof DatabaseTask) {
+      task = () -> {
+        processDbTask((DatabaseTask) command);
+        return null;
+      };
+    } else {
+      throw new UnsupportedOperationException("Unable to process task " + command.getClass().getSimpleName());
     }
-  }
 
-  public void finish() {
-    logger.debug("Stopping...");
-    running = false;
-  }
-
-  private void processSlowTasks() {
-    while (!ctx.getPendingTasks().isEmpty()) {
-      Task task = ctx.getPendingTasks().poll();
-      Object cmd = task.getCommand();
-      if (cmd instanceof AdminCommand) {
-        processAdminCommand((AdminCommand) cmd);
-      } else if (cmd instanceof DatabaseTask) {
-        processDbTask((DatabaseTask) cmd);
-      } else {
-        throw new UnsupportedOperationException("Unable to process task " + task.getCommand().getClass().getSimpleName());
-      }
-    }
+    executor.submit(task);
   }
 
   private void processAdminCommand(AdminCommand adminCommand) {
@@ -109,11 +111,11 @@ public class TaskManager implements Runnable {
   }
 
   public void createTask(AdminCommand command) {
-    ctx.getPendingTasks().add(new Task(command));
+    submitTask(command);
   }
 
   public void createDbTask(MalformedPacketHistory entity, DatabaseAction action) {
-    ctx.getPendingTasks().add(new DatabaseTask(entity, action));
+    submitTask(new DatabaseTask(entity, action));
   }
 
 }

@@ -26,4 +26,9 @@ public class Connect extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "Connect [playerId=" + playerId + ", playerName=" + playerName + "]";
+  }
+
 }

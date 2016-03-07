@@ -40,7 +40,7 @@ import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerPosition;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
-import org.game.tanks.server.state.ServerState.ServerStateType;
+import org.game.tanks.server.core.state.ServerState.ServerStateType;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;

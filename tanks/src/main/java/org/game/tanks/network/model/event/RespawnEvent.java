@@ -36,4 +36,9 @@ public class RespawnEvent extends GameEvent {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "RespawnEvent [playerId=" + playerId + ", posX=" + posX + ", posY=" + posY + "]";
+  }
+
 }

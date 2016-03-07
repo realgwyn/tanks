@@ -2,6 +2,7 @@ package org.game.tanks.server.core;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.network.NetworkAdapter;
 import org.game.tanks.network.NetworkServer;
@@ -13,6 +14,7 @@ import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
+import org.game.tanks.server.core.task.TaskManager;
 import org.game.tanks.server.model.ConnectionInfo;
 import org.game.tanks.utils.NetworkMessageValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,7 @@ import com.esotericsoftware.kryonet.Connection;
 public class ServerNetworkAdapter extends NetworkAdapter {
 
   private NetworkServer server;
+  private final static Logger logger = Logger.getLogger(ServerNetworkAdapter.class);
 
   @Autowired
   ServerContext ctx;
@@ -35,10 +38,12 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   TaskManager taskManager;
 
   private boolean packetValidatorEnabled;
+  private boolean offlineDebugModeEnabled;
 
   @PostConstruct
   public void init() {
     packetValidatorEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_PACKET_VALIDATION);
+    offlineDebugModeEnabled = config.getPropertyBoolean(Config.SERVER_OFFLINE_DEBUG_MODE);
   }
 
   public NetworkServer getServer() {
@@ -52,80 +57,83 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   }
 
   public void sendToAllTCP(TCPMessage msg) {
-    server.sendToAllTCP(msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> TCPbroadcast " + msg.toString());
+    } else {
+      server.sendToAllTCP(msg);
+    }
   }
 
   public void sendToAllUDP(UDPMessage msg) {
-    server.sendToAllUDP(msg);
+    if (offlineDebugModeEnabled) {
+      // logger.debug("-> UDPbroadcast" + msg.toString());
+    } else {
+      server.sendToAllUDP(msg);
+    }
   }
 
   public void sendToAllExceptTCP(int connectionID, TCPMessage msg) {
-    server.sendToAllExceptTCP(connectionID, msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> TCPxor(id:" + connectionID + ")" + msg.toString());
+    } else {
+      server.sendToAllExceptTCP(connectionID, msg);
+    }
   }
 
   public void sendToAllExceptUDP(int connectionID, UDPMessage msg) {
-    server.sendToAllExceptUDP(connectionID, msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> UDPxor(id:" + connectionID + ")" + msg.toString());
+    } else {
+      server.sendToAllExceptUDP(connectionID, msg);
+    }
   }
 
   public void sendTCP(int connectionID, TCPMessage msg) {
-    server.sendTCP(connectionID, msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> TCP(id:" + connectionID + ")" + msg.toString());
+    } else {
+      server.sendTCP(connectionID, msg);
+    }
   }
 
   public void sendUDP(int connectionID, TCPMessage msg) {
-    server.sendUDP(connectionID, msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> UDP(id:" + connectionID + ")" + msg.toString());
+    } else {
+      server.sendUDP(connectionID, msg);
+    }
   }
 
   @Override
   public void receivedTCPMessage(Connection conn, TCPMessage message) {
-    if (packetValidatorEnabled) {
-      validateAndProcessIncomingMessage(conn, message);
+    if (offlineDebugModeEnabled) {
+      logger.debug("<- TCP(id:" + conn.getID() + ")" + message.toString());
     } else {
-      if (message instanceof GameEvent) {
-        ctx.getIncomingGameEvents().add((GameEvent) message);
-      } else if (message instanceof Command) {
-        ctx.getIncomingCommands().add((Command) message);
-      } else if (message instanceof CommunicationMessage) {
-        ctx.getIncomingCommunicationMessages().add((CommunicationMessage) message);
-      } else if (message instanceof Handshake) {
-        ctx.getIncomingHandshakes().add((Handshake) message);
-      } else if (message instanceof AdminCommand) {
-        AdminCommand cmd = (AdminCommand) message;
-        cmd.setConnectionIdFrom(conn.getID());
-        taskManager.createTask(cmd);
+      if (packetValidatorEnabled) {
+        validateAndProcessIncomingMessage(conn, message);
       } else {
-        throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+        if (message instanceof GameEvent) {
+          ctx.getIncomingGameEvents().add((GameEvent) message);
+        } else if (message instanceof Command) {
+          ctx.getIncomingCommands().add((Command) message);
+        } else if (message instanceof CommunicationMessage) {
+          ctx.getIncomingCommunicationMessages().add((CommunicationMessage) message);
+        } else if (message instanceof Handshake) {
+          ctx.getIncomingHandshakes().add((Handshake) message);
+        } else if (message instanceof AdminCommand) {
+          AdminCommand cmd = (AdminCommand) message;
+          cmd.setConnectionIdFrom(conn.getID());
+          taskManager.createTask(cmd);
+        } else {
+          throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+        }
       }
-    }
-  }
-
-  private void validateAndProcessIncomingMessage(Connection conn, TCPMessage message) {
-    if (message instanceof GameEvent) {
-      GameEvent gameEvent = (GameEvent) message;
-      if (networkMessageValidator.isValid(conn, gameEvent)) {
-        ctx.getIncomingGameEvents().add(gameEvent);
-      }
-    } else if (message instanceof Command) {
-      Command command = (Command) message;
-      if (networkMessageValidator.isValid(conn, command)) {
-        ctx.getIncomingCommands().add(command);
-      }
-    } else if (message instanceof CommunicationMessage) {
-      CommunicationMessage comMsg = (CommunicationMessage) message;
-      if (networkMessageValidator.isValid(conn, comMsg)) {
-        ctx.getIncomingCommunicationMessages().add(comMsg);
-      }
-    } else if (message instanceof AdminCommand) {
-      AdminCommand admCmd = (AdminCommand) message;
-      if (networkMessageValidator.isValid(conn, admCmd)) {
-        ctx.getIncomingAdminCommands().add(admCmd);
-      }
-    } else {
-      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
     }
   }
 
   @Override
   public void receivedUDPMessage(Connection conn, UDPMessage message) {
+    System.out.println("<- UDP(id:" + conn.getID() + ")" + message.toString());
     if (message instanceof PlayerSnapshot) {
       ctx.getIncomingPlayerSnapshots().add((PlayerSnapshot) message);
     } else {
@@ -155,6 +163,32 @@ public class ServerNetworkAdapter extends NetworkAdapter {
       return conn.getRemoteAddressTCP().getHostName();
     }
     return null;
+  }
+
+  private void validateAndProcessIncomingMessage(Connection conn, TCPMessage message) {
+    if (message instanceof GameEvent) {
+      GameEvent gameEvent = (GameEvent) message;
+      if (networkMessageValidator.isValid(conn, gameEvent)) {
+        ctx.getIncomingGameEvents().add(gameEvent);
+      }
+    } else if (message instanceof Command) {
+      Command command = (Command) message;
+      if (networkMessageValidator.isValid(conn, command)) {
+        ctx.getIncomingCommands().add(command);
+      }
+    } else if (message instanceof CommunicationMessage) {
+      CommunicationMessage comMsg = (CommunicationMessage) message;
+      if (networkMessageValidator.isValid(conn, comMsg)) {
+        ctx.getIncomingCommunicationMessages().add(comMsg);
+      }
+    } else if (message instanceof AdminCommand) {
+      AdminCommand admCmd = (AdminCommand) message;
+      if (networkMessageValidator.isValid(conn, admCmd)) {
+        ctx.getIncomingAdminCommands().add(admCmd);
+      }
+    } else {
+      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+    }
   }
 
 }

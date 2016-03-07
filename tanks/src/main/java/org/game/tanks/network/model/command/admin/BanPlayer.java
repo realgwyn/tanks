@@ -2,22 +2,24 @@ package org.game.tanks.network.model.command.admin;
 
 import org.game.tanks.network.model.AdminCommand;
 
-public class BanPlayer extends AdminCommand{
+public class BanPlayer extends AdminCommand {
 
   private static final long serialVersionUID = -3767574307222712576L;
 
-  public enum BanReason {CHEATING, VERBAL_ABUSEMENT, ASSHOLE, OTHER}
-  
-  private long playerId;
+  public enum BanReason {
+    CHEATING, VERBAL_ABUSEMENT, ASSHOLE, OTHER
+  }
+
+  private int playerId;
   private long banTimeLenght;
   private BanReason reason;
   private String comment;
 
-  public long getPlayerId() {
+  public int getPlayerId() {
     return playerId;
   }
 
-  public BanPlayer setPlayerId(long playerId) {
+  public BanPlayer setPlayerId(int playerId) {
     this.playerId = playerId;
     return this;
   }
@@ -48,5 +50,5 @@ public class BanPlayer extends AdminCommand{
     this.comment = comment;
     return this;
   }
-  
+
 }

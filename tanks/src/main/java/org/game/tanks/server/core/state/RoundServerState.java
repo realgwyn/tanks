@@ -1,5 +1,6 @@
-package org.game.tanks.server.state;
+package org.game.tanks.server.core.state;
 
+import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.process.ProcessScheduler;
 import org.game.tanks.server.gameplay.GameplayManager;
 import org.game.tanks.server.service.SyncStateService;
@@ -17,6 +18,8 @@ public class RoundServerState extends ServerState {
   RoundEndServerState nextState;
   @Autowired
   SyncStateService syncStateService;
+  @Autowired
+  ServerEngine engine;
 
   public RoundServerState() {
     super(ServerStateType.ROUND);
@@ -33,9 +36,11 @@ public class RoundServerState extends ServerState {
     if (gameplayManager.roundTimePassed()) {
       gameplayManager.scoreRoundTimeout();
       syncStateService.syncClients(nextState.getType(), 0);
+      engine.setState(nextState);
     } else if (gameplayManager.roundObjectivesCompleted()) {
       gameplayManager.scoreRound();
       syncStateService.syncClients(nextState.getType(), 0);
+      engine.setState(nextState);
     }
   }
 

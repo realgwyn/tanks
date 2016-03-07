@@ -47,4 +47,9 @@ public class MapInfoData extends TCPMessage {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "MapInfoData [mapName=" + mapName + "]";
+  }
+
 }

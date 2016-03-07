@@ -27,4 +27,9 @@ public class ChangeState extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "ChangeState [type=" + type + ", changeStateTime=" + changeStateTime + "]";
+  }
+
 }

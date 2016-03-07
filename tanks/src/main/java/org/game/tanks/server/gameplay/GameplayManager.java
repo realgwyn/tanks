@@ -15,6 +15,11 @@ public class GameplayManager {
 
   private GameType gameType;
 
+  public void reinitialize() {
+    gameType = serverContext.getGameType();
+    gameType.reinitialize();
+  }
+
   public boolean matchTimePassed() {
     long currentTime = System.currentTimeMillis();
     return serverContext.getMatchEndTime() - currentTime < 0;
@@ -27,11 +32,6 @@ public class GameplayManager {
 
   public boolean roundObjectivesCompleted() {
     return gameType.roundObjectivesCompleted();
-  }
-
-  public void reinitialize() {
-    gameType = serverContext.getGameType();
-    gameType.reinitialize();
   }
 
   public void scoreRoundTimeout() {

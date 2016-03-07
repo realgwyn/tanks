@@ -26,4 +26,9 @@ public class ChooseTeam extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "ChooseTeam [playerId=" + playerId + ", team=" + team + "]";
+  }
+
 }

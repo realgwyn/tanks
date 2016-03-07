@@ -28,9 +28,6 @@ public class ServerController {
   }
 
   public void startServer(String serverName, String tcpPort, String udpPort) {
-
-    // dbService.createUser("username", "password", "username@com.pl");
-    // System.out.println(dbService.getUserByUsername("username").getUsername());
     try {
       ctx.setTcpPort(Integer.parseInt(tcpPort));
       ctx.setUdpPort(Integer.parseInt(udpPort));

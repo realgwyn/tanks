@@ -4,7 +4,7 @@ import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.game.tanks.network.model.command.ChangeState;
 import org.game.tanks.network.model.command.SyncTime;
 import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.state.ServerState.ServerStateType;
+import org.game.tanks.server.core.state.ServerState.ServerStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

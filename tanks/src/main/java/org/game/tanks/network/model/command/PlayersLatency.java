@@ -1,5 +1,7 @@
 package org.game.tanks.network.model.command;
 
+import java.util.Arrays;
+
 import org.game.tanks.network.model.Command;
 
 public class PlayersLatency extends Command {
@@ -14,6 +16,11 @@ public class PlayersLatency extends Command {
   public PlayersLatency setPlayersLatency(Latency[] playersLatency) {
     this.playersLatency = playersLatency;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "PlayersLatency [playersLatency=" + Arrays.toString(playersLatency) + "]";
   }
 
 }

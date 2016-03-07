@@ -44,9 +44,6 @@ public class MessageSendingThread implements Runnable {
   }
 
   private void sendOutgoingMessages() {
-    while (!ctx.getOutgoingGameSnapshots().isEmpty()) {
-      networkAdapter.sendToAllUDP(ctx.getOutgoingGameSnapshots().poll());
-    }
     while (!ctx.getOutgoingGameEvents().isEmpty()) {
       networkAdapter.sendToAllTCP(ctx.getOutgoingGameEvents().poll());
     }

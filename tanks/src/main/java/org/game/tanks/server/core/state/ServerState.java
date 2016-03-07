@@ -1,4 +1,4 @@
-package org.game.tanks.server.state;
+package org.game.tanks.server.core.state;
 
 public abstract class ServerState {
 

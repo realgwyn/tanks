@@ -36,4 +36,9 @@ public class SyncTime extends TCPMessage {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "SyncTime [matchStartTime=" + matchStartTime + ", matchEndTime=" + matchEndTime + ", roundEndTime=" + roundEndTime + "]";
+  }
+
 }

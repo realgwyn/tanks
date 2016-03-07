@@ -1,4 +1,4 @@
-package org.game.tanks.server.state;
+package org.game.tanks.server.core.state;
 
 import javax.annotation.PostConstruct;
 
@@ -49,9 +49,10 @@ public class MatchInitServerState extends ServerState {
   public void onStateBegin() {
     processScheduler.reinitialize();
     serverContext.reinitialize();
-    gameplayManager.reinitialize();
     serverContext.setMatchEndTime(System.currentTimeMillis() + MATCH_DURATION_MILLIS);
     mapService.loadNextMap();
+
+    gameplayManager.reinitialize();
     playerConnectionThread.reconnectPlayers();
     syncStateService.syncClients(nextState.getType(), TIME_UNTIL_NEXT_STATE);
   }

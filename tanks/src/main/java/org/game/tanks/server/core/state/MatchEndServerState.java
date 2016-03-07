@@ -1,4 +1,4 @@
-package org.game.tanks.server.state;
+package org.game.tanks.server.core.state;
 
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerEngine;

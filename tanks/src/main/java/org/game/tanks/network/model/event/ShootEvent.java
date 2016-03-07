@@ -38,4 +38,9 @@ public class ShootEvent extends GameEvent {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "ShootEvent [playerId=" + playerId + ", point=" + point + ", damage=" + damage + "]";
+  }
+
 }

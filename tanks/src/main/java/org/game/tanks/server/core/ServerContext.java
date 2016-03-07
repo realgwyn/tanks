@@ -13,9 +13,7 @@ import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.message.ChatMessage;
-import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
-import org.game.tanks.server.core.task.Task;
 import org.game.tanks.server.gameplay.GameType;
 import org.game.tanks.server.gameplay.TeamDeathmatch;
 import org.game.tanks.server.model.PlayerServerModel;
@@ -41,7 +39,6 @@ public class ServerContext {
   private Queue<Integer> leavingPlayerIds;
 
   private Queue<PlayerSnapshot> incomingPlayerSnapshots;
-  private Queue<GameSnapshot> outgoingGameSnapshots;
 
   private Queue<GameEvent> incomingGameEvents;
   private Queue<GameEvent> outgoingGameEvents;
@@ -55,9 +52,7 @@ public class ServerContext {
   private Queue<AdminCommand> incomingAdminCommands;
 
   private Queue<ChatMessage> chatHistory;
-  private Queue<Task> pendingTasks;
-
-  // TODO: use object pool in synchronization with player stats from scheduler thread??
+  // private Queue<Task> pendingTasks;
 
   private int tcpPort;
   private int udpPort;
@@ -66,12 +61,15 @@ public class ServerContext {
   private MapModel currentMap;
   private MapModel nextMap;
 
-  private GameType gameType;
   private int matchDuration;
   private int roundDuration;
   private long matchStartTime;
   private long matchEndTime;
   private long roundEndTime;
+
+  @Autowired
+  private TeamDeathmatch defaultGameType;
+  private GameType gameType;
 
   /**
    * Used when starting the Server
@@ -80,8 +78,6 @@ public class ServerContext {
   public void init() {
     incomingHandshakes = new ConcurrentLinkedQueue<>();
     incomingAdminCommands = new ConcurrentLinkedQueue<>();
-    pendingTasks = new ConcurrentLinkedQueue<>();
-    gameType = new TeamDeathmatch();
 
     initValuesFromConfig();
     initCollections();
@@ -91,8 +87,9 @@ public class ServerContext {
     tcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT, 55555);
     udpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT, 55556);
     serverName = cfg.getProperty(Config.SERVER_DEFAULT_SERVER_NAME, "Tanks Game Server");
-    matchDuration = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION, 15);
-    roundDuration = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION, 2);
+    matchDuration = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION, 1);
+    roundDuration = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION, 1);
+    gameType = defaultGameType;
   }
 
   private void initCollections() {
@@ -100,7 +97,6 @@ public class ServerContext {
     incomingPlayers = new ConcurrentLinkedQueue<>();
 
     incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
-    outgoingGameSnapshots = new ConcurrentLinkedQueue<>();
 
     incomingGameEvents = new ConcurrentLinkedQueue<>();
     outgoingGameEvents = new ConcurrentLinkedQueue<>();
@@ -202,20 +198,12 @@ public class ServerContext {
     return incomingAdminCommands;
   }
 
-  public Queue<Task> getPendingTasks() {
-    return pendingTasks;
-  }
-
   public Queue<Handshake> getIncomingHandshakes() {
     return incomingHandshakes;
   }
 
   public Queue<Integer> getLeavingPlayerIds() {
     return leavingPlayerIds;
-  }
-
-  public Queue<GameSnapshot> getOutgoingGameSnapshots() {
-    return outgoingGameSnapshots;
   }
 
   public Queue<ChatMessage> getChatHistory() {

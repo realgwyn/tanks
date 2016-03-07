@@ -171,5 +171,6 @@ public class Config {
   public final static String SERVER_ROUND_DURATION = "server.roundDuration";
   public final static String SERVER_MATCH_DURATION = "server.matchDuration";
   public final static String SERVER_ENABLE_FRIENDLY_FIRE = "server.enableFriendlyfire";
+  public final static String SERVER_OFFLINE_DEBUG_MODE = "server.enableOfflineDebugMode";
 
 }

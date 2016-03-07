@@ -49,10 +49,8 @@ public class NetworkServer {
       @Override
       public void received(Connection conn, Object object) {
         if (object instanceof UDPMessage) {
-          System.out.println("<UDP(id:" + conn.getID() + ")");
           udpListener.receivedUDPMessage(conn, (UDPMessage) object);
         } else if (object instanceof TCPMessage) {
-          System.out.println("<TCP(id:" + conn.getID() + ")");
           tcpListener.receivedTCPMessage(conn, (TCPMessage) object);
         }
       }
@@ -72,32 +70,26 @@ public class NetworkServer {
   }
 
   public void sendTCP(int connectionID, TCPMessage msg) {
-    System.out.println(">TCP(id:" + connectionID + ")");
     server.sendToTCP(connectionID, msg);
   }
 
   public void sendUDP(int connectionID, TCPMessage msg) {
-    System.out.println(">UDP(id:" + connectionID + ")");
     server.sendToUDP(connectionID, msg);
   }
 
   public void sendToAllTCP(TCPMessage msg) {
-    System.out.println(">TCPtoAll");
     server.sendToAllTCP(msg);
   }
 
   public void sendToAllUDP(UDPMessage msg) {
-    System.out.println(">UDPtoAll)");
     server.sendToAllUDP(msg);
   }
 
   public void sendToAllExceptTCP(int connectionID, TCPMessage msg) {
-    System.out.println(">TCPxor(id:" + connectionID + ")");
     server.sendToAllExceptTCP(connectionID, msg);
   }
 
   public void sendToAllExceptUDP(int connectionID, UDPMessage msg) {
-    System.out.println(">UDPxor(id:" + connectionID + ")");
     server.sendToAllExceptUDP(connectionID, msg);
   }
 

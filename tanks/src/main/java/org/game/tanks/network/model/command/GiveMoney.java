@@ -16,4 +16,9 @@ public class GiveMoney extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "GiveMoney [value=" + value + "]";
+  }
+
 }

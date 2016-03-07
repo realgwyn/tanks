@@ -7,7 +7,7 @@ import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
-import org.game.tanks.server.core.TaskManager;
+import org.game.tanks.server.core.task.TaskManager;
 import org.game.tanks.server.core.task.DatabaseTask.DatabaseAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

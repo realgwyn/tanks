@@ -26,4 +26,9 @@ public class Latency extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "Latency [playerId=" + playerId + ", latency=" + latency + "]";
+  }
+
 }

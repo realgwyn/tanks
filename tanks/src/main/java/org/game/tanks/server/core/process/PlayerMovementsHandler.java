@@ -112,7 +112,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   }
 
   private void sendOutGameSnapshot() {
-    ctx.getOutgoingGameSnapshots().add(generateGameSnapshot());
+    networkAdapter.sendToAllUDP(generateGameSnapshot());
   }
 
   private GameSnapshot generateGameSnapshot() {

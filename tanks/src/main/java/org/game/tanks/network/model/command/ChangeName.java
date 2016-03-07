@@ -26,4 +26,9 @@ public class ChangeName extends Command {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "ChangeName [playerId=" + playerId + ", newPlayerName=" + newPlayerName + "]";
+  }
+
 }
