@@ -1,7 +1,12 @@
 package org.game.tanks.server.gameplay;
 
+import javax.annotation.PostConstruct;
+
+import org.game.tanks.server.core.PlayerConnectionThread;
 import org.game.tanks.server.core.ServerContext;
+import org.game.tanks.server.core.process.ProcessScheduler;
 import org.game.tanks.server.core.process.SchedulerContext;
+import org.game.tanks.server.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +17,38 @@ public class GameplayManager {
   ServerContext serverContext;
   @Autowired
   SchedulerContext schedulerContext;
+  @Autowired
+  ProcessScheduler processScheduler;
+  @Autowired
+  MapService mapService;
+  @Autowired
+  PlayerConnectionThread playerConnectionThread;
 
   private GameType gameType;
 
-  public void reinitialize() {
+  private long MATCH_DURATION_MILLIS;
+  private long ROUND_DURATION_MILLIS;
+
+  @PostConstruct
+  public void init() {
+    MATCH_DURATION_MILLIS = serverContext.getMatchDurationMillis();
+    ROUND_DURATION_MILLIS = serverContext.getRoundDuationMillis();
+  }
+
+  public void initializeMatch() {
+    processScheduler.reinitialize();
+    serverContext.reinitialize();
+    serverContext.setMatchEndTime(System.currentTimeMillis() + MATCH_DURATION_MILLIS);
+    mapService.loadNextMap();// ???
     gameType = serverContext.getGameType();
     gameType.reinitialize();
+    playerConnectionThread.reconnectPlayers();
+  }
+
+  public void initializeRound() {
+    serverContext.setRoundEndTime(System.currentTimeMillis() + ROUND_DURATION_MILLIS);
+    gameType.reinitialize();
+    gameType.initializePlayersProperties(schedulerContext.getPlayers());
   }
 
   public boolean matchTimePassed() {
@@ -40,6 +71,10 @@ public class GameplayManager {
 
   public void scoreRound() {
     gameType.scoreRound();
+  }
+
+  public boolean playersAreReadyForNewMatch() {
+    return gameType.playersAreReadyForNewMatch();
   }
 
 }

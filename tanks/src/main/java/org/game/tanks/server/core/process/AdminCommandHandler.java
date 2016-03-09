@@ -1,22 +1,40 @@
 package org.game.tanks.server.core.process;
 
+import org.apache.log4j.Logger;
 import org.game.tanks.network.model.AdminCommand;
+import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.admin.BanPlayer;
 import org.game.tanks.network.model.command.admin.ChangeMap;
 import org.game.tanks.network.model.command.admin.ChangeNextMap;
 import org.game.tanks.network.model.command.admin.KickPlayer;
-import org.game.tanks.network.model.command.admin.RestartMap;
+import org.game.tanks.network.model.command.admin.RestartMatch;
 import org.game.tanks.network.model.command.admin.SystemCommand;
+import org.game.tanks.server.core.EventBus;
 import org.game.tanks.server.core.ServerContext;
+import org.game.tanks.server.core.ServerEngine;
+import org.game.tanks.server.core.state.MatchInitServerState;
+import org.game.tanks.server.core.task.TaskManager;
+import org.game.tanks.server.service.MapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-// TODO XXX: those commands should be invoked in ServerController, not in time critical loop
 @Component
 public class AdminCommandHandler extends ScheduledProcess {
 
+  private final static Logger logger = Logger.getLogger(AdminCommandHandler.class);
+
   @Autowired
   ServerContext ctx;
+  @Autowired
+  EventBus bus;
+  @Autowired
+  TaskManager taskManager;
+  @Autowired
+  ServerEngine engine;
+  @Autowired
+  MatchInitServerState matchInitState;
+  @Autowired
+  MapService mapService;
 
   @Override
   public void runProcess() {
@@ -24,18 +42,18 @@ public class AdminCommandHandler extends ScheduledProcess {
   }
 
   private void processAdminCommands() {
-    while (!ctx.getIncomingAdminCommands().isEmpty()) {
-      AdminCommand cmd = ctx.getIncomingAdminCommands().poll();
+    while (!bus.getIncomingAdminCommands().isEmpty()) {
+      AdminCommand cmd = bus.getIncomingAdminCommands().poll();
       if (cmd instanceof BanPlayer) {
-        processPanPlayerCommand((BanPlayer) cmd);
+        processBanPlayerCommand((BanPlayer) cmd);
       } else if (cmd instanceof ChangeMap) {
         processChangeMapCommand((ChangeMap) cmd);
       } else if (cmd instanceof ChangeNextMap) {
         processChangeNextMapCommand((ChangeNextMap) cmd);
       } else if (cmd instanceof KickPlayer) {
         processKickPlayerCommand((KickPlayer) cmd);
-      } else if (cmd instanceof RestartMap) {
-        processRestartMapCommand((RestartMap) cmd);
+      } else if (cmd instanceof RestartMatch) {
+        processRestartMatchCommand((RestartMatch) cmd);
       } else if (cmd instanceof SystemCommand) {
         processSystemCommand((SystemCommand) cmd);
       } else {
@@ -44,28 +62,38 @@ public class AdminCommandHandler extends ScheduledProcess {
     }
   }
 
-  private void processPanPlayerCommand(BanPlayer cmd) {
-    // TODO
-  }
+  private void processBanPlayerCommand(BanPlayer cmd) {
+    logger.debug("Banning player id:" + cmd.getPlayerId());
 
-  private void processChangeMapCommand(ChangeMap cmd) {
-    // TODO
-  }
+    bus.getOutgoingCommands().add(new Disconnect().setPlayerId(cmd.getPlayerId()));
 
-  private void processChangeNextMapCommand(ChangeNextMap cmd) {
-    // TODO
+    // TODO: implement banning by playerId (not connectionId!)
+    // BanHistory entity = new BanHistory();
+    // taskManager.createDbTask(entity, DatabaseAction.CREATE);
   }
 
   private void processKickPlayerCommand(KickPlayer cmd) {
-    // TODO
+    logger.debug("Kicking player id:" + cmd.getPlayerId());
+    bus.getOutgoingCommands().add(new Disconnect().setPlayerId(cmd.getPlayerId()));
   }
 
-  private void processRestartMapCommand(RestartMap cmd) {
-    // TODO
+  private void processChangeMapCommand(ChangeMap cmd) {
+    ctx.setCurrentMap(mapService.loadMap(cmd.getMapName()));
+    engine.setState(matchInitState);
+  }
+
+  private void processChangeNextMapCommand(ChangeNextMap cmd) {
+    ctx.setNextMap(mapService.loadMap(cmd.getMapName()));
+  }
+
+  private void processRestartMatchCommand(RestartMatch cmd) {
+    engine.setState(matchInitState);
   }
 
   private void processSystemCommand(SystemCommand cmd) {
     // TODO
+    // save property to cfg file
+    // If property change requires server restart, send msg to admin informing about this
   }
 
 }

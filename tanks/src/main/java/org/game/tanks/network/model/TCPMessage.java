@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public class TCPMessage implements Serializable {
 
+  private static final long serialVersionUID = 5745415005328673143L;
   private int connectionIdTo;
   private int connectionIdFrom;
-  private static final long serialVersionUID = 5745415005328673143L;
+  private boolean newRoundFlipFlag;
 
   public int getConnectionIdTo() {
     return connectionIdTo;
@@ -22,6 +23,14 @@ public class TCPMessage implements Serializable {
 
   public void setConnectionIdFrom(int connectionIdFrom) {
     this.connectionIdFrom = connectionIdFrom;
+  }
+
+  public boolean getNewRoundFlipFlag() {
+    return newRoundFlipFlag;
+  }
+
+  public void setNewRoundFlipFlag(boolean newRoundFlipFlag) {
+    this.newRoundFlipFlag = newRoundFlipFlag;
   }
 
 }

@@ -27,7 +27,8 @@ import org.game.tanks.network.model.command.admin.BanPlayer.BanReason;
 import org.game.tanks.network.model.command.admin.ChangeMap;
 import org.game.tanks.network.model.command.admin.ChangeNextMap;
 import org.game.tanks.network.model.command.admin.KickPlayer;
-import org.game.tanks.network.model.command.admin.RestartMap;
+import org.game.tanks.network.model.command.admin.RestartMatch;
+import org.game.tanks.network.model.command.admin.RestartRound;
 import org.game.tanks.network.model.command.admin.SystemCommand;
 import org.game.tanks.network.model.command.admin.SystemCommand.SystemCommandName;
 import org.game.tanks.network.model.event.HitEvent;
@@ -76,7 +77,8 @@ public class NetworkDataModel {
     kryo.register(ChangeMap.class);
     kryo.register(ChangeNextMap.class);
     kryo.register(KickPlayer.class);
-    kryo.register(RestartMap.class);
+    kryo.register(RestartMatch.class);
+    kryo.register(RestartRound.class);
     kryo.register(SystemCommand.class);
 
     kryo.register(GameEvent.class);

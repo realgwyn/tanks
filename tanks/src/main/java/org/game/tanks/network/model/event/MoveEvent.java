@@ -36,4 +36,9 @@ public class MoveEvent extends GameEvent {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "MoveEvent [playerId=" + playerId + ", newX=" + newX + ", newY=" + newY + "]";
+  }
+
 }

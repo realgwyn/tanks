@@ -2,9 +2,10 @@ package org.game.tanks.server.core.state;
 
 import javax.annotation.PostConstruct;
 
-import org.game.tanks.server.core.ServerContext;
+import org.game.tanks.cfg.Config;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.process.ProcessScheduler;
+import org.game.tanks.server.gameplay.GameplayManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,19 +18,19 @@ public class RoundStartServerState extends ServerState {
   @Autowired
   ProcessScheduler processScheduler;
   @Autowired
-  ServerContext serverCtx;
-  @Autowired
   RoundServerState nextState;
   @Autowired
   ServerEngine engine;
+  @Autowired
+  Config cfg;
+  @Autowired
+  GameplayManager gameplayManager;
 
-  private static final long TIME_UNTIL_NEXT_STATE = 10000;
-
-  private long ROUND_DURATION_MILLIS;
+  private long TIME_UNTIL_NEXT_STATE;
 
   @PostConstruct
   public void init() {
-    ROUND_DURATION_MILLIS = serverCtx.getRoundDurationMinutes() * 1000 * 60;
+    TIME_UNTIL_NEXT_STATE = cfg.getPropertyInt(Config.SERVER_ROUND_START_FREEZE_TIME_SECONDS, 1);
   }
 
   public RoundStartServerState() {
@@ -38,7 +39,7 @@ public class RoundStartServerState extends ServerState {
 
   @Override
   public void onStateBegin() {
-    serverCtx.setRoundEndTime(System.currentTimeMillis() + ROUND_DURATION_MILLIS);
+    gameplayManager.initializeRound();
   }
 
   @Override
@@ -52,7 +53,6 @@ public class RoundStartServerState extends ServerState {
 
   @Override
   public void onStateEnd() {
-
   }
 
 }

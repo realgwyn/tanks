@@ -1,22 +1,11 @@
 package org.game.tanks.server.core;
 
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
 import org.game.tanks.model.MapModel;
-import org.game.tanks.network.model.AdminCommand;
-import org.game.tanks.network.model.Command;
-import org.game.tanks.network.model.CommunicationMessage;
-import org.game.tanks.network.model.GameEvent;
-import org.game.tanks.network.model.Handshake;
-import org.game.tanks.network.model.message.ChatMessage;
-import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.gameplay.GameType;
 import org.game.tanks.server.gameplay.TeamDeathmatch;
-import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,28 +21,6 @@ public class ServerContext {
   @Autowired
   Config cfg;
 
-  private Queue<PlayerServerModel> syncPlayersQueue;
-
-  private Queue<Handshake> incomingHandshakes;
-  private Queue<PlayerServerModel> incomingPlayers;
-  private Queue<Integer> leavingPlayerIds;
-
-  private Queue<PlayerSnapshot> incomingPlayerSnapshots;
-
-  private Queue<GameEvent> incomingGameEvents;
-  private Queue<GameEvent> outgoingGameEvents;
-
-  private Queue<Command> incomingCommands;
-  private Queue<Command> outgoingCommands;
-
-  private Queue<CommunicationMessage> incomingMessages;
-  private Queue<CommunicationMessage> outgoingMessages;
-
-  private Queue<AdminCommand> incomingAdminCommands;
-
-  private Queue<ChatMessage> chatHistory;
-  // private Queue<Task> pendingTasks;
-
   private int tcpPort;
   private int udpPort;
   private String serverName;
@@ -61,8 +28,11 @@ public class ServerContext {
   private MapModel currentMap;
   private MapModel nextMap;
 
-  private int matchDuration;
-  private int roundDuration;
+  // This flag is used to ignore all old/late packets that are incoming
+  // into the server from the old game round (lagging shoot events, move events etc)
+  private boolean newRoundFlipFlag;
+  private int matchDurationSeconds;
+  private int roundDurationSeconds;
   private long matchStartTime;
   private long matchEndTime;
   private long roundEndTime;
@@ -76,50 +46,21 @@ public class ServerContext {
    */
   @PostConstruct
   public void init() {
-    incomingHandshakes = new ConcurrentLinkedQueue<>();
-    incomingAdminCommands = new ConcurrentLinkedQueue<>();
-
-    initValuesFromConfig();
-    initCollections();
-  }
-
-  private void initValuesFromConfig() {
     tcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT, 55555);
     udpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT, 55556);
     serverName = cfg.getProperty(Config.SERVER_DEFAULT_SERVER_NAME, "Tanks Game Server");
-    matchDuration = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION, 1);
-    roundDuration = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION, 1);
+    matchDurationSeconds = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION_SECONDS, 15);
+    roundDurationSeconds = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION_SECONDS, 5);
     gameType = defaultGameType;
-  }
-
-  private void initCollections() {
-    leavingPlayerIds = new ConcurrentLinkedQueue<>();
-    incomingPlayers = new ConcurrentLinkedQueue<>();
-
-    incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
-
-    incomingGameEvents = new ConcurrentLinkedQueue<>();
-    outgoingGameEvents = new ConcurrentLinkedQueue<>();
-
-    incomingMessages = new ConcurrentLinkedQueue<>();
-    outgoingMessages = new ConcurrentLinkedQueue<>();
-
-    incomingCommands = new ConcurrentLinkedQueue<>();
-    outgoingCommands = new ConcurrentLinkedQueue<>();
-
-    chatHistory = new ConcurrentLinkedQueue<>();
   }
 
   /**
    * Used when starting new Match
    */
   public void reinitialize() {
-    initCollections();
     matchStartTime = 0;
     matchEndTime = 0;
     roundEndTime = 0;
-    // clear all data objects
-    // clear current player list
   }
 
   public MapModel getCurrentMap() {
@@ -162,60 +103,20 @@ public class ServerContext {
     this.serverName = serverName;
   }
 
-  public Queue<PlayerServerModel> getIncomingPlayers() {
-    return incomingPlayers;
+  public int getMatchDurationSeconds() {
+    return matchDurationSeconds;
   }
 
-  public Queue<GameEvent> getIncomingGameEvents() {
-    return incomingGameEvents;
+  public int getMatchDurationMillis() {
+    return matchDurationSeconds * 1000;
   }
 
-  public Queue<GameEvent> getOutgoingGameEvents() {
-    return outgoingGameEvents;
+  public int getRoundDurationSeconds() {
+    return roundDurationSeconds;
   }
 
-  public Queue<PlayerSnapshot> getIncomingPlayerSnapshots() {
-    return incomingPlayerSnapshots;
-  }
-
-  public Queue<Command> getIncomingCommands() {
-    return incomingCommands;
-  }
-
-  public Queue<Command> getOutgoingCommands() {
-    return outgoingCommands;
-  }
-
-  public Queue<CommunicationMessage> getIncomingCommunicationMessages() {
-    return incomingMessages;
-  }
-
-  public Queue<CommunicationMessage> getOutgoingCommunicationMessages() {
-    return outgoingMessages;
-  }
-
-  public Queue<AdminCommand> getIncomingAdminCommands() {
-    return incomingAdminCommands;
-  }
-
-  public Queue<Handshake> getIncomingHandshakes() {
-    return incomingHandshakes;
-  }
-
-  public Queue<Integer> getLeavingPlayerIds() {
-    return leavingPlayerIds;
-  }
-
-  public Queue<ChatMessage> getChatHistory() {
-    return chatHistory;
-  }
-
-  public int getMatchDurationMinutes() {
-    return matchDuration;
-  }
-
-  public int getRoundDurationMinutes() {
-    return roundDuration;
+  public int getRoundDuationMillis() {
+    return roundDurationSeconds * 1000;
   }
 
   public long getMatchStartTime() {
@@ -248,15 +149,13 @@ public class ServerContext {
     this.roundEndTime = roundEndTime;
     return this;
   }
-  //
-  // public PlayerServerModel getPlayerById(long id) {
-  // return playerById.get(id);
-  // }
-  // public List<PlayerServerModel> getPlayers() {
-  // return players;
-  // }
-  //
-  // public Map<Long, PlayerInfo> getPlayerStatsAll() {
-  // return playerStats;
-  // }
+
+  public boolean getNewRoundFlipFlag() {
+    return newRoundFlipFlag;
+  }
+
+  public void setNewRoundFlipFlag(boolean newRoundFlipFlag) {
+    this.newRoundFlipFlag = newRoundFlipFlag;
+  }
+
 }

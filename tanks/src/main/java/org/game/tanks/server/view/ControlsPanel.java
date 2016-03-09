@@ -2,10 +2,14 @@ package org.game.tanks.server.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.beans.Beans;
 
 import javax.annotation.PostConstruct;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -32,7 +36,8 @@ public class ControlsPanel extends JPanel {
   private JTextField txtAddress;
   private JTextField txtTcpPort;
   private JTextField txtUdpPort;
-  JLabel lblStatus;
+  private JLabel lblStatus;
+  private String[] mapNames;
 
   public ControlsPanel() {
     if (Beans.isDesignTime()) {
@@ -48,7 +53,7 @@ public class ControlsPanel extends JPanel {
   private void initComponents() {
     setLayout(new FormLayout(
         new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormFactory.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("100px"), },
+            ColumnSpec.decode("100px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("110px"), },
         new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
             FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
             FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
@@ -89,6 +94,15 @@ public class ControlsPanel extends JPanel {
         serverController.startServer(txtServerName.getText(), txtTcpPort.getText(), txtUdpPort.getText());
       }
     });
+
+    JButton btnRestartRound = new JButton("Restart Round");
+    btnRestartRound.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        serverController.restartRound();
+      }
+    });
+    add(btnRestartRound, "6, 8");
     add(btnStart, "2, 10");
 
     JButton btnStop = new JButton("Stop");
@@ -99,6 +113,27 @@ public class ControlsPanel extends JPanel {
       }
     });
     add(btnStop, "4, 10");
+
+    JComboBox<String> cbxMapName = new JComboBox<>();
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(
+        config.getPropertyListString(Config.MAP_NAMES).toArray(new String[0]));
+    cbxMapName.setModel(model);
+    add(cbxMapName, "6, 2");
+    cbxMapName.addItemListener(new ItemListener() {
+      @Override
+      public void itemStateChanged(ItemEvent e) {
+        serverController.changeMap((String) cbxMapName.getSelectedItem());
+      }
+    });
+
+    JButton btnRestartMatch = new JButton("Restart Match");
+    btnRestartMatch.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        serverController.restartMatch();
+      }
+    });
+    add(btnRestartMatch, "6, 10");
 
     lblStatus = new JLabel("Status: stopped");
     lblStatus.setHorizontalAlignment(SwingConstants.LEFT);

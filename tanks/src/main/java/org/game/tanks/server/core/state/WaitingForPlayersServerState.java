@@ -5,6 +5,7 @@ import org.game.tanks.server.core.ServerController;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.process.ProcessScheduler;
 import org.game.tanks.server.core.process.SchedulerContext;
+import org.game.tanks.server.gameplay.GameplayManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,10 @@ public class WaitingForPlayersServerState extends ServerState {
   Config config;
   @Autowired
   ServerController controller;
+  @Autowired
+  GameplayManager gameplayManager;
+
+  private long TIME_BEFORE_NEXT_STATE = 2000;
 
   public WaitingForPlayersServerState() {
     super(ServerStateType.WAITING_FOR_PLAYERS);
@@ -38,11 +43,13 @@ public class WaitingForPlayersServerState extends ServerState {
 
     // Wait until there are at least 2 players in the game
     // XXX: uncomment this
-    // if (schedulerCtx.getPlayers().size() > 1) {
-    // engine.setState(nextState);
-    // }
+    if (gameplayManager.playersAreReadyForNewMatch()) {
+      gameplayManager.initializeRound();
+      engine.setState(nextState);
+    }
+
     // XXX:
-    engine.setState(nextState);
+    // engine.setState(nextState);
   }
 
   @Override

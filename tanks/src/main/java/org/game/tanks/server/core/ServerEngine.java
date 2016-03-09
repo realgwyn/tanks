@@ -106,7 +106,7 @@ public class ServerEngine extends Loop {
 
   @Override
   public void render() {
-
+    // TODO: maybe in render function perform
   }
 
   public void setState(ServerState state) {

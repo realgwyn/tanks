@@ -31,6 +31,8 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   @Autowired
   ServerContext ctx;
   @Autowired
+  EventBus bus;
+  @Autowired
   Config config;
   @Autowired
   NetworkMessageValidator networkMessageValidator;
@@ -113,13 +115,13 @@ public class ServerNetworkAdapter extends NetworkAdapter {
         validateAndProcessIncomingMessage(conn, message);
       } else {
         if (message instanceof GameEvent) {
-          ctx.getIncomingGameEvents().add((GameEvent) message);
+          bus.getIncomingGameEvents().add((GameEvent) message);
         } else if (message instanceof Command) {
-          ctx.getIncomingCommands().add((Command) message);
+          bus.getIncomingCommands().add((Command) message);
         } else if (message instanceof CommunicationMessage) {
-          ctx.getIncomingCommunicationMessages().add((CommunicationMessage) message);
+          bus.getIncomingCommunicationMessages().add((CommunicationMessage) message);
         } else if (message instanceof Handshake) {
-          ctx.getIncomingHandshakes().add((Handshake) message);
+          bus.getIncomingHandshakes().add((Handshake) message);
         } else if (message instanceof AdminCommand) {
           AdminCommand cmd = (AdminCommand) message;
           cmd.setConnectionIdFrom(conn.getID());
@@ -134,10 +136,12 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   @Override
   public void receivedUDPMessage(Connection conn, UDPMessage message) {
     System.out.println("<- UDP(id:" + conn.getID() + ")" + message.toString());
-    if (message instanceof PlayerSnapshot) {
-      ctx.getIncomingPlayerSnapshots().add((PlayerSnapshot) message);
-    } else {
-      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+    if (ctx.getNewRoundFlipFlag() == message.getNewRoundFlipFlag()) {
+      if (message instanceof PlayerSnapshot) {
+        bus.getIncomingPlayerSnapshots().add((PlayerSnapshot) message);
+      } else {
+        throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+      }
     }
   }
 
@@ -169,22 +173,22 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     if (message instanceof GameEvent) {
       GameEvent gameEvent = (GameEvent) message;
       if (networkMessageValidator.isValid(conn, gameEvent)) {
-        ctx.getIncomingGameEvents().add(gameEvent);
+        bus.getIncomingGameEvents().add(gameEvent);
       }
     } else if (message instanceof Command) {
       Command command = (Command) message;
       if (networkMessageValidator.isValid(conn, command)) {
-        ctx.getIncomingCommands().add(command);
+        bus.getIncomingCommands().add(command);
       }
     } else if (message instanceof CommunicationMessage) {
       CommunicationMessage comMsg = (CommunicationMessage) message;
       if (networkMessageValidator.isValid(conn, comMsg)) {
-        ctx.getIncomingCommunicationMessages().add(comMsg);
+        bus.getIncomingCommunicationMessages().add(comMsg);
       }
     } else if (message instanceof AdminCommand) {
       AdminCommand admCmd = (AdminCommand) message;
       if (networkMessageValidator.isValid(conn, admCmd)) {
-        ctx.getIncomingAdminCommands().add(admCmd);
+        bus.getIncomingAdminCommands().add(admCmd);
       }
     } else {
       throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());

@@ -13,6 +13,7 @@ import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.message.ServerMessage.ServerMessageType;
 import org.game.tanks.security.AuthenticationService;
+import org.game.tanks.server.core.EventBus;
 import org.game.tanks.server.core.MessageSendingThread;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerNetworkAdapter;
@@ -34,6 +35,8 @@ public class TaskManager {
   @Autowired
   ServerContext ctx;
   @Autowired
+  EventBus bus;
+  @Autowired
   AuthenticationService authService;
   @Autowired
   DatabaseService dbService;
@@ -45,6 +48,14 @@ public class TaskManager {
   @PostConstruct
   public void init() {
     executor = Executors.newFixedThreadPool(1);
+  }
+
+  public void createTask(AdminCommand command) {
+    submitTask(command);
+  }
+
+  public void createDbTask(Object entity, DatabaseAction action) {
+    submitTask(new DatabaseTask(entity, action));
   }
 
   private void submitTask(Object command) {
@@ -68,13 +79,13 @@ public class TaskManager {
 
   private void processAdminCommand(AdminCommand adminCommand) {
     if (authService.authenticateCommand(adminCommand)) {
-      ctx.getIncomingAdminCommands().add(adminCommand);
+      bus.getIncomingAdminCommands().add(adminCommand);
     } else {
       ServerMessage msg = new ServerMessage();
       msg.setConnectionIdTo(adminCommand.getConnectionIdFrom());
       msg.setType(ServerMessageType.FORBIDDEN);
       msg.setText("You are not authenticated to execute this command");
-      ctx.getOutgoingCommunicationMessages().add(msg);
+      bus.getOutgoingCommunicationMessages().add(msg);
       String ipAddress = serverNetworkAdapter.getIpAddressByConectionId(msg.getConnectionIdFrom());
       dbService.saveUnauthorizedAction(ipAddress, msg);
     }
@@ -108,14 +119,6 @@ public class TaskManager {
 
   private void deleteDbObject(Object dataObject) {
     throw new UnsupportedOperationException("Not implemented yet");
-  }
-
-  public void createTask(AdminCommand command) {
-    submitTask(command);
-  }
-
-  public void createDbTask(MalformedPacketHistory entity, DatabaseAction action) {
-    submitTask(new DatabaseTask(entity, action));
   }
 
 }

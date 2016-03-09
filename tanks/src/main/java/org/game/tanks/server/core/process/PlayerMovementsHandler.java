@@ -9,6 +9,7 @@ import org.game.tanks.model.PlayerModel;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerPosition;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
+import org.game.tanks.server.core.EventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.ServerNetworkAdapter;
@@ -25,6 +26,8 @@ public class PlayerMovementsHandler extends ScheduledProcess {
 
   @Autowired
   ServerContext ctx;
+  @Autowired
+  EventBus bus;
   @Autowired
   SchedulerContext schedulerCtx;
   @Autowired
@@ -49,8 +52,8 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   }
 
   private void updatePlayerPositions() {
-    while (!ctx.getIncomingPlayerSnapshots().isEmpty()) {
-      updatePlayerPosition(ctx.getIncomingPlayerSnapshots().poll());
+    while (!bus.getIncomingPlayerSnapshots().isEmpty()) {
+      updatePlayerPosition(bus.getIncomingPlayerSnapshots().poll());
     }
   }
 

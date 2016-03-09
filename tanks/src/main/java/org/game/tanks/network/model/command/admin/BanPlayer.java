@@ -11,7 +11,7 @@ public class BanPlayer extends AdminCommand {
   }
 
   private int playerId;
-  private long banTimeLenght;
+  private long banTimeLenghtMinutes;
   private BanReason reason;
   private String comment;
 
@@ -25,11 +25,11 @@ public class BanPlayer extends AdminCommand {
   }
 
   public long getBanTimeLenght() {
-    return banTimeLenght;
+    return banTimeLenghtMinutes;
   }
 
-  public BanPlayer setBanTimeLenght(long banTimeLenght) {
-    this.banTimeLenght = banTimeLenght;
+  public BanPlayer setBanTimeLenghtMinutes(long banTimeLenghtMinutes) {
+    this.banTimeLenghtMinutes = banTimeLenghtMinutes;
     return this;
   }
 

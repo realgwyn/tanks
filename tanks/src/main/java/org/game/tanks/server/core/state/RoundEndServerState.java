@@ -25,6 +25,8 @@ public class RoundEndServerState extends ServerState {
   @Autowired
   MatchEndServerState matchEndState;
   @Autowired
+  WaitingForPlayersServerState waitingForPlayersState;
+  @Autowired
   ServerEngine engine;
   @Autowired
   GameplayManager gameplayManager;
@@ -41,16 +43,19 @@ public class RoundEndServerState extends ServerState {
   public void onStateBegin() {
     // TODO: score team which won the round
     // TODO: send message which team won round
-    //
-    // serverCtx.getOutgoingCommands().add(
-    // new ChangeState().setType(syncStateService.resolveClientState()));
+
     if (gameplayManager.matchTimePassed()) {
       nextState = matchEndState;
+    } else if (!gameplayManager.playersAreReadyForNewMatch()) {
+      // If players left the game
+      nextState = waitingForPlayersState;
     } else {
       nextState = roundStartState;
     }
 
+    gameplayManager.initializeRound();
     syncStateService.syncClients(nextState.getType(), TIME_UNTIL_NEXT_STATE);
+
   }
 
   @Override

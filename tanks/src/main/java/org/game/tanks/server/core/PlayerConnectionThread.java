@@ -11,6 +11,7 @@ import org.game.tanks.network.model.command.Connect;
 import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.GameInitData;
 import org.game.tanks.network.model.command.PlayerInfo;
+import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.server.model.ConnectionInfo;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.game.tanks.server.service.MapService;
@@ -26,6 +27,8 @@ public class PlayerConnectionThread implements Runnable {
   @Autowired
   ServerContext ctx;
   @Autowired
+  EventBus bus;
+  @Autowired
   ServerNetworkAdapter networkAdapter;
   @Autowired
   SyncStateService syncTimeService;
@@ -34,11 +37,13 @@ public class PlayerConnectionThread implements Runnable {
   private boolean reconnectPlayers;
   private List<PlayerServerModel> pendingPlayers;
   private List<PlayerServerModel> connectedPlayers;
+  private List<ChatMessage> chatHistory;
 
   @PostConstruct
   public void init() {
     pendingPlayers = new ArrayList<>();
     connectedPlayers = new ArrayList<>();
+    chatHistory = new ArrayList<>();
   }
 
   public synchronized void start() {
@@ -85,8 +90,8 @@ public class PlayerConnectionThread implements Runnable {
   }
 
   private void processIncomingHandshakes() {
-    while (!ctx.getIncomingHandshakes().isEmpty()) {
-      Handshake handshake = ctx.getIncomingHandshakes().poll();
+    while (!bus.getIncomingHandshakes().isEmpty()) {
+      Handshake handshake = bus.getIncomingHandshakes().poll();
       addNewPlayerToTheGame(handshake);
     }
   }
@@ -132,7 +137,7 @@ public class PlayerConnectionThread implements Runnable {
             .setPlayerName(player.getPlayerName());
         // Broadcast to other players about new connection
         networkAdapter.sendToAllTCP(connect);
-        ctx.getIncomingPlayers().add(player);
+        bus.getIncomingPlayers().add(player);
         break;
       }
     }
@@ -166,7 +171,7 @@ public class PlayerConnectionThread implements Runnable {
       Disconnect disconnect = new Disconnect()
           .setPlayerId(player.getConnectionId());
       networkAdapter.sendToAllTCP(disconnect);
-      ctx.getLeavingPlayerIds().add(player.getConnectionId());
+      bus.getLeavingPlayerIds().add(player.getConnectionId());
     }
   }
 

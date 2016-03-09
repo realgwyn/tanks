@@ -16,7 +16,7 @@ public class MessageSendingThread implements Runnable {
   private boolean running = true;
 
   @Autowired
-  ServerContext ctx;
+  EventBus bus;
   @Autowired
   ServerNetworkAdapter networkAdapter;
 
@@ -44,14 +44,14 @@ public class MessageSendingThread implements Runnable {
   }
 
   private void sendOutgoingMessages() {
-    while (!ctx.getOutgoingGameEvents().isEmpty()) {
-      networkAdapter.sendToAllTCP(ctx.getOutgoingGameEvents().poll());
+    while (!bus.getOutgoingGameEvents().isEmpty()) {
+      networkAdapter.sendToAllTCP(bus.getOutgoingGameEvents().poll());
     }
-    while (!ctx.getOutgoingCommands().isEmpty()) {
-      sendCommand(ctx.getOutgoingCommands().poll());
+    while (!bus.getOutgoingCommands().isEmpty()) {
+      sendCommand(bus.getOutgoingCommands().poll());
     }
-    while (!ctx.getOutgoingCommunicationMessages().isEmpty()) {
-      sendCommunicationMessage(ctx.getOutgoingCommunicationMessages().poll());
+    while (!bus.getOutgoingCommunicationMessages().isEmpty()) {
+      sendCommunicationMessage(bus.getOutgoingCommunicationMessages().poll());
     }
   }
 

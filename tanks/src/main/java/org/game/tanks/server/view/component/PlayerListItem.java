@@ -7,6 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.game.tanks.network.model.command.admin.BanPlayer;
+import org.game.tanks.network.model.command.admin.KickPlayer;
 import org.game.tanks.server.core.ServerController;
 import org.game.tanks.server.model.PlayerServerModel;
 
@@ -76,13 +78,13 @@ public class PlayerListItem extends JPanel {
     btnKick.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        controller.actionKickPlayer(playerServerModel.getConnectionId());
+        controller.actionKickPlayer(new KickPlayer().setPlayerId(playerServerModel.getConnectionId()));
       }
     });
     btnBan.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        controller.actionBanPlayer(playerServerModel.getConnectionId());
+        controller.actionBanPlayer(new BanPlayer().setPlayerId(playerServerModel.getConnectionId()).setBanTimeLenghtMinutes(60));
       }
     });
   }

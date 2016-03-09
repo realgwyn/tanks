@@ -3,7 +3,7 @@ package org.game.tanks.server.core.state;
 public abstract class ServerState {
 
   public enum ServerStateType {
-    MATCH_INIT, WAITING_FOR_PLAYERS, ROUND_START, ROUND, ROUND_END, MATCH_END, OFFLINE
+    MATCH_INIT, WAITING_FOR_PLAYERS, ROUND_INIT, ROUND_START, ROUND, ROUND_END, MATCH_END, OFFLINE
   }
 
   private ServerStateType type;

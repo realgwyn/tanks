@@ -1,12 +1,9 @@
 package org.game.tanks.server.core.process;
 
-import java.util.Queue;
-
-import javax.annotation.PostConstruct;
-
 import org.game.tanks.cfg.Config;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.message.ChatMessage;
+import org.game.tanks.server.core.EventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,14 +17,9 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
+  EventBus bus;
+  @Autowired
   Config config;
-
-  private int maxChatHistorySize = 1000;
-
-  @PostConstruct
-  public void init() {
-    maxChatHistorySize = config.getPropertyInt(Config.SERVER_MAX_CHAT_HISTORY_SIZE);
-  }
 
   @Override
   public void runProcess() {
@@ -35,8 +27,8 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   }
 
   private void processCommunitactionMessages() {
-    while (!ctx.getIncomingCommunicationMessages().isEmpty()) {
-      CommunicationMessage msg = ctx.getIncomingCommunicationMessages().poll();
+    while (!bus.getIncomingCommunicationMessages().isEmpty()) {
+      CommunicationMessage msg = bus.getIncomingCommunicationMessages().poll();
       if (msg instanceof ChatMessage) {
         processChatMessage((ChatMessage) msg);
       } else {
@@ -46,12 +38,8 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   }
 
   private void processChatMessage(ChatMessage msg) {
-    Queue<ChatMessage> chatHistory = ctx.getChatHistory();
-    chatHistory.add(msg);
-    if (chatHistory.size() > maxChatHistorySize) {
-      chatHistory.poll();
-    }
-    ctx.getOutgoingCommunicationMessages().add(msg);
+    // TODO: display chat message in Server GUI if standalone
+    bus.getOutgoingCommunicationMessages().add(msg);
   }
 
 }

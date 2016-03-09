@@ -12,6 +12,7 @@ import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.Latency;
 import org.game.tanks.network.model.command.Ping;
 import org.game.tanks.network.model.command.PlayersLatency;
+import org.game.tanks.server.core.EventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class GameCommandHandler extends ScheduledProcess {
 
   @Autowired
   ServerContext ctx;
+  @Autowired
+  EventBus bus;
   @Autowired
   SchedulerContext schedulerCtx;
   @Autowired
@@ -49,8 +52,8 @@ public class GameCommandHandler extends ScheduledProcess {
   @Override
   public void runProcess() {
     currentTime = System.currentTimeMillis();
-    while (!ctx.getIncomingCommands().isEmpty()) {
-      Command cmd = ctx.getIncomingCommands().poll();
+    while (!bus.getIncomingCommands().isEmpty()) {
+      Command cmd = bus.getIncomingCommands().poll();
       if (cmd instanceof ChangeName) {
         processChangeNameCommand((ChangeName) cmd);
       } else if (cmd instanceof Disconnect) {
@@ -76,7 +79,7 @@ public class GameCommandHandler extends ScheduledProcess {
       Ping ping = new Ping()
           .setSentTime(currentTime);
 
-      ctx.getOutgoingCommands().add(ping);
+      bus.getOutgoingCommands().add(ping);
     }
   }
 
@@ -93,7 +96,7 @@ public class GameCommandHandler extends ScheduledProcess {
       }
       PlayersLatency playersLatency = new PlayersLatency().setPlayersLatency(latencies);
 
-      ctx.getOutgoingCommands().add(playersLatency);
+      bus.getOutgoingCommands().add(playersLatency);
     }
   }
 
@@ -103,7 +106,7 @@ public class GameCommandHandler extends ScheduledProcess {
       if (player != null) {
         logger.debug(player + " changed name to: " + cmd.getNewPlayerName());
         player.setPlayerName(cmd.getNewPlayerName());
-        ctx.getOutgoingCommands().add(cmd);
+        bus.getOutgoingCommands().add(cmd);
       }
     }
   }
@@ -112,7 +115,7 @@ public class GameCommandHandler extends ScheduledProcess {
     PlayerServerModel player = schedulerCtx.getPlayerById(cmd.getPlayerId());
     if (player != null) {
       logger.debug(player + " disconnecting");
-      ctx.getLeavingPlayerIds().add(player.getConnectionId());
+      bus.getLeavingPlayerIds().add(player.getConnectionId());
     }
   }
 

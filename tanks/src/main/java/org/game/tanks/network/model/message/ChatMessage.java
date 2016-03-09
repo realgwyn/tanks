@@ -16,4 +16,9 @@ public class ChatMessage extends CommunicationMessage {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "ChatMessage [playerIdFrom=" + playerIdFrom + ", time=" + time + ", text=" + text + "]";
+  }
+
 }

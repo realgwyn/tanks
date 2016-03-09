@@ -29,6 +29,12 @@ public class MapService {
     mapNames = config.getPropertyListString(Config.MAP_NAMES);
   }
 
+  public MapModel loadMap(String mapName) {
+    MapModel map = new MapModel();
+    // TODO parse map file
+    return map;
+  }
+
   public void loadNextMap() {
     if (context.getCurrentMap() == null) {
       context.setCurrentMap(loadMap(mapNames.get(nextMapIndex())));
@@ -47,12 +53,6 @@ public class MapService {
       currentMapIndex = 0;
     }
     return currentMapIndex;
-  }
-
-  private MapModel loadMap(String mapName) {
-    MapModel map = new MapModel();
-    // TODO parse map file
-    return map;
   }
 
   public static MapModel createMapModel(MapInfoData data) {
