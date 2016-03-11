@@ -2,6 +2,7 @@ package org.game.tanks.server.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class MapPanel extends JPanel {
     g.setColor(Color.black);
     g.drawRect(1, 1, width - 2, height - 2);
     for (MapObject object : map.getObjects()) {
-      g.drawPolygon(GraphicsUtils.scale(object.getShape(), widthRatio, heightRatio));
+      g.drawPolygon(GraphicsUtils.scale((Polygon) object.getShape(), widthRatio, heightRatio));
     }
     for (PlayerServerModel player : players) {
       g.drawPolygon(GraphicsUtils.scale(player.getModel().getShape(), widthRatio, heightRatio));

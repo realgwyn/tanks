@@ -1,9 +1,16 @@
 package org.game.tanks.model;
 
+import java.awt.Shape;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Assume that map object dimensions size cannot be bigger than map sector (100x100 units) size
+ * 
+ * @author rafal.kojta
+ *
+ */
 public class MapModel implements Serializable {
 
   private static final long serialVersionUID = -6692869560887603657L;
@@ -51,9 +58,17 @@ public class MapModel implements Serializable {
     this.objects = objects;
     objectsPositions = new MapObject[width][height];
     for (MapObject object : objects) {
-      objectsPositions[object.getPosX()][object.getPosY()] = object;
+      objectsPositions[calculateSectorX(object.getShape())][calculateSectorY(object.getShape())] = object;
     }
     return this;
+  }
+
+  private int calculateSectorY(Shape shape) {
+    return (int) shape.getBounds2D().getY();
+  }
+
+  private int calculateSectorX(Shape shape) {
+    return (int) shape.getBounds2D().getX();
   }
 
   public List<MapObject> getObjects() {

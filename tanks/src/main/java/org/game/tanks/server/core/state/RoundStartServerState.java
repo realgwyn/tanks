@@ -39,7 +39,6 @@ public class RoundStartServerState extends ServerState {
 
   @Override
   public void onStateBegin() {
-    gameplayManager.initializeRound();
   }
 
   @Override

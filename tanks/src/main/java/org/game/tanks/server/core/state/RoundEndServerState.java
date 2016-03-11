@@ -1,11 +1,8 @@
 package org.game.tanks.server.core.state;
 
-import org.game.tanks.server.core.ServerContext;
-import org.game.tanks.server.core.ServerController;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.process.ProcessScheduler;
 import org.game.tanks.server.gameplay.GameplayManager;
-import org.game.tanks.server.service.SyncStateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,13 +12,7 @@ public class RoundEndServerState extends ServerState {
   @Autowired
   ProcessScheduler processScheduler;
   @Autowired
-  ServerController controller;
-  @Autowired
-  ServerContext serverCtx;
-  @Autowired
-  SyncStateService syncStateService;
-  @Autowired
-  RoundStartServerState roundStartState;
+  RoundInitServerState roundInitState;
   @Autowired
   MatchEndServerState matchEndState;
   @Autowired
@@ -32,8 +23,6 @@ public class RoundEndServerState extends ServerState {
   GameplayManager gameplayManager;
 
   private ServerState nextState;
-
-  private static final long TIME_UNTIL_NEXT_STATE = 5000;
 
   public RoundEndServerState() {
     super(ServerStateType.ROUND_END);
@@ -47,23 +36,18 @@ public class RoundEndServerState extends ServerState {
     if (gameplayManager.matchTimePassed()) {
       nextState = matchEndState;
     } else if (!gameplayManager.playersAreReadyForNewMatch()) {
-      // If players left the game
+      // If all players left the game
       nextState = waitingForPlayersState;
     } else {
-      nextState = roundStartState;
+      nextState = roundInitState;
     }
-
-    gameplayManager.initializeRound();
-    syncStateService.syncClients(nextState.getType(), TIME_UNTIL_NEXT_STATE);
 
   }
 
   @Override
   public void update() {
     processScheduler.runProcesses();
-    if (timePassed(TIME_UNTIL_NEXT_STATE)) {
-      engine.setState(nextState);
-    }
+    engine.setState(nextState);
   }
 
   @Override

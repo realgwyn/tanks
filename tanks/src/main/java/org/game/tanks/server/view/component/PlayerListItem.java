@@ -90,7 +90,7 @@ public class PlayerListItem extends JPanel {
   }
 
   private void setModel(PlayerServerModel model) {
-    lblRankNumber.setText(Integer.toString(model.getRankNumber()));
+    lblRankNumber.setText("?");
     lblName.setText(model.getPlayerName());
     lblId.setText(Long.toString(model.getConnectionId()));
     lblKills.setText(Integer.toString(model.getKills()));

@@ -38,8 +38,8 @@ public class TeamDeathmatch extends GameType {
   @Override
   public void initializePlayersProperties(List<PlayerServerModel> players) {
     for (PlayerServerModel player : players) {
-      player.getModel().setHealth(100);
-      player.getModel().setState(PlayerState.ALIVE);
+      player.setHealth(100);
+      player.setState(PlayerState.ALIVE);
     }
   }
 
@@ -80,7 +80,7 @@ public class TeamDeathmatch extends GameType {
     for (PlayerServerModel player : schedulerContext.getPlayers()) {
       GiveMoney money = new GiveMoney();
       money.setPlayerToId(player.getConnectionId());
-      if (player.getModel().team == winningTeamNumber) {
+      if (player.getTeam() == winningTeamNumber) {
         money.setValue(BIG_REWARD_VALUE);
       } else {
         money.setValue(SMALL_REWARD_VALUE);
@@ -91,7 +91,7 @@ public class TeamDeathmatch extends GameType {
 
   private boolean allTeamMembersDead(int teamNumber) {
     for (PlayerServerModel player : schedulerContext.getPlayers()) {
-      if (player.getModel().team == teamNumber && player.getModel().state == PlayerState.ALIVE) {
+      if (player.getTeam() == teamNumber && player.getState() == PlayerState.ALIVE) {
         return false;
       }
     }

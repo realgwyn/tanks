@@ -2,6 +2,7 @@ package org.game.tanks.server.gameplay;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.model.MapModel;
 import org.game.tanks.server.core.PlayerConnectionThread;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.process.ProcessScheduler;
@@ -39,9 +40,10 @@ public class GameplayManager {
     processScheduler.reinitialize();
     serverContext.reinitialize();
     serverContext.setMatchEndTime(System.currentTimeMillis() + MATCH_DURATION_MILLIS);
-    mapService.loadNextMap();// ???
     gameType = serverContext.getGameType();
-    gameType.reinitialize();
+    MapModel map = mapService.loadMap(mapService.getNextMapName());
+    schedulerContext.setCurrentMap(map);
+    playerConnectionThread.setCurrentMap(map);
     playerConnectionThread.reconnectPlayers();
   }
 

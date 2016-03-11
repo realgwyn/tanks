@@ -1,25 +1,28 @@
 package org.game.tanks.server.model;
 
 import org.game.tanks.model.PlayerModel;
+import org.game.tanks.model.PlayerState;
+import org.game.tanks.network.model.command.PlayerInfo;
 
 public class PlayerServerModel {
 
-  private String playerName = "Unknown";
   private ConnectionInfo connectionInfo;
   private PlayerModel model;
+  private PlayerInfo playerInfo;
 
   public long sequenceNumber;
   public boolean sequenceFlipFlag;
-  private int latency;
-
-  private int rankNumber;
-  private int kills;
-  private int deaths;
 
   private boolean connectionEstablished;
 
-  public PlayerServerModel(ConnectionInfo connectionInfo) {
+  public PlayerServerModel(ConnectionInfo connectionInfo, PlayerInfo playerInfo) {
     this.connectionInfo = connectionInfo;
+    this.playerInfo = playerInfo;
+    this.model = new PlayerModel();
+  }
+
+  public PlayerInfo getPlayerInfo() {
+    return playerInfo;
   }
 
   public int getConnectionId() {
@@ -27,47 +30,71 @@ public class PlayerServerModel {
   }
 
   public String getPlayerName() {
-    return playerName;
+    return playerInfo.getPlayerName();
   }
 
   public PlayerServerModel setPlayerName(String playerName) {
-    this.playerName = playerName;
+    playerInfo.setPlayerName(playerName);
     return this;
   }
 
   public int getKills() {
-    return kills;
+    return playerInfo.getKills();
+  }
+
+  public PlayerServerModel incrementKills() {
+    playerInfo.incrementKills();
+    return this;
   }
 
   public PlayerServerModel setKills(int kills) {
-    this.kills = kills;
+    playerInfo.setKills(kills);
+    return this;
+  }
+
+  public PlayerServerModel incrementDeaths() {
+    playerInfo.incrementDeaths();
     return this;
   }
 
   public int getDeaths() {
-    return deaths;
+    return playerInfo.getDeaths();
   }
 
   public PlayerServerModel setDeaths(int deaths) {
-    this.deaths = deaths;
+    playerInfo.setDeaths(deaths);
+    return this;
+  }
+
+  public PlayerState getState() {
+    return playerInfo.getState();
+  }
+
+  public PlayerServerModel setState(PlayerState state) {
+    playerInfo.setState(state);
     return this;
   }
 
   public int getLatency() {
-    return latency;
+    return playerInfo.getLatency();
   }
 
   public PlayerServerModel setLatency(int latency) {
-    this.latency = latency;
+    playerInfo.setLatency(latency);
     return this;
   }
 
-  public int getRankNumber() {
-    return rankNumber;
+  public float getHealth() {
+    return playerInfo.getHealth();
   }
 
-  public PlayerServerModel setRankNumber(int rankNumber) {
-    this.rankNumber = rankNumber;
+  public PlayerServerModel setHealth(float health) {
+    playerInfo.setHealth(health);
+    return this;
+  }
+
+  public PlayerServerModel appendHealth(float health) {
+    playerInfo.appendHealth(health);
     return this;
   }
 
@@ -106,9 +133,18 @@ public class PlayerServerModel {
     this.connectionInfo = connectionInfo;
   }
 
+  public int getTeam() {
+    return playerInfo.getTeam();
+  }
+
+  public PlayerServerModel setTeam(int team) {
+    playerInfo.setTeam(team);
+    return this;
+  }
+
   @Override
   public String toString() {
-    return "Player [id:" + connectionInfo.getConnectionId() + ", name:" + playerName + "]";
+    return "Player [id:" + connectionInfo.getConnectionId() + ", name:" + playerInfo.getPlayerName() + "]";
   }
 
 }

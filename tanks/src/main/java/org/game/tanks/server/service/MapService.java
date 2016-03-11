@@ -1,5 +1,6 @@
 package org.game.tanks.server.service;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,15 +11,12 @@ import org.game.tanks.cfg.Config;
 import org.game.tanks.model.MapModel;
 import org.game.tanks.model.MapObject;
 import org.game.tanks.network.model.command.MapInfoData;
-import org.game.tanks.server.core.ServerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MapService {
 
-  @Autowired
-  private ServerContext context;
   @Autowired
   private Config config;
 
@@ -31,28 +29,24 @@ public class MapService {
 
   public MapModel loadMap(String mapName) {
     MapModel map = new MapModel();
-    // TODO parse map file
+    map.setMapName(mapName);
+    map.setHeight(5000);
+    map.setWidth(5000);
+    map = generateMapObjects(map);
+    // TODO parse map from file
     return map;
-  }
-
-  public void loadNextMap() {
-    if (context.getCurrentMap() == null) {
-      context.setCurrentMap(loadMap(mapNames.get(nextMapIndex())));
-      context.setNextMap(loadMap(mapNames.get(nextMapIndex())));
-    } else {
-      context.setCurrentMap(context.getNextMap());
-      context.setNextMap(loadMap(mapNames.get(nextMapIndex())));
-    }
   }
 
   private int currentMapIndex = 0;
 
-  private int nextMapIndex() {
+  public String getNextMapName() {
+    String mapName = mapNames.get(currentMapIndex);
     currentMapIndex++;
     if (currentMapIndex >= mapNames.size()) {
       currentMapIndex = 0;
     }
-    return currentMapIndex;
+
+    return mapName;
   }
 
   public static MapModel createMapModel(MapInfoData data) {
@@ -69,6 +63,27 @@ public class MapService {
         .setWidth(model.getWidth())
         .setHeight(model.getHeight())
         .setObjects(model.getObjects().toArray(new MapObject[0]));
+  }
+
+  private MapModel generateMapObjects(MapModel map) {
+
+    MapObject borderTop = new MapObject();
+    borderTop.setShape(new Rectangle(0, 0, 5000, 10));
+    map.getObjects().add(borderTop);
+
+    MapObject borderRight = new MapObject();
+    borderRight.setShape(new Rectangle(4990, 0, 10, 5000));
+    map.getObjects().add(borderRight);
+
+    MapObject borderBottom = new MapObject();
+    borderBottom.setShape(new Rectangle(0, 4990, 5000, 10));
+    map.getObjects().add(borderBottom);
+
+    MapObject borderLeft = new MapObject();
+    borderLeft.setShape(new Rectangle(0, 0, 10, 5000));
+    map.getObjects().add(borderLeft);
+
+    return map;
   }
 
 }

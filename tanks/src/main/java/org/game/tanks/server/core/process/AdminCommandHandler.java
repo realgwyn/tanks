@@ -1,6 +1,7 @@
 package org.game.tanks.server.core.process;
 
 import org.apache.log4j.Logger;
+import org.game.tanks.model.MapModel;
 import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.admin.BanPlayer;
@@ -10,6 +11,7 @@ import org.game.tanks.network.model.command.admin.KickPlayer;
 import org.game.tanks.network.model.command.admin.RestartMatch;
 import org.game.tanks.network.model.command.admin.SystemCommand;
 import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.PlayerConnectionThread;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.state.MatchInitServerState;
@@ -35,6 +37,10 @@ public class AdminCommandHandler extends ScheduledProcess {
   MatchInitServerState matchInitState;
   @Autowired
   MapService mapService;
+  @Autowired
+  PlayerConnectionThread playerConnectionThread;
+  @Autowired
+  SchedulerContext schedulerContext;
 
   @Override
   public void runProcess() {
@@ -78,12 +84,15 @@ public class AdminCommandHandler extends ScheduledProcess {
   }
 
   private void processChangeMapCommand(ChangeMap cmd) {
-    ctx.setCurrentMap(mapService.loadMap(cmd.getMapName()));
+    MapModel map = mapService.loadMap(mapService.getNextMapName());
+    schedulerContext.setCurrentMap(map);
+    playerConnectionThread.setCurrentMap(map);
     engine.setState(matchInitState);
   }
 
   private void processChangeNextMapCommand(ChangeNextMap cmd) {
-    ctx.setNextMap(mapService.loadMap(cmd.getMapName()));
+    throw new UnsupportedOperationException("Not implemented yet.");
+    // ctx.setNextMap(mapService.loadMap(cmd.getMapName()));
   }
 
   private void processRestartMatchCommand(RestartMatch cmd) {

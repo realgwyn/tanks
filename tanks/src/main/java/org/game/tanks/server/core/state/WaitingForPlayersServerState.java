@@ -19,7 +19,7 @@ public class WaitingForPlayersServerState extends ServerState {
   @Autowired
   ServerEngine engine;
   @Autowired
-  RoundStartServerState nextState;
+  RoundInitServerState nextState;
   @Autowired
   Config config;
   @Autowired
@@ -44,7 +44,6 @@ public class WaitingForPlayersServerState extends ServerState {
     // Wait until there are at least 2 players in the game
     // XXX: uncomment this
     if (gameplayManager.playersAreReadyForNewMatch()) {
-      gameplayManager.initializeRound();
       engine.setState(nextState);
     }
 

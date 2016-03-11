@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.model.MapModel;
 import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SchedulerContext {
 
+  private MapModel currentMap;
   private List<PlayerServerModel> players;
   private Map<Integer, PlayerServerModel> playerById;
   private List<PlayerInfo> playerStats;
@@ -62,6 +64,14 @@ public class SchedulerContext {
 
   public PlayerServerModel getPlayerById(long id) {
     return playerById.get(id);
+  }
+
+  public MapModel getCurrentMap() {
+    return currentMap;
+  }
+
+  public void setCurrentMap(MapModel currentMap) {
+    this.currentMap = currentMap;
   }
 
 }

@@ -2,24 +2,36 @@ package org.game.tanks.network.model.command;
 
 import java.io.Serializable;
 
-import org.game.tanks.model.PlayerModel;
+import org.game.tanks.model.PlayerState;
 
 public class PlayerInfo implements Serializable {
 
   private static final long serialVersionUID = -5527049409093060600L;
-  private PlayerModel model;
-  private int name;
+  private String playerName = "Unnamed";
   private int playerId;
   private int kills;
   private int deaths;
   private int latency;
+  private PlayerState state = PlayerState.DEAD;
+  private int team;
+  private float health;
 
-  public PlayerModel getModel() {
-    return model;
+  public PlayerInfo(int playerId) {
+    this.playerId = playerId;
   }
 
-  public PlayerInfo setModel(PlayerModel model) {
-    this.model = model;
+  public void update(PlayerInfo info) {
+    playerName = info.getPlayerName();
+    kills = info.getKills();
+    deaths = info.getDeaths();
+    latency = info.getLatency();
+    state = info.getState();
+    team = info.getTeam();
+    health = info.getHealth();
+  }
+
+  public PlayerInfo incrementKills() {
+    this.kills++;
     return this;
   }
 
@@ -29,6 +41,11 @@ public class PlayerInfo implements Serializable {
 
   public PlayerInfo setKills(int kills) {
     this.kills = kills;
+    return this;
+  }
+
+  public PlayerInfo incrementDeaths() {
+    this.deaths++;
     return this;
   }
 
@@ -50,12 +67,12 @@ public class PlayerInfo implements Serializable {
     return this;
   }
 
-  public int getName() {
-    return name;
+  public String getPlayerName() {
+    return playerName;
   }
 
-  public PlayerInfo setName(int name) {
-    this.name = name;
+  public PlayerInfo setPlayerName(String name) {
+    this.playerName = name;
     return this;
   }
 
@@ -63,8 +80,35 @@ public class PlayerInfo implements Serializable {
     return playerId;
   }
 
-  public PlayerInfo setPlayerId(int playerId) {
-    this.playerId = playerId;
+  public PlayerState getState() {
+    return state;
+  }
+
+  public PlayerInfo setState(PlayerState state) {
+    this.state = state;
+    return this;
+  }
+
+  public int getTeam() {
+    return team;
+  }
+
+  public PlayerInfo setTeam(int team) {
+    this.team = team;
+    return this;
+  }
+
+  public float getHealth() {
+    return health;
+  }
+
+  public PlayerInfo setHealth(float health) {
+    this.health = health;
+    return this;
+  }
+
+  public PlayerInfo appendHealth(float health) {
+    this.health += health;
     return this;
   }
 

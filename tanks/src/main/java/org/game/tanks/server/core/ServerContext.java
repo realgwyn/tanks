@@ -3,15 +3,12 @@ package org.game.tanks.server.core;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
-import org.game.tanks.model.MapModel;
 import org.game.tanks.server.gameplay.GameType;
 import org.game.tanks.server.gameplay.TeamDeathmatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * Contains thread-safe collections
- * 
  * @author rafal.kojta
  *
  */
@@ -24,9 +21,6 @@ public class ServerContext {
   private int tcpPort;
   private int udpPort;
   private String serverName;
-
-  private MapModel currentMap;
-  private MapModel nextMap;
 
   // This flag is used to ignore all old/late packets that are incoming
   // into the server from the old game round (lagging shoot events, move events etc)
@@ -61,22 +55,6 @@ public class ServerContext {
     matchStartTime = 0;
     matchEndTime = 0;
     roundEndTime = 0;
-  }
-
-  public MapModel getCurrentMap() {
-    return currentMap;
-  }
-
-  public void setCurrentMap(MapModel currentMap) {
-    this.currentMap = currentMap;
-  }
-
-  public MapModel getNextMap() {
-    return nextMap;
-  }
-
-  public void setNextMap(MapModel nextMap) {
-    this.nextMap = nextMap;
   }
 
   public int getTcpPort() {

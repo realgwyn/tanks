@@ -1,41 +1,30 @@
 package org.game.tanks.model;
 
-import java.awt.Polygon;
+import java.awt.Shape;
 import java.io.Serializable;
 
 public class MapObject implements Serializable {
 
   private static final long serialVersionUID = 7681325751830093812L;
-  private int posX;
-  private int posY;
-  private Polygon shape;
+  private int id;
+  private Shape shape;
   private int texture;
   private boolean solid;// If not solid, it can be destroyed
   private int hp;
 
-  public int getPosX() {
-    return posX;
+  public int getId() {
+    return id;
   }
 
-  public MapObject setPosX(int posX) {
-    this.posX = posX;
-    return this;
+  public void setId(int id) {
+    this.id = id;
   }
 
-  public int getPosY() {
-    return posY;
-  }
-
-  public MapObject setPosY(int posY) {
-    this.posY = posY;
-    return this;
-  }
-
-  public Polygon getShape() {
+  public Shape getShape() {
     return shape;
   }
 
-  public MapObject setShape(Polygon shape) {
+  public MapObject setShape(Shape shape) {
     this.shape = shape;
     return this;
   }

@@ -13,9 +13,6 @@ public class PlayerModel implements Serializable {
   public float bodyAngle;
   public float towerAngle;
   public Polygon shape;
-  public PlayerState state = PlayerState.UNDEFINED;
-  public float health;
-  public int team;
 
   public int getX() {
     return x;
@@ -59,33 +56,6 @@ public class PlayerModel implements Serializable {
 
   public PlayerModel setShape(Polygon shape) {
     this.shape = shape;
-    return this;
-  }
-
-  public PlayerState getState() {
-    return state;
-  }
-
-  public PlayerModel setState(PlayerState state) {
-    this.state = state;
-    return this;
-  }
-
-  public float getHealth() {
-    return health;
-  }
-
-  public PlayerModel setHealth(float health) {
-    this.health = health;
-    return this;
-  }
-
-  public int getTeam() {
-    return team;
-  }
-
-  public PlayerModel setTeam(int team) {
-    this.team = team;
     return this;
   }
 
