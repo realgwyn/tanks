@@ -11,8 +11,8 @@ import org.game.tanks.client.core.GamePhysicsUnit;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.core.PlayerInput;
 import org.game.tanks.client.state.ClientState.ClientStateType;
-import org.game.tanks.client.view.InGameChatWindow;
-import org.game.tanks.client.view.InGameMenuWindow;
+import org.game.tanks.client.view.ChatWindow;
+import org.game.tanks.client.view.MenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +30,9 @@ public class RoundState extends ClientState {
   @Autowired
   GameEngine engine;
   @Autowired
-  InGameChatWindow chatWindow;
+  ChatWindow chatWindow;
   @Autowired
-  InGameMenuWindow menuWindow;
+  MenuWindow menuWindow;
   @Autowired
   GuiManager guiManager;
   

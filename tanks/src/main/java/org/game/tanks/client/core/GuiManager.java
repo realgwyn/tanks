@@ -7,8 +7,8 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.game.tanks.client.gui.widgets.components.MessageWindow;
 import org.game.tanks.client.view.GuiComponent;
+import org.game.tanks.client.view.components.MessageWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

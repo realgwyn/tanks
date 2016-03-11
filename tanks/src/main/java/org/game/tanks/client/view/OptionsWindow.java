@@ -7,12 +7,9 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
-/**
- * 
- */
 @Component
 @SuppressWarnings("serial")
-public class OptionsMenuWindow extends GuiComponent {
+public class OptionsWindow extends GuiComponent {
 
   @PostConstruct
   public void initialize() {
@@ -27,5 +24,4 @@ public class OptionsMenuWindow extends GuiComponent {
     g.drawRect(x, y, width, height);
     super.paintComponent(g);
   }
-
 }

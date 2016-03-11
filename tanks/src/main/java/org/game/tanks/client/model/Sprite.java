@@ -3,13 +3,13 @@ package org.game.tanks.client.model;
 import java.awt.image.BufferedImage;
 
 /**
- * Animated Sprite. Types:
- * 1. none - rock, barrel
- * 2. animated - explosion
- * 3. animated & looped - constantly burning fire
- * 4. sequenced - nonanimated tank tower in different angles
- * 5. animated & sequenced - cannon fire animation in different angles
- * 6. animated & sequenced & looped - rolling tank wheel in different angles
+ * Animated Sprite. Types:<br>
+ * 1. none - rock, barrel<br>
+ * 2. animated - explosion<br>
+ * 3. animated & looped - constantly burning fire<br>
+ * 4. sequenced - nonanimated tank tower in different angles<br>
+ * 5. animated & sequenced - cannon fire animation in different angles<br>
+ * 6. animated & sequenced & looped - rolling tank wheel in different angles<br>
  * 
  * @author Rafcio
  */
@@ -45,8 +45,10 @@ public class Sprite implements Cloneable {
   }
 
   /**
-   * Creates sprite type 2# or type 3# Images are stored in one big image: [] -
-   * first frame [] - second frame [] - ... Here they will be splitted.
+   * Creates sprite type 2# or type 3#<br> 
+   * Images are stored in one big image:<br> 
+   * [] - first frame [] - second frame [] - ...<br>
+   * Here they will be splitted.<br>
    */
   public Sprite(BufferedImage image, int numberOfFrames, boolean looped) {
     this.looped = looped;
@@ -61,8 +63,9 @@ public class Sprite implements Cloneable {
   }
 
   /**
-   * Creates sprite type 4# Images are stored in one big image in division of
-   * sequences: [] - first sequence [] - second sequence [] - ...
+   * Creates sprite type 4# <br>
+   * Images are stored in one big image in division of sequences:<br>
+   *  [] - first sequence [] - second sequence [] - ...<br>
    */
   public Sprite(BufferedImage image, int numberOfSequences) {
     this.height = image.getHeight() / numberOfSequences;
@@ -77,9 +80,9 @@ public class Sprite implements Cloneable {
   }
 
   /**
-   * Creates sprite type 5# & 6# Images are placed in order: sequence1, image1,
-   * image 2, ..., sequence2, image1, image2, ..., ... It looks like this: s1,
-   * i11, i12, i13, s2, i21, i22, i23, s3...
+   * Creates sprite type 5# & 6# Images are placed in order: <br>
+   * sequence1, image1, image 2, ..., sequence2, image1, image2, ..., ... <br>
+   * It looks like this: s1, i11, i12, i13, s2, i21, i22, i23, s3...<br>
    */
   public Sprite(BufferedImage image, int numberOfSequences, int framesPerSequence, boolean looped) {
     this.height = image.getHeight() / (numberOfSequences * framesPerSequence);
@@ -88,7 +91,6 @@ public class Sprite implements Cloneable {
     images = new BufferedImage[numberOfSequences][framesPerSequence];
     for (int i = 0; i < numberOfSequences; i++) {
       for (int j = 0; j < framesPerSequence; j++) {
-        System.out.println();
         images[i][j] = image.getSubimage(0, currentImagePositionY, width, height);
         currentImagePositionY += height;
       }
@@ -109,9 +111,10 @@ public class Sprite implements Cloneable {
       }
     }
   }
-  
+
   /**
-   * @param sequence: from 0 to maxSequenceNumber
+   * @param sequence:
+   *          from 0 to maxSequenceNumber
    */
   public void setSequenceIndex(int sequence) {
     if (sequence < images.length) {

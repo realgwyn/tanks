@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets.components;
+package org.game.tanks.client.view.components;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -25,6 +25,10 @@ public class Label extends GuiComponent {
     this(text, GameStyle.WHITE);
   }
 
+  public Label(String text, Font font) {
+    this(text, GameStyle.WHITE, font);
+  }
+
   public Label(String text, Color foreground) {
     this(text, foreground, GameStyle.FONT_LABEL);
   }
@@ -46,6 +50,7 @@ public class Label extends GuiComponent {
     g.setColor(foregroundColor);
 
     if (!positionResolved) {
+      positionResolved = true;
       this.positionX = resolvePositionX(g);
     }
     g.drawString(text, positionX, y);

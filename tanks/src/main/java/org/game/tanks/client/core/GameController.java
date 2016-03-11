@@ -2,10 +2,10 @@ package org.game.tanks.client.core;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
-import org.game.tanks.client.gui.widgets.components.MessageWindow;
 import org.game.tanks.client.service.ServerConnectionService;
-import org.game.tanks.client.state.FindGameMenuState;
 import org.game.tanks.client.state.MatchInitState;
+import org.game.tanks.client.state.menu.FindGameOnlineMenuState;
+import org.game.tanks.client.view.components.MessageWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class GameController {
   @Autowired
   MatchInitState matchInitState;
   @Autowired
-  FindGameMenuState findGameMenuState;
+  FindGameOnlineMenuState findGameMenuState;
   @Autowired
   MessageWindow messageWindow;
   @Autowired

@@ -6,9 +6,9 @@ import java.awt.Graphics;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
-import org.game.tanks.client.gui.widgets.components.Button;
-import org.game.tanks.client.gui.widgets.components.Label;
-import org.game.tanks.client.gui.widgets.components.MapPanel;
+import org.game.tanks.client.view.components.Button;
+import org.game.tanks.client.view.components.Label;
+import org.game.tanks.client.view.components.MapPanel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -39,7 +39,7 @@ public class SyncStateService {
     case MATCH_END:
       return ClientStateType.MATCH_END;
     default:
-      return ClientStateType.FIND_GAME_MENU;
+      return ClientStateType.FIND_GAME_ONLINE_MENU;
     }
   }
 

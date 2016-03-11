@@ -1,16 +1,18 @@
-package org.game.tanks.client.state;
+package org.game.tanks.client.state.menu;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.view.CreateGameMenuWindow;
+import org.game.tanks.client.state.ClientState;
+import org.game.tanks.client.state.ClientState.ClientStateType;
+import org.game.tanks.client.view.menu.CreateGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreateGameMenuState extends ClientState {
+public class CreateLanGameMenuState extends ClientState {
 
   @Autowired
   GameDisplay display;
@@ -19,8 +21,8 @@ public class CreateGameMenuState extends ClientState {
   @Autowired
   CreateGameMenuWindow createGameMenuWindow;
 
-  public CreateGameMenuState() {
-    super(ClientStateType.CREATE_GAME_MENU);
+  public CreateLanGameMenuState() {
+    super(ClientStateType.CREATE_LAN_GAME_MENU);
   }
 
   @Override

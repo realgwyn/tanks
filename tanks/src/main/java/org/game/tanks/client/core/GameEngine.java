@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.client.state.ClientState;
-import org.game.tanks.client.state.LoadingGameState;
+import org.game.tanks.client.state.menu.LoadingGameState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

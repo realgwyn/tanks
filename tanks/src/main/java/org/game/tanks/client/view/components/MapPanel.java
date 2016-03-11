@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets.components;
+package org.game.tanks.client.view.components;
 
 import org.game.tanks.client.view.GuiComponent;
 

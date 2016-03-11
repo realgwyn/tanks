@@ -1,4 +1,4 @@
-package org.game.tanks.client.gui.widgets.components;
+package org.game.tanks.client.view.components;
 
 import java.awt.Graphics;
 
@@ -7,8 +7,8 @@ import javax.annotation.PostConstruct;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.cfg.GameStyle;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.gui.widgets.components.Label.HorizontalAlignment;
 import org.game.tanks.client.view.GuiComponent;
+import org.game.tanks.client.view.components.Label.HorizontalAlignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -39,13 +39,13 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
   }
 
   public void add(GuiComponent child, int relativeX, int relativeY) {
-    this.relativeX = relativeX;
-    this.relativeY = relativeY;
+    child.relativeX = relativeX;
+    child.relativeY = relativeY;
+    child.setParent(this);
     child.setLocation(getAbsoluteX(relativeX), getAbsoluteY(relativeY));
     if (children == null) {
       children = new ArrayList<>();
     }
-    child.setParent(this);
     children.add(child);
   }
 
@@ -69,7 +69,7 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
     this.y = newY;
     if (children != null) {
       for (GuiComponent child : children) {
-        child.setLocation(newX + child.getRelativeX(), newY + getRelativeY());
+        child.setLocation(newX + child.getRelativeX(), newY + child.getRelativeY());
       }
     }
   }
@@ -139,7 +139,7 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
     }
 
     if (mouseActionListener != null) {
-      mouseActionListener.mouseClicked(e);
+      mouseActionListener.mousePressed(e);
     }
   }
 

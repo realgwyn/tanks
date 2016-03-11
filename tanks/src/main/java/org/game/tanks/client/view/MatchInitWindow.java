@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import javax.annotation.PostConstruct;
 
-import org.game.tanks.client.gui.widgets.components.BusySpinner;
+import org.game.tanks.client.view.components.BusySpinner;
 import org.springframework.stereotype.Component;
 
 @Component

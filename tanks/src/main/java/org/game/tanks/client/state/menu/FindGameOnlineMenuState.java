@@ -1,16 +1,18 @@
-package org.game.tanks.client.state;
+package org.game.tanks.client.state.menu;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.view.FindGameMenuWindow;
+import org.game.tanks.client.state.ClientState;
+import org.game.tanks.client.state.ClientState.ClientStateType;
+import org.game.tanks.client.view.menu.FindGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FindGameMenuState extends ClientState {
+public class FindGameOnlineMenuState extends ClientState {
 
   @Autowired
   GameDisplay display;
@@ -19,8 +21,8 @@ public class FindGameMenuState extends ClientState {
   @Autowired
   FindGameMenuWindow findGameMenuWindow;
 
-  public FindGameMenuState() {
-    super(ClientStateType.FIND_GAME_MENU);
+  public FindGameOnlineMenuState() {
+    super(ClientStateType.FIND_GAME_ONLINE_MENU);
   }
 
   @Override

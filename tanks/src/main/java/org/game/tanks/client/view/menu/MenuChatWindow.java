@@ -1,15 +1,19 @@
-package org.game.tanks.client.view;
+package org.game.tanks.client.view.menu;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.client.view.GuiComponent;
 import org.springframework.stereotype.Component;
 
+/**
+ * Main Menu Chat window for talking with friends
+ */
 @Component
 @SuppressWarnings("serial")
-public class InGameOptionsWindow extends GuiComponent {
+public class MenuChatWindow extends GuiComponent {
 
   @PostConstruct
   public void initialize() {
@@ -24,4 +28,5 @@ public class InGameOptionsWindow extends GuiComponent {
     g.drawRect(x, y, width, height);
     super.paintComponent(g);
   }
+
 }

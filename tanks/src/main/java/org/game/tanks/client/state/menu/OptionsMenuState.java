@@ -1,11 +1,13 @@
-package org.game.tanks.client.state;
+package org.game.tanks.client.state.menu;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
-import org.game.tanks.client.view.OptionsMenuWindow;
+import org.game.tanks.client.state.ClientState;
+import org.game.tanks.client.state.ClientState.ClientStateType;
+import org.game.tanks.client.view.menu.OptionsMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

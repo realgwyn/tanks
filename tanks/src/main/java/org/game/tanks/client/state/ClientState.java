@@ -11,7 +11,7 @@ public abstract class ClientState implements Focusable {
   static final Logger logger = Logger.getLogger(ClientState.class);
 
   public enum ClientStateType {
-    LOADING_GAME, MAIN_MENU, OPTIONS_MENU, CREATE_GAME_MENU, FIND_GAME_MENU, MATCH_INIT, WAITING_FOR_PLAYERS, ROUND_START, ROUND, ROUND_END, MATCH_END
+    LOADING_GAME, MAIN_MENU, OPTIONS_MENU, CREATE_LAN_GAME_MENU, JOIN_LAN_GAME_MENU, FIND_GAME_ONLINE_MENU, MATCH_INIT, WAITING_FOR_PLAYERS, ROUND_START, ROUND, ROUND_END, MATCH_END
   }
 
   private ClientStateType type;

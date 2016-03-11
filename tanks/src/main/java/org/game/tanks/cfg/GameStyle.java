@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 public class GameStyle {
 
   public static Font FONT_BIG_MESSAGE = new Font("Courier New", Font.BOLD, 18);
+  public static Font FONT_MENU_BUTTON = new Font("Courier New", Font.BOLD, 16);
   public static Font FONT_TEXT = new Font("Courier New", Font.PLAIN, 10);
   public static Font FONT_CHAT = new Font("Courier New", Font.PLAIN, 12);
   public static Font FONT_LABEL = new Font("Courier New", Font.BOLD, 12);
