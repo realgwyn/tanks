@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.state.ClientState;
-import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -58,6 +57,12 @@ public class LoadingGameState extends ClientState {
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
     g.drawString("Loading: " + percent + " %", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+  }
+
+  @Override
+  public void onStateEnd() {
+    // TODO Auto-generated method stub
+
   }
 
 }

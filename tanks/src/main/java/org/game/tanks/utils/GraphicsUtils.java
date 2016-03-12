@@ -19,13 +19,4 @@ public class GraphicsUtils {
     return shape;
   }
 
-  public static void main(String[] args) {
-    Polygon p = new Polygon();
-    p.addPoint(2, 2);
-    p.addPoint(4, 2);
-    p.addPoint(4, 4);
-    p.addPoint(2, 4);
-
-  }
-
 }

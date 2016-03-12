@@ -10,7 +10,6 @@ import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.core.GamePhysicsUnit;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.core.PlayerInput;
-import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.game.tanks.client.view.ChatWindow;
 import org.game.tanks.client.view.MenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RoundState extends ClientState {
-  
+
   static final Logger logger = Logger.getLogger(RoundState.class);
 
   @Autowired
@@ -35,15 +34,15 @@ public class RoundState extends ClientState {
   MenuWindow menuWindow;
   @Autowired
   GuiManager guiManager;
-  
-  public RoundState(){
+
+  public RoundState() {
     super(ClientStateType.ROUND);
   }
 
   @Override
   public void update() {
     gamePhysicsUnit.update();
-    //Update other stuff
+    // Update other stuff
   }
 
   @Override
@@ -56,16 +55,28 @@ public class RoundState extends ClientState {
 
   @Override
   public void keyPressed(KeyEvent e) {
-    switch(e.getKeyCode()){
+    switch (e.getKeyCode()) {
     case KeyEvent.VK_ENTER:
       guiManager.showComponent(chatWindow);
       break;
     case KeyEvent.VK_ESCAPE:
       guiManager.showComponent(menuWindow);
-    break;
-      default:
-        break;
+      break;
+    default:
+      break;
     }
+  }
+
+  @Override
+  public void onStateBegin() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void onStateEnd() {
+    // TODO Auto-generated method stub
+
   }
 
 }

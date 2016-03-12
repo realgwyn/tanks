@@ -15,6 +15,8 @@ public abstract class ClientState implements Focusable {
   }
 
   private ClientStateType type;
+  private long startTime;
+  private long periodStartTime;
 
   public ClientState(ClientStateType type) {
     this.type = type;
@@ -24,19 +26,46 @@ public abstract class ClientState implements Focusable {
 
   public abstract void draw();
 
-  public void onStateBegin() {
+  public void stateBegin() {
+    startTime = System.currentTimeMillis();
+    onStateBegin();
   }
 
-  public void onStateEnd() {
+  public abstract void onStateBegin();
+
+  /**
+   * NOTICE: Do not use in game states - might slow down the game loop
+   * 
+   * @returns true - if time passed since state started is greater than timeDelta (milliseconds)
+   */
+  public boolean timePassed(long timeDeltaMillis) {
+    long currentTime = System.currentTimeMillis();
+    return currentTime - startTime > timeDeltaMillis;
   }
 
-  @Override
-  public void onFocus() {
+  /**
+   * Use when want to invoke some operation every time on fixed period NOTICE: Do not use in game states - might slow
+   * down the game loop
+   * 
+   * @param timeDeltaMillis
+   * @return true - periodicaly every timeDelta period
+   */
+  public boolean everyTimePeriod(long timeDeltaMillis) {
+    long currentTime = System.currentTimeMillis();
+    if (currentTime - periodStartTime > timeDeltaMillis) {
+
+      periodStartTime = System.currentTimeMillis();
+      return true;
+    }
+    return false;
   }
 
-  @Override
-  public void onFocusLost() {
+  public void stateEnd() {
+
+    onStateEnd();
   }
+
+  public abstract void onStateEnd();
 
   @Override
   public void keyPressed(KeyEvent e) {

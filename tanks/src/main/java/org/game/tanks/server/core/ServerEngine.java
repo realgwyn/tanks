@@ -58,7 +58,9 @@ public class ServerEngine extends Loop {
   }
 
   public synchronized void start() {
-    new Thread(this).start();
+    Thread thread = new Thread(this);
+    thread.setName("ServerEngineThread");
+    thread.start();
   }
 
   @Override
@@ -113,9 +115,9 @@ public class ServerEngine extends Loop {
     logger.debug("Changing Server State from " + currentState.getClass().getSimpleName()
         + " to: " + state.getClass().getSimpleName());
 
-    currentState.endState();
+    currentState.stateEnd();
     currentState = state;
-    currentState.beginState();
+    currentState.stateBegin();
   }
 
   public ServerState getState() {

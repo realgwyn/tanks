@@ -12,6 +12,7 @@ import org.game.tanks.network.model.message.ChatMessage;
 import org.game.tanks.server.model.ConnectionInfo;
 
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage.KeepAlive;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
@@ -20,8 +21,8 @@ public class NetworkServer {
   Server server;
   UDPListener udpListener;
   TCPListener tcpListener;
+  ConnectionListener connectionListener;
 
-  // TODO: implement adding and removing connections
   Queue<ConnectionInfo> incomingConnections;
   Queue<Integer> closedConnectionIDs;
 
@@ -35,9 +36,9 @@ public class NetworkServer {
 
   public void start(int tcpPort, int udpPort) throws NetworkException {
     System.out.println("Starting server at tcpPort: " + tcpPort + ", udpPort: " + udpPort);
-    server.start();
     try {
       server.bind(tcpPort, udpPort);
+      server.start();
     } catch (IOException e) {
       e.printStackTrace();
       throw new NetworkException("Unable to start the server, reason:" + e.getMessage());
@@ -52,13 +53,31 @@ public class NetworkServer {
           udpListener.receivedUDPMessage(conn, (UDPMessage) object);
         } else if (object instanceof TCPMessage) {
           tcpListener.receivedTCPMessage(conn, (TCPMessage) object);
+        } else if (object instanceof KeepAlive) {
+          // Ignore KeepAlive messages
+        } else {
+          System.out.println("Received unknown message " + object.getClass().getSimpleName());
         }
+      }
+
+      @Override
+      public void connected(Connection c) {
+        connectionListener.connected(c);
+      }
+
+      @Override
+      public void disconnected(Connection c) {
+        connectionListener.disconnected(c);
       }
     });
   }
 
   public void stop() {
     server.stop();
+  }
+
+  public void setConnectionListener(ConnectionListener connectionListener) {
+    this.connectionListener = connectionListener;
   }
 
   public void setUDPListener(UDPListener listener) {

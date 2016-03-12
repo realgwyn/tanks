@@ -15,25 +15,38 @@ public class Button extends GuiComponent {
   private int labelOffsetX = 10;
   private int labelOffsetY = 15;
   private Color borderColor;
+  private Color disabledColor;
+  private Color hoveringColor;
 
-  public Button(String text, Color borderColor) {
-    this(new Label(text), borderColor, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+  public Button(String text, Color color) {
+    this(new Label(text, color), color, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   }
 
   public Button(String text, Font font) {
-    this(new Label(text, font), GameStyle.WHITE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    this(new Label(text, font), GameStyle.ORANGE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   }
 
-  public Button(Label label, Color borderColor, int width, int height) {
+  public Button(Label label, Color color, int width, int height) {
     this.width = width;
     this.height = height;
+    label.setForegroundColor(color);
     add(label, labelOffsetX, labelOffsetY);
-    this.borderColor = borderColor;
+    this.borderColor = color;
+    this.hoveringColor = color.brighter();
+    this.disabledColor = color.darker();
   }
 
   @Override
   public void paintComponent(Graphics g) {
-    g.setColor(borderColor);
+    if (!enabled) {
+      g.setColor(disabledColor);
+    } else if (hovering) {
+      g.setColor(hoveringColor);
+    } else {
+      g.setColor(borderColor);
+    }
+    if (focused) {
+    }
     g.drawRect(x, y, width, height);
     super.paintComponent(g);
   }

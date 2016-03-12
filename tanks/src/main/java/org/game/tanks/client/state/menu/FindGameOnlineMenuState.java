@@ -7,7 +7,7 @@ import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.state.ClientState;
 import org.game.tanks.client.state.ClientState.ClientStateType;
-import org.game.tanks.client.view.menu.FindGameMenuWindow;
+import org.game.tanks.client.view.menu.FindGameOnlineMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class FindGameOnlineMenuState extends ClientState {
   @Autowired
   GuiManager guiManager;
   @Autowired
-  FindGameMenuWindow findGameMenuWindow;
+  FindGameOnlineMenuWindow findGameMenuWindow;
 
   public FindGameOnlineMenuState() {
     super(ClientStateType.FIND_GAME_ONLINE_MENU);

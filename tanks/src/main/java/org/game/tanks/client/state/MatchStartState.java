@@ -45,4 +45,10 @@ public class MatchStartState extends ClientState {
     g.drawString("MatchStartState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
 
+  @Override
+  public void onStateEnd() {
+    // TODO Auto-generated method stub
+
+  }
+
 }

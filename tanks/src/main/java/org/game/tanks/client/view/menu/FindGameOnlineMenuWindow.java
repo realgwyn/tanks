@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @SuppressWarnings("serial")
-public class FindGameMenuWindow extends GuiComponent {
+public class FindGameOnlineMenuWindow extends GuiComponent {
 
   @Autowired
   GameEngine engine;

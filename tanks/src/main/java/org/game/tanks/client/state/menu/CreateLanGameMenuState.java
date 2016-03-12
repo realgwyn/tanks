@@ -7,7 +7,7 @@ import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.state.ClientState;
 import org.game.tanks.client.state.ClientState.ClientStateType;
-import org.game.tanks.client.view.menu.CreateGameMenuWindow;
+import org.game.tanks.client.view.menu.CreateLanGameMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,7 @@ public class CreateLanGameMenuState extends ClientState {
   @Autowired
   GuiManager guiManager;
   @Autowired
-  CreateGameMenuWindow createGameMenuWindow;
+  CreateLanGameMenuWindow createGameMenuWindow;
 
   public CreateLanGameMenuState() {
     super(ClientStateType.CREATE_LAN_GAME_MENU);

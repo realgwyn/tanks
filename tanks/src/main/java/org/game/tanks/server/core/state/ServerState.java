@@ -19,14 +19,14 @@ public abstract class ServerState {
 
   public abstract void update();
 
-  public void beginState() {
+  public void stateBegin() {
     startTime = System.currentTimeMillis();
     onStateBegin();
   }
 
   public abstract void onStateBegin();
 
-  public void endState() {
+  public void stateEnd() {
 
     onStateEnd();
   }

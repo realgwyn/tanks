@@ -50,7 +50,9 @@ public class PlayerConnectionThread implements Runnable {
   }
 
   public synchronized void start() {
-    new Thread(this).start();
+    Thread thread = new Thread(this);
+    thread.setName("PlayerConnectionThread");
+    thread.start();
   }
 
   @Override

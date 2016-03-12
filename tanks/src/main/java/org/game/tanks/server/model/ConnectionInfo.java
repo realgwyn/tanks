@@ -23,4 +23,9 @@ public class ConnectionInfo {
     return this;
   }
 
+  @Override
+  public String toString() {
+    return "ConnectionInfo [connectionId=" + connectionId + ", networkAddress=" + networkAddress + "]";
+  }
+
 }

@@ -37,6 +37,7 @@ public class GuiManager implements PlayerInputListener {
   MessageWindow messageWindow;
 
   GuiComponent focusedGuiComponent = null;
+  GuiComponent hoveringComponent = null;
 
   @PostConstruct
   public void init() {
@@ -89,11 +90,11 @@ public class GuiManager implements PlayerInputListener {
     if (component.isFocusable()) {
       if (focusedGuiComponent == null) {
         focusedGuiComponent = component;
-        focusedGuiComponent.onFocus();
+        focusedGuiComponent.setFocused(true);
       } else if (!focusedGuiComponent.equals(component)) {
-        focusedGuiComponent.onFocusLost();
+        focusedGuiComponent.setFocused(false);
         focusedGuiComponent = component;
-        focusedGuiComponent.onFocus();
+        focusedGuiComponent.setFocused(true);
       } else {
         return;// Do nothing, component already focused
       }
@@ -104,11 +105,7 @@ public class GuiManager implements PlayerInputListener {
     component.setVisible(false);
     visibleComponents.remove(component);
     if (focusedGuiComponent != null && focusedGuiComponent.equals(component)) {
-      focusedGuiComponent.onFocusLost();
-      focusedGuiComponent = getNextFocusableComponent();
-      if (focusedGuiComponent != null) {
-        focusedGuiComponent.onFocus();
-      }
+      focusNextComponent();
     }
   }
 
@@ -118,39 +115,87 @@ public class GuiManager implements PlayerInputListener {
     }
     visibleComponents = new ArrayList<GuiComponent>();
     if (focusedGuiComponent != null) {
-      focusedGuiComponent.onFocusLost();
+      focusedGuiComponent.setFocused(false);
       focusedGuiComponent = null;
     }
     messageWindow.setVisible(false);
   }
 
-  private GuiComponent requestFocusAt(int x, int y) {
-    // If mouse click was outside currently focused component - loose focus
+  private GuiComponent hoverComponentAt(int x, int y) {
+    // Disable hover on current component
+    if (hoveringComponent != null) {
+      hoveringComponent.setHovering(false);
+      hoveringComponent = null;
+    }
+
+    // Focused components are in front of all other Gui component, first check if it is hovering
     if (focusedGuiComponent != null) {
-      if (focusedGuiComponent.contains(x, y)) {
+      GuiComponent comp = focusedGuiComponent.getComponentAt(x, y);
+      if (comp != null) {
+        hoveringComponent = comp;
+        hoveringComponent.setHovering(true);
+        return hoveringComponent;
+      }
+    }
+
+    // Iterate from the end because this is the order of rendering from back to front - focus on component most in front
+    for (int i = visibleComponents.size() - 1; i >= 0; i--) {
+      GuiComponent root = visibleComponents.get(i);
+      if (root.isVisible() && root.isFocusable()) {
+        GuiComponent comp = root.getComponentAt(x, y);
+        if (comp != null) {
+          hoveringComponent = comp;
+          hoveringComponent.setHovering(true);
+          return hoveringComponent;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  private GuiComponent focusComponentAt(int x, int y) {
+    // If mouse click was outside currently focused component - lose focus
+    if (focusedGuiComponent != null) {
+      GuiComponent comp = focusedGuiComponent.getComponentAt(x, y);
+      // Lose focus on current component (maybe its child is gaining focus right now)
+      focusedGuiComponent.setFocused(false);
+      focusedGuiComponent = null;
+      if (comp != null) {
+        focusedGuiComponent = comp;
+        focusedGuiComponent.setFocused(true);
         return focusedGuiComponent;
-      } else {
-        focusedGuiComponent.onFocusLost();
       }
     }
     // Iterate from the end because this is the order of rendering from back to front - focus on component most in front
-    GuiComponent comp = null;
+    GuiComponent root = null;
     for (int i = visibleComponents.size() - 1; i >= 0; i--) {
-      comp = visibleComponents.get(i);
-      if (comp.isVisible() && comp.isFocusable() && comp.contains(x, y)) {
-        comp.onFocus();
-        break;
+      root = visibleComponents.get(i);
+      if (root.isVisible() && root.isFocusable()) {
+        GuiComponent comp = root.getComponentAt(x, y);
+        if (comp != null) {
+          focusedGuiComponent = comp;
+          focusedGuiComponent.setFocused(true);
+          return focusedGuiComponent;
+        }
       }
     }
-    return comp;
+    return null;
   }
 
-  private GuiComponent getNextFocusableComponent() {
+  private GuiComponent focusNextComponent() {
+    if (focusedGuiComponent != null) {
+      focusedGuiComponent.setFocused(false);
+      focusedGuiComponent = null;
+    }
+
     if (!visibleComponents.isEmpty()) {
       for (int i = visibleComponents.size() - 1; i >= 0; i--) {
         GuiComponent comp = visibleComponents.get(i);
         if (comp.isVisible() && comp.isFocusable()) {
-          return comp;
+          focusedGuiComponent = comp;
+          focusedGuiComponent.setFocusable(true);
+          return focusedGuiComponent;
         }
       }
     }
@@ -177,8 +222,9 @@ public class GuiManager implements PlayerInputListener {
 
   @Override
   public void mouseMoved(MouseEvent e) {
-    if (focusedGuiComponent != null) {
-      focusedGuiComponent.mouseMoved(e);
+    GuiComponent comp = hoverComponentAt(e.getX(), e.getY());
+    if (comp != null) {
+      comp.mouseMoved(e);
     } else {
       engine.getCurrentState().mouseMoved(e);
     }
@@ -195,9 +241,9 @@ public class GuiManager implements PlayerInputListener {
 
   @Override
   public void mousePressed(MouseEvent e) {
-    focusedGuiComponent = requestFocusAt(e.getX(), e.getY());
-    if (focusedGuiComponent != null) {
-      focusedGuiComponent.mousePressed(e);
+    GuiComponent comp = focusComponentAt(e.getX(), e.getY());
+    if (comp != null) {
+      comp.mousePressed(e);
     } else {
       engine.getCurrentState().mousePressed(e);
     }

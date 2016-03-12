@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.game.tanks.client.core.GameDisplay;
-import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +12,8 @@ public class RoundStartState extends ClientState {
 
   @Autowired
   GameDisplay display;
-  
-  public RoundStartState(){
+
+  public RoundStartState() {
     super(ClientStateType.ROUND_START);
   }
 
@@ -30,5 +29,17 @@ public class RoundStartState extends ClientState {
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
     g.drawString("RoundEndState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+  }
+
+  @Override
+  public void onStateBegin() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void onStateEnd() {
+    // TODO Auto-generated method stub
+
   }
 }

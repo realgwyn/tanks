@@ -26,6 +26,9 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   protected boolean visible = true;
   protected boolean focusable = true;
+  protected boolean enabled = true;
+  protected boolean focused = false;
+  protected boolean hovering = false;
 
   private List<GuiComponent> children;
 
@@ -101,6 +104,20 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
     }
   }
 
+  public GuiComponent getComponentAt(int x, int y) {
+    if (children != null) {
+      for (GuiComponent child : children) {
+        if (child.contains(x, y)) {
+          return child.getComponentAt(x, y);
+        }
+      }
+    }
+    if (this.contains(x, y)) {
+      return this;
+    }
+    return null;
+  }
+
   public void paintComponent(Graphics g) {
     if (children != null) {
       for (GuiComponent child : children) {
@@ -138,7 +155,7 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
       }
     }
 
-    if (mouseActionListener != null) {
+    if (mouseActionListener != null && enabled) {
       mouseActionListener.mousePressed(e);
     }
   }
@@ -147,12 +164,16 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
   public void mouseReleased(MouseEvent e) {
   }
 
-  @Override
-  public void onFocus() {
+  public void setFocused(boolean focused) {
+    this.focused = focused;
   }
 
-  @Override
-  public void onFocusLost() {
+  public boolean isFocused() {
+    return focused;
+  }
+
+  public void setHovering(boolean hovering) {
+    this.hovering = hovering;
   }
 
   public boolean isFocusable() {
@@ -161,6 +182,14 @@ public abstract class GuiComponent extends Rectangle implements Focusable {
 
   public void setFocusable(boolean focusable) {
     this.focusable = focusable;
+  }
+
+  public boolean isEnabled() {
+    return enabled;
+  }
+
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
   }
 
   /**

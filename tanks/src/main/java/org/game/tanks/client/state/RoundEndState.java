@@ -30,4 +30,16 @@ public class RoundEndState extends ClientState {
     g.setColor(Color.WHITE);
     g.drawString("RoundEndState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
+
+  @Override
+  public void onStateBegin() {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void onStateEnd() {
+    // TODO Auto-generated method stub
+
+  }
 }

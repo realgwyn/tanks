@@ -108,9 +108,9 @@ public class GameEngine extends Loop {
       throw new UnsupportedOperationException("Flow error - its prohibited for state to change to itself");
     }
 
-    currentState.onStateEnd();
+    currentState.stateEnd();
     currentState = state;
-    currentState.onStateBegin();
+    currentState.stateBegin();
   }
 
   public ClientState getCurrentState() {

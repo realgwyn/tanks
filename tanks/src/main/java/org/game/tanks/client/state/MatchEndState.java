@@ -45,4 +45,10 @@ public class MatchEndState extends ClientState {
     guiManager.hideAllComponents();
   }
 
+  @Override
+  public void onStateBegin() {
+    // TODO Auto-generated method stub
+
+  }
+
 }

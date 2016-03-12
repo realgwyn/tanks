@@ -21,7 +21,9 @@ public class MessageSendingThread implements Runnable {
   ServerNetworkAdapter networkAdapter;
 
   public synchronized void start() {
-    new Thread(this).start();
+    Thread thread = new Thread(this);
+    thread.setName("MessageSendingThread");
+    thread.start();
   }
 
   @Override

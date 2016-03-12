@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @SuppressWarnings("serial")
-public class CreateGameMenuWindow extends GuiComponent {
+public class CreateLanGameMenuWindow extends GuiComponent {
 
   @PostConstruct
   public void initialize() {

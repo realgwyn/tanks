@@ -25,7 +25,7 @@ public class Game {
     } catch (Exception e) {
       e.printStackTrace();
 
-      // XXX: game crashed, ask user if he wants to send crash report (email)
+      // TODO: game crashed, ask user if he wants to send crash report (email)
       ctx.close();
       ctx.destroy();
       System.exit(-1);

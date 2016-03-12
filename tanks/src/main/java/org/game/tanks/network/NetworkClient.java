@@ -1,6 +1,7 @@
 package org.game.tanks.network;
 
 import java.io.IOException;
+import java.net.InetAddress;
 
 import org.game.tanks.network.model.NetworkDataModel;
 import org.game.tanks.network.model.TCPMessage;
@@ -10,6 +11,7 @@ import org.game.tanks.network.model.udp.GameSnapshot;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.FrameworkMessage.KeepAlive;
 import com.esotericsoftware.kryonet.Listener;
 
 public class NetworkClient {
@@ -26,10 +28,18 @@ public class NetworkClient {
     initActions();
   }
 
+  public InetAddress discoverLanServer(int serverUdpPort, int timeoutMillis) {
+    return client.discoverHost(serverUdpPort, timeoutMillis);
+  }
+
   public void connect(ConnectionAddress addr) throws NetworkException {
     client.start();
     try {
-      client.connect(5000, addr.getIp(), addr.getTcpPort(), addr.getUdpPort());
+      if (addr.getUdpPort() <= 0) {
+        client.connect(5000, addr.getIp(), addr.getTcpPort());
+      } else {
+        client.connect(5000, addr.getIp(), addr.getTcpPort(), addr.getUdpPort());
+      }
       serverAddress = addr;
       connected = true;
     } catch (IOException e) {
@@ -48,6 +58,10 @@ public class NetworkClient {
           udpListener.receivedUDPMessage(conn, (UDPMessage) object);
         } else if (object instanceof TCPMessage) {
           tcpListener.receivedTCPMessage(conn, (TCPMessage) object);
+        } else if (object instanceof KeepAlive) {
+          // Ignore KeepAlive messages
+        } else {
+          System.out.println("Received unknown message " + object.getClass().getSimpleName());
         }
       }
     });
@@ -73,6 +87,10 @@ public class NetworkClient {
     client.stop();
     serverAddress = null;
     connected = false;
+  }
+
+  public InetAddress discoverHost(int udpPort, int timeoutMillis) {
+    return client.discoverHost(udpPort, timeoutMillis);
   }
 
   public boolean isConnected() {
@@ -117,6 +135,10 @@ public class NetworkClient {
     client.sendTCPRequest(msg);
 
     Thread.sleep(20000);
+  }
+
+  public Client getClient() {
+    return client;
   }
 
 }

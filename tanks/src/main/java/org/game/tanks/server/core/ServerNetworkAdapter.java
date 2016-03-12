@@ -54,6 +54,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   public void setServer(NetworkServer server) {
     this.server = server;
+    this.server.setConnectionListener(this);
     this.server.setTCPListener(this);
     this.server.setUDPListener(this);
   }
@@ -135,7 +136,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   @Override
   public void receivedUDPMessage(Connection conn, UDPMessage message) {
-    System.out.println("<- UDP(id:" + conn.getID() + ")" + message.toString());
+    logger.debug("<- UDP(id:" + conn.getID() + ")" + message.toString());
     if (ctx.getNewRoundFlipFlag() == message.getNewRoundFlipFlag()) {
       if (message instanceof PlayerSnapshot) {
         bus.getIncomingPlayerSnapshots().add((PlayerSnapshot) message);
@@ -143,6 +144,21 @@ public class ServerNetworkAdapter extends NetworkAdapter {
         throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
       }
     }
+  }
+
+  @Override
+  public void connected(Connection c) {
+    ConnectionInfo connectionInfo = new ConnectionInfo()
+        .setConnectionId(c.getID())
+        .setNetworkAddress(c.getRemoteAddressTCP().getHostName());
+    logger.debug("Incomming Player " + connectionInfo);
+    server.getIncommingConnections().add(connectionInfo);
+  }
+
+  @Override
+  public void disconnected(Connection c) {
+    logger.debug("Leaving Player (id:" + c.getID() + ")");
+    server.getClosedConnections().add(c.getID());
   }
 
   public boolean hasNewConnections() {

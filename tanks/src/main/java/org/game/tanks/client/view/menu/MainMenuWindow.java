@@ -48,7 +48,6 @@ public class MainMenuWindow extends GuiComponent {
 
   @PostConstruct
   public void initialize() {
-
     initComponents();
     initActions();
   }
@@ -67,7 +66,7 @@ public class MainMenuWindow extends GuiComponent {
     add(btnCreateLanGame, 40, 120);
     btnOptions = new Button("O - Options", GameStyle.FONT_MENU_BUTTON);
     add(btnOptions, 40, 140);
-    btnExit = new Button("ESCAPE - Exit", GameStyle.FONT_MENU_BUTTON);
+    btnExit = new Button("ESC - Exit", GameStyle.FONT_MENU_BUTTON);
     add(btnExit, 40, 160);
   }
 
@@ -78,16 +77,16 @@ public class MainMenuWindow extends GuiComponent {
         engine.setState(findGameMenuState);
       }
     });
-    btnCreateLanGame.setMouseActionListener(new MouseAdapter() {
+    btnJoinLanGame.setMouseActionListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
-        engine.setState(createGameMenuState);
+        engine.setState(joinLanGameMenuState);
       }
     });
     btnCreateLanGame.setMouseActionListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
-        engine.setState(joinLanGameMenuState);
+        engine.setState(createGameMenuState);
       }
     });
     btnOptions.setMouseActionListener(new MouseAdapter() {
