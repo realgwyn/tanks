@@ -17,6 +17,7 @@ public class Button extends GuiComponent {
   private Color borderColor;
   private Color disabledColor;
   private Color hoveringColor;
+  private Label label;
 
   public Button(String text, Color color) {
     this(new Label(text, color), color, DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -29,8 +30,9 @@ public class Button extends GuiComponent {
   public Button(Label label, Color color, int width, int height) {
     this.width = width;
     this.height = height;
-    label.setForegroundColor(color);
-    add(label, labelOffsetX, labelOffsetY);
+    this.label = label;
+    this.label.setForegroundColor(color);
+    add(this.label, labelOffsetX, labelOffsetY);
     this.borderColor = color;
     this.hoveringColor = color.brighter();
     this.disabledColor = color.darker();
@@ -40,10 +42,13 @@ public class Button extends GuiComponent {
   public void paintComponent(Graphics g) {
     if (!enabled) {
       g.setColor(disabledColor);
+      label.setForegroundColor(disabledColor);
     } else if (hovering) {
       g.setColor(hoveringColor);
+      label.setForegroundColor(hoveringColor);
     } else {
       g.setColor(borderColor);
+      label.setForegroundColor(borderColor);
     }
     if (focused) {
     }
