@@ -7,6 +7,8 @@ import org.game.tanks.network.model.Command;
  */
 public class GiveModifier extends Command {
 
+  private static final long serialVersionUID = 5687839991769109196L;
+
   public enum ModifierType {
     VELOCITY, ACCELERATION, FRICTION
   }
@@ -14,6 +16,10 @@ public class GiveModifier extends Command {
   private int playerId;
   private ModifierType type;
   private double value;
+
+  public GiveModifier() {
+
+  }
 
   public int getPlayerId() {
     return playerId;

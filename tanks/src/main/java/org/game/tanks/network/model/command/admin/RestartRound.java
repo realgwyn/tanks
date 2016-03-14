@@ -6,4 +6,8 @@ public class RestartRound extends AdminCommand {
 
   private static final long serialVersionUID = -6862432802515448561L;
 
+  public RestartRound() {
+
+  }
+
 }

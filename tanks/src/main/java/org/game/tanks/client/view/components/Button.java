@@ -18,13 +18,14 @@ public class Button extends GuiComponent {
   private Color disabledColor;
   private Color hoveringColor;
   private Label label;
+  private boolean borderEnabled = true;
 
   public Button(String text, Color color) {
     this(new Label(text, color), color, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   }
 
   public Button(String text, Font font) {
-    this(new Label(text, font), GameStyle.ORANGE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    this(new Label(text, font), GameStyle.WHITE, DEFAULT_WIDTH, DEFAULT_HEIGHT);
   }
 
   public Button(Label label, Color color, int width, int height) {
@@ -34,8 +35,8 @@ public class Button extends GuiComponent {
     this.label.setForegroundColor(color);
     add(this.label, labelOffsetX, labelOffsetY);
     this.borderColor = color;
-    this.hoveringColor = color.brighter();
-    this.disabledColor = color.darker();
+    this.hoveringColor = GameStyle.GREEN;
+    this.disabledColor = GameStyle.GRAY;
   }
 
   @Override
@@ -50,10 +51,14 @@ public class Button extends GuiComponent {
       g.setColor(borderColor);
       label.setForegroundColor(borderColor);
     }
-    if (focused) {
+    if (borderEnabled) {
+      g.drawRect(x, y, width, height);
     }
-    g.drawRect(x, y, width, height);
     super.paintComponent(g);
+  }
+
+  public void setBorderEnabled(boolean borderEnabled) {
+    this.borderEnabled = borderEnabled;
   }
 
 }

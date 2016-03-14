@@ -11,6 +11,10 @@ public class MapInfoData extends TCPMessage {
   private int height;
   private MapObject[] objects;
 
+  public MapInfoData() {
+
+  }
+
   public String getMapName() {
     return mapName;
   }

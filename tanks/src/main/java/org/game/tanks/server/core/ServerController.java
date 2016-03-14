@@ -27,7 +27,7 @@ public class ServerController {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   DatabaseService dbService;
   @Autowired
@@ -37,21 +37,24 @@ public class ServerController {
   @Autowired
   MapService mapService;
 
-  public void startServer(String serverName, String tcpPort, String udpPort) {
-    try {
-      ctx.setTcpPort(Integer.parseInt(tcpPort));
-      ctx.setUdpPort(Integer.parseInt(udpPort));
-    } catch (Exception e) {
-      serverWindow.setStatus("Invalid port");
-      e.printStackTrace();
-      return;
-    }
-
+  public void startServer(String serverName, int tcpPort, int udpPort) {
+    serverWindow.setStatus("Starting...");
+    ctx.setTcpPort(tcpPort);
+    ctx.setUdpPort(udpPort);
     engine.start();
+    while (engine.isReady()) {
+      // Wait until engine is not ready
+      try {
+        Thread.sleep(10);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
     serverWindow.setStatus("Running");
   }
 
   public void stopServer() {
+    serverWindow.setStatus("Stopping...");
     engine.stop();
     serverWindow.setStatus("Stopped");
   }

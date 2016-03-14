@@ -9,6 +9,10 @@ public class MoveEvent extends GameEvent {
   private int newX;
   private int newY;
 
+  public MoveEvent() {
+
+  }
+
   public int getPlayerId() {
     return playerId;
   }

@@ -7,6 +7,10 @@ public class ChangeNextMap extends AdminCommand {
   private static final long serialVersionUID = -6532318002778838074L;
   private String mapName;
 
+  public ChangeNextMap() {
+
+  }
+
   public String getMapName() {
     return mapName;
   }

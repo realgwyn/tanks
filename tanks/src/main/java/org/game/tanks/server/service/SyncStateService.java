@@ -3,7 +3,7 @@ package org.game.tanks.server.service;
 import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.game.tanks.network.model.command.ChangeState;
 import org.game.tanks.network.model.command.SyncTime;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.state.ServerState.ServerStateType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ public class SyncStateService {
   @Autowired
   ServerContext serverCtx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
 
   public SyncTime createNewSyncTimeEvent() {
     return new SyncTime()
@@ -29,7 +29,7 @@ public class SyncStateService {
     case MATCH_INIT:
       return ClientStateType.MATCH_INIT;
     case WAITING_FOR_PLAYERS:
-      return ClientStateType.JOINING_MATCH_STATE;
+      return ClientStateType.WAITING_FOR_PLAYERS;
     case ROUND_START:
       return ClientStateType.ROUND_START;
     case ROUND:

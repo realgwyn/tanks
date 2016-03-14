@@ -13,6 +13,10 @@ public class GameInitData extends Command {
   private MapInfoData currentMap;
   private MapInfoData nextMap;
 
+  public GameInitData() {
+
+  }
+
   public List<PlayerInfo> getPlayersInfo() {
     return playersInfo;
   }

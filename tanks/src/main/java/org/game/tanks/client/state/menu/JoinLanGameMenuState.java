@@ -95,7 +95,7 @@ public class JoinLanGameMenuState extends ClientState {
   public void draw() {
     int[] pixels = display.getRasterPixels();
     for (int i = 0; i < pixels.length; i++) {
-      pixels[i] = animationCounter + i / 2;
+      pixels[i] = animationCounter + i / 3;
     }
   }
 

@@ -6,4 +6,8 @@ public class RestartMatch extends AdminCommand {
 
   private static final long serialVersionUID = -1979972091139432882L;
 
+  public RestartMatch() {
+
+  }
+
 }

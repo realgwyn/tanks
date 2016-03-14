@@ -16,7 +16,7 @@ public class MessageSendingThread implements Runnable {
   private boolean running = true;
 
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   ServerNetworkAdapter networkAdapter;
 

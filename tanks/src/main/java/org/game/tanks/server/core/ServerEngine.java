@@ -43,6 +43,8 @@ public class ServerEngine extends Loop {
   @Autowired
   Config config;
 
+  private boolean ready;
+
   private NetworkServer server;
 
   @PostConstruct
@@ -89,6 +91,7 @@ public class ServerEngine extends Loop {
     playerConnectionThread.start();
 
     logger.debug("Server running.");
+    ready = true;
   }
 
   @Override
@@ -99,6 +102,7 @@ public class ServerEngine extends Loop {
     messageSendingThread.finish();
     playerConnectionThread.finish();
     logger.debug("Server stopped.");
+    ready = false;
   }
 
   @Override
@@ -122,6 +126,10 @@ public class ServerEngine extends Loop {
 
   public ServerState getState() {
     return currentState;
+  }
+
+  public boolean isReady() {
+    return ready;
   }
 
 }

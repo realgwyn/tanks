@@ -31,7 +31,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   Config config;
   @Autowired
@@ -41,11 +41,13 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   private boolean packetValidatorEnabled;
   private boolean offlineDebugModeEnabled;
+  private boolean networkDebugModeEnabled;
 
   @PostConstruct
   public void init() {
     packetValidatorEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_PACKET_VALIDATION);
     offlineDebugModeEnabled = config.getPropertyBoolean(Config.SERVER_OFFLINE_DEBUG_MODE);
+    networkDebugModeEnabled = config.getPropertyBoolean(Config.SERVER_ENABLE_NETWORK_DEBUG_MODE);
   }
 
   public NetworkServer getServer() {
@@ -63,48 +65,45 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     if (offlineDebugModeEnabled) {
       logger.debug("-> TCPbroadcast " + msg.toString());
     } else {
+      if (networkDebugModeEnabled) {
+        logger.debug("-> TCPbroadcast " + msg.toString());
+      }
       server.sendToAllTCP(msg);
     }
   }
 
   public void sendToAllUDP(UDPMessage msg) {
-    if (offlineDebugModeEnabled) {
-      // logger.debug("-> UDPbroadcast" + msg.toString());
-    } else {
-      server.sendToAllUDP(msg);
-    }
+    server.sendToAllUDP(msg);
   }
 
   public void sendToAllExceptTCP(int connectionID, TCPMessage msg) {
     if (offlineDebugModeEnabled) {
       logger.debug("-> TCPxor(id:" + connectionID + ")" + msg.toString());
     } else {
+      if (networkDebugModeEnabled) {
+        logger.debug("-> TCPxor(id:" + connectionID + ")" + msg.toString());
+      }
       server.sendToAllExceptTCP(connectionID, msg);
     }
   }
 
   public void sendToAllExceptUDP(int connectionID, UDPMessage msg) {
-    if (offlineDebugModeEnabled) {
-      logger.debug("-> UDPxor(id:" + connectionID + ")" + msg.toString());
-    } else {
-      server.sendToAllExceptUDP(connectionID, msg);
-    }
+    server.sendToAllExceptUDP(connectionID, msg);
   }
 
   public void sendTCP(int connectionID, TCPMessage msg) {
     if (offlineDebugModeEnabled) {
       logger.debug("-> TCP(id:" + connectionID + ")" + msg.toString());
     } else {
+      if (networkDebugModeEnabled) {
+        logger.debug("-> TCP(id:" + connectionID + ")" + msg.toString());
+      }
       server.sendTCP(connectionID, msg);
     }
   }
 
   public void sendUDP(int connectionID, TCPMessage msg) {
-    if (offlineDebugModeEnabled) {
-      logger.debug("-> UDP(id:" + connectionID + ")" + msg.toString());
-    } else {
-      server.sendUDP(connectionID, msg);
-    }
+    server.sendUDP(connectionID, msg);
   }
 
   @Override
@@ -112,6 +111,9 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     if (offlineDebugModeEnabled) {
       logger.debug("<- TCP(id:" + conn.getID() + ")" + message.toString());
     } else {
+      if (networkDebugModeEnabled) {
+        logger.debug("<- TCP(id:" + conn.getID() + ")" + message.toString());
+      }
       if (packetValidatorEnabled) {
         validateAndProcessIncomingMessage(conn, message);
       } else {
@@ -138,7 +140,6 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   @Override
   public void receivedUDPMessage(Connection conn, UDPMessage message) {
-    logger.debug("<- UDP(id:" + conn.getID() + ")" + message.toString());
     if (ctx.getNewRoundFlipFlag() == message.getNewRoundFlipFlag()) {
       if (message instanceof PlayerSnapshot) {
         bus.getIncomingPlayerSnapshots().add((PlayerSnapshot) message);
@@ -194,9 +195,13 @@ public class ServerNetworkAdapter extends NetworkAdapter {
         bus.getIncomingGameEvents().add(gameEvent);
       }
     } else if (message instanceof Command) {
-      Command command = (Command) message;
-      if (networkMessageValidator.isValid(conn, command)) {
-        bus.getIncomingCommands().add(command);
+      if (message instanceof Handshake) {
+        bus.getIncomingHandshakes().add((Handshake) message);
+      } else {
+        Command command = (Command) message;
+        if (networkMessageValidator.isValid(conn, command)) {
+          bus.getIncomingCommands().add(command);
+        }
       }
     } else if (message instanceof CommunicationMessage) {
       CommunicationMessage comMsg = (CommunicationMessage) message;

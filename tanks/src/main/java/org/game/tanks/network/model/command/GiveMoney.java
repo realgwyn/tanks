@@ -7,6 +7,10 @@ public class GiveMoney extends Command {
   private static final long serialVersionUID = 4657307547233722583L;
   private int value;
 
+  public GiveMoney() {
+
+  }
+
   public int getValue() {
     return value;
   }

@@ -7,6 +7,10 @@ public class Disconnect extends Command {
   private static final long serialVersionUID = -4729948455525322010L;
   private int playerId;
 
+  public Disconnect() {
+
+  }
+
   public int getPlayerId() {
     return playerId;
   }

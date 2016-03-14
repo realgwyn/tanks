@@ -12,7 +12,7 @@ import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.Latency;
 import org.game.tanks.network.model.command.Ping;
 import org.game.tanks.network.model.command.PlayersLatency;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class GameCommandHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   SchedulerContext schedulerCtx;
   @Autowired

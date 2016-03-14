@@ -9,6 +9,10 @@ public class SyncTime extends Command {
   private long matchEndTime;
   private long roundEndTime;
 
+  public SyncTime() {
+
+  }
+
   public long getMatchStartTime() {
     return matchStartTime;
   }

@@ -13,6 +13,10 @@ public class GiveItem extends Command {
   private ItemType type;
   private int value;
 
+  public GiveItem() {
+
+  }
+
   public ItemType getType() {
     return type;
   }

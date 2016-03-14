@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.client.core.ClientContext;
+import org.game.tanks.client.core.ClientEventBus;
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.core.GuiManager;
@@ -36,11 +37,13 @@ public class MatchInitState extends ClientState {
   @Autowired
   GameEngine engine;
   @Autowired
-  JoiningMatchState waitingForPlayersState;
+  WaitingForPlayersState waitingForPlayersState;
   @Autowired
   MessageWindow messageWindow;
   @Autowired
   MainMenuState mainMenuState;
+  @Autowired
+  ClientEventBus bus;
 
   public MatchInitState() {
     super(ClientStateType.MATCH_INIT);
@@ -52,6 +55,8 @@ public class MatchInitState extends ClientState {
 
   @Override
   public void onStateBegin() {
+    bus.flushEvents();
+    ctx.reinitialize();
     guiManager.showComponent(matchInitWindow);
     try {
       serverConnectionService.connectToServer(ctx.getServerAddress());
@@ -76,7 +81,7 @@ public class MatchInitState extends ClientState {
     g.setColor(Color.BLACK);
     g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
     g.setColor(Color.WHITE);
-    g.drawString("MatchInitState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+    g.drawString("INITIALIZING MATCH", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
   }
 
   @Override

@@ -1,6 +1,6 @@
 package org.game.tanks.server.core.process;
 
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class PlayerConnectionHandler extends ScheduledProcess {
 
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   SchedulerContext schedulerCtx;
 

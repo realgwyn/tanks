@@ -9,6 +9,10 @@ public class PlayersLatency extends Command {
   private static final long serialVersionUID = -8531753145720959806L;
   private Latency[] playersLatency;
 
+  public PlayersLatency() {
+
+  }
+
   public Latency[] getPlayersLatency() {
     return playersLatency;
   }

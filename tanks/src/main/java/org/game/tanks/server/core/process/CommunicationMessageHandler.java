@@ -3,7 +3,7 @@ package org.game.tanks.server.core.process;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.message.ChatMessage;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   Config config;
 

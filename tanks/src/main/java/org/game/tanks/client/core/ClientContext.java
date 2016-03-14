@@ -21,6 +21,8 @@ public class ClientContext {
   @Autowired
   Config cfg;
 
+  private boolean isHostingGame;
+
   private long serverTimeOffset;// XXX: is this really needed anywhere?
   private PlayerGameModel player;
 
@@ -165,6 +167,14 @@ public class ClientContext {
 
   public PlayerGameModel getPlayer() {
     return player;
+  }
+
+  public boolean isHostingGame() {
+    return isHostingGame;
+  }
+
+  public void setHostingGame(boolean isHostingGame) {
+    this.isHostingGame = isHostingGame;
   }
 
 }

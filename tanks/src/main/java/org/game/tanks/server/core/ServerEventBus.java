@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  * @author rafal.kojta
  */
 @Component
-public class EventBus {
+public class ServerEventBus {
 
   private Queue<Handshake> incomingHandshakes;
   private Queue<PlayerServerModel> incomingPlayers;

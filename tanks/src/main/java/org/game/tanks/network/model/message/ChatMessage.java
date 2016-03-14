@@ -7,6 +7,10 @@ public class ChatMessage extends CommunicationMessage {
   private static final long serialVersionUID = 4963779786005611800L;
   private String playerIdFrom;
 
+  public ChatMessage() {
+
+  }
+
   public String getPlayerIdFrom() {
     return playerIdFrom;
   }

@@ -8,6 +8,10 @@ public class KickPlayer extends AdminCommand {
   private int playerId;
   private String reason;
 
+  public KickPlayer() {
+
+  }
+
   public int getPlayerId() {
     return playerId;
   }

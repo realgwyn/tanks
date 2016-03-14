@@ -1,12 +1,8 @@
 package org.game.tanks.client.state.menu;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.state.ClientState;
-import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.game.tanks.client.view.menu.FindGameOnlineMenuWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +17,8 @@ public class FindGameOnlineMenuState extends ClientState {
   @Autowired
   FindGameOnlineMenuWindow findGameMenuWindow;
 
+  private int animationCounter;
+
   public FindGameOnlineMenuState() {
     super(ClientStateType.FIND_GAME_ONLINE_MENU);
   }
@@ -32,16 +30,15 @@ public class FindGameOnlineMenuState extends ClientState {
 
   @Override
   public void update() {
-
+    animationCounter++;
   }
 
   @Override
   public void draw() {
-    Graphics g = display.getGraphics();
-    g.setColor(Color.BLACK);
-    g.fillRect(display.WIDTH / 2 - 80, display.HEIGHT / 2 - 20, 160, 40);
-    g.setColor(Color.WHITE);
-    g.drawString("FindGameMenuState", display.WIDTH / 2 - 75, display.HEIGHT / 2 + 4);
+    int[] pixels = display.getRasterPixels();
+    for (int i = 0; i < pixels.length; i++) {
+      pixels[i] = (int) (i * -1 * animationCounter * 1.34);
+    }
   }
 
   @Override

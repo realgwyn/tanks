@@ -8,6 +8,10 @@ public class Handshake extends Command {
   private long playerConnectionId;
   private String playerName;
 
+  public Handshake() {
+
+  }
+
   public long getPlayerConnectionId() {
     return playerConnectionId;
   }
@@ -24,6 +28,11 @@ public class Handshake extends Command {
   public Handshake setPlayerName(String playerName) {
     this.playerName = playerName;
     return this;
+  }
+
+  @Override
+  public String toString() {
+    return "Handshake [playerConnectionId=" + playerConnectionId + ", playerName=" + playerName + "]";
   }
 
 }

@@ -39,6 +39,7 @@ public class RoundStartServerState extends ServerState {
 
   @Override
   public void onStateBegin() {
+
   }
 
   @Override

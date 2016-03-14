@@ -10,7 +10,7 @@ import org.game.tanks.network.model.command.admin.ChangeNextMap;
 import org.game.tanks.network.model.command.admin.KickPlayer;
 import org.game.tanks.network.model.command.admin.RestartMatch;
 import org.game.tanks.network.model.command.admin.SystemCommand;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.core.PlayerConnectionThread;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerEngine;
@@ -28,7 +28,7 @@ public class AdminCommandHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   TaskManager taskManager;
   @Autowired

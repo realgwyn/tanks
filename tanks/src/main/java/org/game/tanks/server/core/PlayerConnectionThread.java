@@ -28,7 +28,7 @@ public class PlayerConnectionThread implements Runnable {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   ServerNetworkAdapter networkAdapter;
   @Autowired

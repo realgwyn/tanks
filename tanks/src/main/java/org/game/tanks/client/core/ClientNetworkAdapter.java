@@ -37,6 +37,7 @@ public class ClientNetworkAdapter extends NetworkAdapter {
   private int defaultServerUdpPort;
   private int defaultServerTcpPort;
   private boolean offlineDebugModeEnabled;
+  private boolean networkDebugModeEnabled;
   private boolean connected;
 
   @PostConstruct
@@ -44,6 +45,7 @@ public class ClientNetworkAdapter extends NetworkAdapter {
     defaultServerTcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT);
     defaultServerUdpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT);
     offlineDebugModeEnabled = cfg.getPropertyBoolean(Config.SERVER_OFFLINE_DEBUG_MODE);
+    networkDebugModeEnabled = cfg.getPropertyBoolean(Config.GAME_ENABLE_NETWORK_DEBUG_MODE);
   }
 
   public void setClient(NetworkClient client) {
@@ -73,49 +75,72 @@ public class ClientNetworkAdapter extends NetworkAdapter {
   }
 
   public InetAddress discoverLanHost(int udpPort, int timeoutMillis) {
+    if (offlineDebugModeEnabled) {
+      return null;
+    }
     return client.discoverHost(udpPort, timeoutMillis);
   }
 
   public void sendTCP(TCPMessage msg) {
-    client.sendTCP(msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> TCP: " + msg.toString());
+    } else {
+      if (networkDebugModeEnabled) {
+        logger.debug("-> TCP: " + msg.toString());
+      }
+      client.sendTCP(msg);
+    }
   }
 
   public void sendUDP(UDPMessage msg) {
-    client.sendUDP(msg);
+    if (offlineDebugModeEnabled) {
+      logger.debug("-> UDP: " + msg.toString());
+    } else {
+      client.sendUDP(msg);
+    }
   }
 
   @Override
   public void receivedUDPMessage(Connection conn, UDPMessage message) {
-    if (message instanceof GameSnapshot) {
-      bus.getIncomingGameSnapshots().add((GameSnapshot) message);
+    if (offlineDebugModeEnabled) {
+      logger.debug("<- UDP: " + message.toString());
     } else {
-      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+      if (message instanceof GameSnapshot) {
+        bus.getIncomingGameSnapshots().add((GameSnapshot) message);
+      } else {
+        throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+      }
     }
   }
 
   @Override
   public void receivedTCPMessage(Connection conn, TCPMessage message) {
-    if (message instanceof GameEvent) {
-      bus.getIncomingGameEvents().add((GameEvent) message);
-    } else if (message instanceof Command) {
-      bus.getIncomingCommands().add((Command) message);
-    } else if (message instanceof CommunicationMessage) {
-      bus.getIncomingMessages().add((CommunicationMessage) message);
+    if (offlineDebugModeEnabled) {
+      logger.debug("<- TCP: " + message.toString());
     } else {
-      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+      if (networkDebugModeEnabled) {
+        logger.debug("<- TCP: " + message.toString());
+      }
+      if (message instanceof GameEvent) {
+        bus.getIncomingGameEvents().add((GameEvent) message);
+      } else if (message instanceof Command) {
+        bus.getIncomingCommands().add((Command) message);
+      } else if (message instanceof CommunicationMessage) {
+        bus.getIncomingMessages().add((CommunicationMessage) message);
+      } else {
+        throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+      }
     }
   }
 
   @Override
   public void connected(Connection c) {
-    // TODO Auto-generated method stub
     logger.debug("Connected to Server " + c.getRemoteAddressTCP());
     connected = true;
   }
 
   @Override
   public void disconnected(Connection c) {
-    // TODO Auto-generated method stub
     logger.debug("Disconnected from Server " + c.getRemoteAddressTCP());
     connected = false;
   }

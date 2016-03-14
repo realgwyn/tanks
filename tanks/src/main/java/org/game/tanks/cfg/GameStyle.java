@@ -30,6 +30,7 @@ public class GameStyle {
   public static Color GREEN = new Color(34, 177, 76);
   public static Color BLUE = new Color(0, 162, 232);
   public static Color ORANGE = new Color(255, 127, 39);
+  public static Color GRAY = new Color(144, 144, 144);
 
   static {
     try {

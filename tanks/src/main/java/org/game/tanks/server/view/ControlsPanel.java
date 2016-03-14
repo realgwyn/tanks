@@ -91,7 +91,19 @@ public class ControlsPanel extends JPanel {
     btnStart.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        serverController.startServer(txtServerName.getText(), txtTcpPort.getText(), txtUdpPort.getText());
+        int tcp;
+        int udp;
+        try {
+          tcp = Integer.parseInt(txtTcpPort.getText());
+          udp = Integer.parseInt(txtUdpPort.getText());
+        } catch (Exception ex) {
+          System.out.println("Invalid port value " + ex.getMessage());
+          ex.printStackTrace();
+          System.out.println();
+          return;
+        }
+
+        serverController.startServer(txtServerName.getText(), tcp, udp);
       }
     });
 

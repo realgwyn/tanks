@@ -9,4 +9,8 @@ public class GameSnapshot extends UDPMessage {
   public boolean sequenceFlipFlag;
   public PlayerPosition[] positions;
 
+  public GameSnapshot() {
+
+  }
+
 }

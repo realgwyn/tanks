@@ -54,17 +54,22 @@ public class MainMenuWindow extends GuiComponent {
     height = cfg.getPropertyInt(Config.GAME_RESOLUTION_HEIGHT);
     Label label = new Label("Welcome to the Game", GameStyle.FONT_BIG_MESSAGE);
     label.setHorizontalAlignment(HorizontalAlignment.CENTER);
-    add(label, width / 2, 60);
+    add(label, width / 2, 20);
     btnFindGameOnline = new Button("F - Find Game Online", GameStyle.FONT_MENU_BUTTON);
-    add(btnFindGameOnline, 40, 80);
+    btnFindGameOnline.setBorderEnabled(false);
+    add(btnFindGameOnline, 20, 80);
     btnJoinLanGame = new Button("J - Join LAN Game", GameStyle.FONT_MENU_BUTTON);
-    add(btnJoinLanGame, 40, 100);
+    btnJoinLanGame.setBorderEnabled(false);
+    add(btnJoinLanGame, 20, 100);
     btnCreateLanGame = new Button("C - Create LAN Game", GameStyle.FONT_MENU_BUTTON);
-    add(btnCreateLanGame, 40, 120);
+    btnCreateLanGame.setBorderEnabled(false);
+    add(btnCreateLanGame, 20, 120);
     btnOptions = new Button("O - Options", GameStyle.FONT_MENU_BUTTON);
-    add(btnOptions, 40, 140);
+    btnOptions.setBorderEnabled(false);
+    add(btnOptions, 20, 140);
     btnExit = new Button("ESC - Exit", GameStyle.FONT_MENU_BUTTON);
-    add(btnExit, 40, 160);
+    btnExit.setBorderEnabled(false);
+    add(btnExit, 20, 180);
   }
 
   public void initActions() {

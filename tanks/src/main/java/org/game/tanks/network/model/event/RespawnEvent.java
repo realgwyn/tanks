@@ -9,6 +9,10 @@ public class RespawnEvent extends GameEvent {
   private int posX;
   private int posY;
 
+  public RespawnEvent() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

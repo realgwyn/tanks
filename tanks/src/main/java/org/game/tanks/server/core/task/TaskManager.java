@@ -13,7 +13,7 @@ import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.message.ServerMessage;
 import org.game.tanks.network.model.message.ServerMessage.ServerMessageType;
 import org.game.tanks.security.AuthenticationService;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.core.MessageSendingThread;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerNetworkAdapter;
@@ -35,7 +35,7 @@ public class TaskManager {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   AuthenticationService authService;
   @Autowired

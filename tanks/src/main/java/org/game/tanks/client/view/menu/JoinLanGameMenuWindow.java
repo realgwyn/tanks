@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 
 import javax.annotation.PostConstruct;
 
+import org.game.tanks.cfg.Config;
 import org.game.tanks.cfg.GameStyle;
 import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.state.MatchInitState;
@@ -28,6 +29,8 @@ public class JoinLanGameMenuWindow extends GuiComponent {
   MainMenuState mainMenuState;
   @Autowired
   MatchInitState matchInitState;
+  @Autowired
+  Config cfg;
 
   private Button btnJoinGame;
   private Button btnCancel;
@@ -43,19 +46,23 @@ public class JoinLanGameMenuWindow extends GuiComponent {
   }
 
   private void initComponents() {
+    width = cfg.getPropertyInt(Config.GAME_RESOLUTION_WIDTH);
+    height = cfg.getPropertyInt(Config.GAME_RESOLUTION_HEIGHT);
     Label label = new Label("Join Local Area Network Game", GameStyle.FONT_BIG_MESSAGE);
     label.setHorizontalAlignment(HorizontalAlignment.CENTER);
-    add(label, width / 2, 60);
+    add(label, width / 2, 20);
     lblServerStatus = new Label("Server: ", GameStyle.FONT_MENU_BUTTON);
-    add(lblServerStatus, 40, 80);
+    add(lblServerStatus, 20, 80);
     lblServerStatusValue = new Label("Offline", GameStyle.FONT_MENU_BUTTON);
     lblServerStatusValue.setForegroundColor(GameStyle.RED);
-    add(lblServerStatusValue, 40, 100);
+    add(lblServerStatusValue, 100, 80);
     btnJoinGame = new Button("ENTER - Join LAN Game", GameStyle.FONT_MENU_BUTTON);
-    add(btnJoinGame, 40, 100);
+    btnJoinGame.setBorderEnabled(false);
+    add(btnJoinGame, 20, 100);
     btnJoinGame.setEnabled(false);
     btnCancel = new Button("ESC - Cancel", GameStyle.FONT_MENU_BUTTON);
-    add(btnCancel, 40, 120);
+    btnCancel.setBorderEnabled(false);
+    add(btnCancel, 20, height - 40);
 
   }
 
@@ -72,7 +79,6 @@ public class JoinLanGameMenuWindow extends GuiComponent {
         engine.setState(mainMenuState);
       }
     });
-
   }
 
   @Override

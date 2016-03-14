@@ -8,6 +8,10 @@ public class ChangeName extends Command {
   private long playerId;
   private String newPlayerName;
 
+  public ChangeName() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

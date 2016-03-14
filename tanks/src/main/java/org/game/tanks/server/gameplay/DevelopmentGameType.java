@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TeamDeathmatch extends GameType {
+public class DevelopmentGameType extends GameType {
 
   @Autowired
   ServerContext serverContext;
@@ -45,17 +45,6 @@ public class TeamDeathmatch extends GameType {
 
   @Override
   public boolean roundObjectivesCompleted() {
-
-    if (allTeamMembersDead(TEAM_A)) {
-      winningTeamNumber = TEAM_B;
-      return true;
-    }
-
-    if (allTeamMembersDead(TEAM_B)) {
-      winningTeamNumber = TEAM_A;
-      return true;
-    }
-
     return false;
   }
 
@@ -89,19 +78,8 @@ public class TeamDeathmatch extends GameType {
     }
   }
 
-  private boolean allTeamMembersDead(int teamNumber) {
-    for (PlayerServerModel player : schedulerContext.getPlayers()) {
-      if (player.getTeam() == teamNumber && player.getState() == PlayerState.ALIVE) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   @Override
   public boolean playersAreReadyForNewMatch() {
-    // TODO both teams has players
     return true;
   }
-
 }

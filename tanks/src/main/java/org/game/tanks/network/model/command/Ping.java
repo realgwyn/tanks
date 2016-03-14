@@ -8,6 +8,10 @@ public class Ping extends Command {
   private long playerId;
   private long sentTime;
 
+  public Ping() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

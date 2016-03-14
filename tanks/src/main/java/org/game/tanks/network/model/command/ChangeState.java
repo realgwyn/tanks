@@ -9,6 +9,10 @@ public class ChangeState extends Command {
   private ClientStateType type;
   private long changeStateTime;
 
+  public ChangeState() {
+
+  }
+
   public ClientStateType getType() {
     return type;
   }

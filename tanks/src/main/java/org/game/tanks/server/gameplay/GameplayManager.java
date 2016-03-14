@@ -2,6 +2,7 @@ package org.game.tanks.server.gameplay;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.game.tanks.model.MapModel;
 import org.game.tanks.server.core.PlayerConnectionThread;
 import org.game.tanks.server.core.ServerContext;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GameplayManager {
+
+  private final static Logger logger = Logger.getLogger(GameplayManager.class);
 
   @Autowired
   ServerContext serverContext;

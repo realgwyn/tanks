@@ -5,7 +5,7 @@ import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.event.HitEvent;
 import org.game.tanks.network.model.event.KillEvent;
 import org.game.tanks.network.model.event.ShootEvent;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class GameEventHandler extends ScheduledProcess {
 
   @Autowired
-  private EventBus bus;
+  private ServerEventBus bus;
   @Autowired
   private SchedulerContext schedulerCtx;
 

@@ -38,6 +38,7 @@ public class Config {
   public final static String GAME_RESOLUTION_WIDTH = "game.resolution.width";
   public final static String GAME_RESOLUTION_HEIGHT = "game.resolution.height";
   public final static String GAME_RESOLUTION_SCALE = "game.resolution.scale";
+  public final static String GAME_ENABLE_NETWORK_DEBUG_MODE = "game.enableNetworkDebugMode";
   public final static String SERVER_MAX_PLAYERS = "server.maxPlayers";
   public final static String SERVER_MAX_PLAYERS_PER_TEAM = "server.maxPlayersPerTeam";
   public final static String SERVER_DEFAULT_TCP_PORT = "server.defaultTcpPort";
@@ -56,6 +57,7 @@ public class Config {
   public final static String SERVER_ROUND_START_FREEZE_TIME_SECONDS = "server.roundStartFreezeTimeDurationSeconds";
   public final static String SERVER_ENABLE_FRIENDLY_FIRE = "server.enableFriendlyfire";
   public final static String SERVER_OFFLINE_DEBUG_MODE = "server.enableOfflineDebugMode";
+  public final static String SERVER_ENABLE_NETWORK_DEBUG_MODE = "server.enableNetworkDebugMode";
 
   @Autowired
   private FileUtils fileUtils;

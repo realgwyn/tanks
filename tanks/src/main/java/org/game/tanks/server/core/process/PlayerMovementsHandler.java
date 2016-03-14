@@ -9,7 +9,7 @@ import org.game.tanks.model.PlayerModel;
 import org.game.tanks.network.model.udp.GameSnapshot;
 import org.game.tanks.network.model.udp.PlayerPosition;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
-import org.game.tanks.server.core.EventBus;
+import org.game.tanks.server.core.ServerEventBus;
 import org.game.tanks.server.core.ServerContext;
 import org.game.tanks.server.core.ServerEngine;
 import org.game.tanks.server.core.ServerNetworkAdapter;
@@ -27,7 +27,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   @Autowired
   ServerContext ctx;
   @Autowired
-  EventBus bus;
+  ServerEventBus bus;
   @Autowired
   SchedulerContext schedulerCtx;
   @Autowired

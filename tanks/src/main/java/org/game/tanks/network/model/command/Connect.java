@@ -8,6 +8,10 @@ public class Connect extends Command {
   private int playerId;
   private String playerName;
 
+  public Connect() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

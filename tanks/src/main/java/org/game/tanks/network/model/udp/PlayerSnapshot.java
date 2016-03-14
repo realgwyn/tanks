@@ -13,4 +13,8 @@ public class PlayerSnapshot extends UDPMessage {
   public float bodyAngle;
   public float towerAngle;
 
+  public PlayerSnapshot() {
+
+  }
+
 }

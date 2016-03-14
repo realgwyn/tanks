@@ -1,8 +1,11 @@
 package org.game.tanks.network.model;
 
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
+import org.game.tanks.client.state.ClientState.ClientStateType;
 import org.game.tanks.model.MapObject;
 import org.game.tanks.model.PlayerModel;
 import org.game.tanks.model.PlayerState;
@@ -105,6 +108,12 @@ public class NetworkDataModel {
     kryo.register(Polygon.class);
     kryo.register(PlayerState.class);
     kryo.register(PlayerModel.class);
+    kryo.register(MapObject[].class);
+    kryo.register(Rectangle.class);
+    kryo.register(ArrayList.class);
+    kryo.register(PlayerPosition[].class);
+    kryo.register(ClientStateType.class);
+    kryo.register(Latency[].class);
   }
 
 }

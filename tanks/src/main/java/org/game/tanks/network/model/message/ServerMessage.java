@@ -14,6 +14,10 @@ public class ServerMessage extends CommunicationMessage {
 
   private ServerMessageType type;
 
+  public ServerMessage() {
+    time = new Date();
+  }
+
   public ServerMessageType getType() {
     return type;
   }
@@ -21,10 +25,6 @@ public class ServerMessage extends CommunicationMessage {
   public ServerMessage setType(ServerMessageType type) {
     this.type = type;
     return this;
-  }
-
-  public ServerMessage() {
-    time = new Date();
   }
 
 }

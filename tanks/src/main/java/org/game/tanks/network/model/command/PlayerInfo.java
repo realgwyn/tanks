@@ -16,6 +16,9 @@ public class PlayerInfo implements Serializable {
   private int team;
   private float health;
 
+  public PlayerInfo() {
+  }
+
   public PlayerInfo(int playerId) {
     this.playerId = playerId;
   }

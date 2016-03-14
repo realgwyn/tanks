@@ -8,6 +8,10 @@ public class Latency extends Command {
   private long playerId;
   private int latency;
 
+  public Latency() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

@@ -10,4 +10,8 @@ public class PlayerPosition implements Serializable {
   public int y;
   public float bodyAngle;
   public float towerAngle;
+
+  public PlayerPosition() {
+
+  }
 }

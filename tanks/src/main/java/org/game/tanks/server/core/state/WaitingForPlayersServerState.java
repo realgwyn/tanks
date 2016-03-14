@@ -27,8 +27,6 @@ public class WaitingForPlayersServerState extends ServerState {
   @Autowired
   GameplayManager gameplayManager;
 
-  private long TIME_BEFORE_NEXT_STATE = 2000;
-
   public WaitingForPlayersServerState() {
     super(ServerStateType.WAITING_FOR_PLAYERS);
   }
@@ -40,15 +38,9 @@ public class WaitingForPlayersServerState extends ServerState {
   @Override
   public void update() {
     processScheduler.runProcesses();
-
-    // Wait until there are at least 2 players in the game
-    // XXX: uncomment this
     if (gameplayManager.playersAreReadyForNewMatch()) {
       engine.setState(nextState);
     }
-
-    // XXX:
-    // engine.setState(nextState);
   }
 
   @Override

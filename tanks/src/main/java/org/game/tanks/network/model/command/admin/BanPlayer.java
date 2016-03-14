@@ -10,6 +10,10 @@ public class BanPlayer extends AdminCommand {
     CHEATING, VERBAL_ABUSEMENT, ASSHOLE, OTHER
   }
 
+  public BanPlayer() {
+
+  }
+
   private int playerId;
   private long banTimeLenghtMinutes;
   private BanReason reason;

@@ -2,9 +2,10 @@ package org.game.tanks.server.core;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
+import org.game.tanks.server.gameplay.DevelopmentGameType;
 import org.game.tanks.server.gameplay.GameType;
-import org.game.tanks.server.gameplay.TeamDeathmatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ServerContext {
+
+  private final static Logger logger = Logger.getLogger(ServerContext.class);
 
   @Autowired
   Config cfg;
@@ -32,7 +35,9 @@ public class ServerContext {
   private long roundEndTime;
 
   @Autowired
-  private TeamDeathmatch defaultGameType;
+  // private TeamDeathmatch defaultGameType;
+  private DevelopmentGameType defaultGameType;
+
   private GameType gameType;
 
   /**
@@ -43,8 +48,8 @@ public class ServerContext {
     tcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT, 55555);
     udpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT, 55556);
     serverName = cfg.getProperty(Config.SERVER_DEFAULT_SERVER_NAME, "Tanks Game Server");
-    matchDurationSeconds = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION_SECONDS, 15);
-    roundDurationSeconds = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION_SECONDS, 5);
+    matchDurationSeconds = cfg.getPropertyInt(Config.SERVER_MATCH_DURATION_SECONDS, 600);
+    roundDurationSeconds = cfg.getPropertyInt(Config.SERVER_ROUND_DURATION_SECONDS, 60);
     gameType = defaultGameType;
   }
 
@@ -102,6 +107,7 @@ public class ServerContext {
   }
 
   public ServerContext setMatchStartTime(long matchStartTime) {
+    logger.debug("Setting Match Start Time at: " + matchStartTime);
     this.matchStartTime = matchStartTime;
     return this;
   }
@@ -111,6 +117,7 @@ public class ServerContext {
   }
 
   public ServerContext setMatchEndTime(long matchEndTime) {
+    logger.debug("Setting Match End Time at: " + matchEndTime);
     this.matchEndTime = matchEndTime;
     return this;
   }
@@ -124,6 +131,7 @@ public class ServerContext {
   }
 
   public ServerContext setRoundEndTime(long roundEndTime) {
+    logger.debug("Setting Round End Time at: " + matchEndTime);
     this.roundEndTime = roundEndTime;
     return this;
   }

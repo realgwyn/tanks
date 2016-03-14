@@ -7,6 +7,10 @@ public class ChangeMap extends AdminCommand {
   private static final long serialVersionUID = 5548555987457829502L;
   private String mapName;
 
+  public ChangeMap() {
+
+  }
+
   public String getMapName() {
     return mapName;
   }
@@ -15,6 +19,5 @@ public class ChangeMap extends AdminCommand {
     this.mapName = mapName;
     return this;
   }
-
 
 }

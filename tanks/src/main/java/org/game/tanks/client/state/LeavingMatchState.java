@@ -1,6 +1,15 @@
 package org.game.tanks.client.state;
 
+import org.game.tanks.client.core.ClientContext;
+import org.game.tanks.server.core.ServerController;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class LeavingMatchState extends ClientState {
+
+  @Autowired
+  ClientContext clientContext;
+  @Autowired
+  ServerController serverController;
 
   public LeavingMatchState(ClientStateType type) {
     super(ClientStateType.LEAVING_MATCH);
@@ -20,8 +29,10 @@ public class LeavingMatchState extends ClientState {
 
   @Override
   public void onStateBegin() {
-    // TODO Auto-generated method stub
-
+    if (clientContext.isHostingGame()) {
+      clientContext.setHostingGame(false);
+      serverController.stopServer();
+    }
   }
 
   @Override

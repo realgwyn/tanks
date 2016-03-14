@@ -11,6 +11,10 @@ public class ShootEvent extends GameEvent {
   private Point2D point;
   private float damage;
 
+  public ShootEvent() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

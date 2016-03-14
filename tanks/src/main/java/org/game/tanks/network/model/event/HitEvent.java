@@ -8,6 +8,10 @@ public class HitEvent extends GameEvent {
   private long playerId;
   private float damage;
 
+  public HitEvent() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }

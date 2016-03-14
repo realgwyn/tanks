@@ -13,6 +13,10 @@ public class SystemCommand extends AdminCommand {
   private SystemCommandName name;
   private String value;
 
+  public SystemCommand() {
+
+  }
+
   public SystemCommandName getName() {
     return name;
   }

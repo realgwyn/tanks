@@ -8,6 +8,10 @@ public class ChooseTeam extends Command {
   private long playerId;
   private int team;
 
+  public ChooseTeam() {
+
+  }
+
   public long getPlayerId() {
     return playerId;
   }
