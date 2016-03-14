@@ -8,10 +8,10 @@ import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.model.MapModel;
-import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.command.Connect;
 import org.game.tanks.network.model.command.Disconnect;
 import org.game.tanks.network.model.command.GameInitData;
+import org.game.tanks.network.model.command.Handshake;
 import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.server.model.ConnectionInfo;
 import org.game.tanks.server.model.PlayerServerModel;

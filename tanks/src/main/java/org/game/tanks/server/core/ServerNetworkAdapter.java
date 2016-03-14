@@ -10,9 +10,9 @@ import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
-import org.game.tanks.network.model.Handshake;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
+import org.game.tanks.network.model.command.Handshake;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.core.task.TaskManager;
 import org.game.tanks.server.model.ConnectionInfo;
@@ -118,11 +118,13 @@ public class ServerNetworkAdapter extends NetworkAdapter {
         if (message instanceof GameEvent) {
           bus.getIncomingGameEvents().add((GameEvent) message);
         } else if (message instanceof Command) {
-          bus.getIncomingCommands().add((Command) message);
+          if (message instanceof Handshake) {
+            bus.getIncomingHandshakes().add((Handshake) message);
+          } else {
+            bus.getIncomingCommands().add((Command) message);
+          }
         } else if (message instanceof CommunicationMessage) {
           bus.getIncomingCommunicationMessages().add((CommunicationMessage) message);
-        } else if (message instanceof Handshake) {
-          bus.getIncomingHandshakes().add((Handshake) message);
         } else if (message instanceof AdminCommand) {
           AdminCommand cmd = (AdminCommand) message;
           cmd.setConnectionIdFrom(conn.getID());

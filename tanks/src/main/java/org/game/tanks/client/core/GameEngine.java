@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
 import org.game.tanks.client.state.ClientState;
 import org.game.tanks.client.state.menu.LoadingGameState;
+import org.game.tanks.network.NetworkClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +34,10 @@ public class GameEngine extends Loop {
   PlayerInput input;
   @Autowired
   GuiManager guiManager;
+  @Autowired
+  ClientNetworkAdapter networkAdapter;
+
+  private NetworkClient networkClient;
 
   @PostConstruct
   public void init() {
@@ -56,11 +61,13 @@ public class GameEngine extends Loop {
 
   @Override
   public void startup() {
-    logger.debug("Starting up Engine...");
+    logger.debug("Starting up Game Engine...");
     initGraphics();
     display.addMouseListener(input);
     display.addKeyListener(input);
     display.addMouseMotionListener(input);
+    networkClient = new NetworkClient();
+    networkAdapter.setClient(networkClient);
   }
 
   private void initGraphics() {
@@ -83,6 +90,8 @@ public class GameEngine extends Loop {
   @Override
   public void shutdown() {
     logger.debug("Shutting down game threads...");
+
+    // TODO: send disconnect message if connected to server
     System.exit(0);
   }
 

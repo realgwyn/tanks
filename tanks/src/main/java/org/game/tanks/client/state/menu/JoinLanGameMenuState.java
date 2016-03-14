@@ -1,15 +1,21 @@
 package org.game.tanks.client.state.menu;
 
 import java.net.InetAddress;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.game.tanks.cfg.Config;
+import org.game.tanks.client.core.ClientContext;
 import org.game.tanks.client.core.ClientNetworkAdapter;
+import org.game.tanks.client.core.FutureTaskManager;
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.core.GuiManager;
+import org.game.tanks.client.core.TaskResult;
 import org.game.tanks.client.state.ClientState;
 import org.game.tanks.client.view.menu.JoinLanGameMenuWindow;
+import org.game.tanks.network.ConnectionAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +36,14 @@ public class JoinLanGameMenuState extends ClientState {
   JoinLanGameMenuWindow joinLanGameMenuWindow;
   @Autowired
   ClientNetworkAdapter networkAdapter;
+  @Autowired
+  FutureTaskManager taskManager;
+  @Autowired
+  ClientContext clientContext;
 
   private int serverTcpPort;
   private int serverUdpPort;
+  private Future<TaskResult> discovderLanHostTaskFuture = null;
 
   private int animationCounter;
 
@@ -51,16 +62,33 @@ public class JoinLanGameMenuState extends ClientState {
   @Override
   public void update() {
     animationCounter++;
+    runLanHostDiscoverTask();
+  }
+
+  private void runLanHostDiscoverTask() {
 
     if (everyTimePeriod(800)) {
-      InetAddress hostAddress = networkAdapter.discoverLanHost(serverUdpPort, 500);
-      if (hostAddress != null) {
-        joinLanGameMenuWindow.setServerOnline(true);
-      } else {
-        joinLanGameMenuWindow.setServerOnline(false);
-      }
+      discovderLanHostTaskFuture = taskManager.runDiscoverLanHostTask(serverUdpPort, 500);
     }
 
+    if (discovderLanHostTaskFuture != null && discovderLanHostTaskFuture.isDone()) {
+      InetAddress hostAddress;
+      try {
+        hostAddress = ((InetAddress) discovderLanHostTaskFuture.get().getWrappedObject());
+        if (hostAddress != null) {
+          ConnectionAddress connectionAddress = new ConnectionAddress()
+              .setAddress(hostAddress.getHostAddress())
+              .setTcpPort(serverTcpPort)
+              .setUdpPort(serverUdpPort);
+          clientContext.setServerAddress(connectionAddress);
+          joinLanGameMenuWindow.setServerOnline(true);
+        } else {
+          joinLanGameMenuWindow.setServerOnline(false);
+        }
+      } catch (InterruptedException | ExecutionException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   @Override

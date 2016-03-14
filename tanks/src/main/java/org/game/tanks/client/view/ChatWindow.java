@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 import javax.annotation.PostConstruct;
 
-import org.game.tanks.client.core.GameContext;
+import org.game.tanks.client.core.ClientContext;
 import org.game.tanks.client.core.GameDisplay;
 import org.game.tanks.client.core.GuiManager;
 import org.game.tanks.client.service.MessageService;
@@ -25,7 +25,7 @@ public class ChatWindow extends GuiComponent {
   @Autowired
   MessageService messageService;
   @Autowired
-  GameContext gameContext;
+  ClientContext gameContext;
 
   @PostConstruct
   public void initialize() {

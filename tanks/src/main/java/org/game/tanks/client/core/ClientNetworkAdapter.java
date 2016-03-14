@@ -2,11 +2,21 @@ package org.game.tanks.client.core;
 
 import java.net.InetAddress;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.log4j.Logger;
+import org.game.tanks.cfg.Config;
+import org.game.tanks.network.ConnectionAddress;
 import org.game.tanks.network.NetworkAdapter;
 import org.game.tanks.network.NetworkClient;
+import org.game.tanks.network.NetworkException;
+import org.game.tanks.network.model.Command;
+import org.game.tanks.network.model.CommunicationMessage;
+import org.game.tanks.network.model.GameEvent;
 import org.game.tanks.network.model.TCPMessage;
 import org.game.tanks.network.model.UDPMessage;
+import org.game.tanks.network.model.udp.GameSnapshot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -14,13 +24,52 @@ import com.esotericsoftware.kryonet.Connection;
 @Component
 public class ClientNetworkAdapter extends NetworkAdapter {
 
-  private NetworkClient client;
   private final static Logger logger = Logger.getLogger(ClientNetworkAdapter.class);
 
-  Connection serverConnection;
+  @Autowired
+  ClientContext ctx;
+  @Autowired
+  ClientEventBus bus;
+  @Autowired
+  Config cfg;
 
-  public void connect(int udpPort) {
-    // client.connect(addr);
+  private NetworkClient client;
+  private int defaultServerUdpPort;
+  private int defaultServerTcpPort;
+  private boolean offlineDebugModeEnabled;
+  private boolean connected;
+
+  @PostConstruct
+  public void init() {
+    defaultServerTcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT);
+    defaultServerUdpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT);
+    offlineDebugModeEnabled = cfg.getPropertyBoolean(Config.SERVER_OFFLINE_DEBUG_MODE);
+  }
+
+  public void setClient(NetworkClient client) {
+    this.client = client;
+    this.client.setConnectionListener(this);
+    this.client.setTCPListener(this);
+    this.client.setUDPListener(this);
+  }
+
+  public void connectToServer(String hostAddress) throws NetworkException {
+    ConnectionAddress addr = new ConnectionAddress()
+        .setAddress(hostAddress)
+        .setTcpPort(defaultServerTcpPort)
+        .setUdpPort(defaultServerUdpPort);
+    connectToServer(addr);
+  }
+
+  public void connectToServer(ConnectionAddress addr) throws NetworkException {
+    logger.debug("Connecting to Server: " + addr);
+    client.connect(addr);
+  }
+
+  public void disconnect() {
+    logger.debug("Disconnecting from Server");
+    client.disconnect();
+    connected = false;
   }
 
   public InetAddress discoverLanHost(int udpPort, int timeoutMillis) {
@@ -28,39 +77,51 @@ public class ClientNetworkAdapter extends NetworkAdapter {
   }
 
   public void sendTCP(TCPMessage msg) {
-    serverConnection.sendTCP(msg);
+    client.sendTCP(msg);
   }
 
   public void sendUDP(UDPMessage msg) {
-    serverConnection.sendUDP(msg);
+    client.sendUDP(msg);
   }
 
   @Override
   public void receivedUDPMessage(Connection conn, UDPMessage message) {
-    // TODO Auto-generated method stub
-
+    if (message instanceof GameSnapshot) {
+      bus.getIncomingGameSnapshots().add((GameSnapshot) message);
+    } else {
+      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+    }
   }
 
   @Override
   public void receivedTCPMessage(Connection conn, TCPMessage message) {
-    // TODO Auto-generated method stub
-
-  }
-
-  public Connection connectToServer(String serverAddress, int serverTcpPort, int serverUdpPort) {
-    throw new UnsupportedOperationException("Not implemented yet");
+    if (message instanceof GameEvent) {
+      bus.getIncomingGameEvents().add((GameEvent) message);
+    } else if (message instanceof Command) {
+      bus.getIncomingCommands().add((Command) message);
+    } else if (message instanceof CommunicationMessage) {
+      bus.getIncomingMessages().add((CommunicationMessage) message);
+    } else {
+      throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
+    }
   }
 
   @Override
   public void connected(Connection c) {
     // TODO Auto-generated method stub
-
+    logger.debug("Connected to Server " + c.getRemoteAddressTCP());
+    connected = true;
   }
 
   @Override
   public void disconnected(Connection c) {
     // TODO Auto-generated method stub
+    logger.debug("Disconnected from Server " + c.getRemoteAddressTCP());
+    connected = false;
+  }
 
+  public boolean isConnected() {
+    return connected;
   }
 
 }

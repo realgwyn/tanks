@@ -17,9 +17,10 @@ import com.esotericsoftware.kryonet.Listener;
 public class NetworkClient {
 
   private Client client;
-  private boolean connected = false;
+
   private UDPListener udpListener;
   private TCPListener tcpListener;
+  private ConnectionListener connectionListener;
   private ConnectionAddress serverAddress;
 
   public NetworkClient() {
@@ -36,17 +37,15 @@ public class NetworkClient {
     client.start();
     try {
       if (addr.getUdpPort() <= 0) {
-        client.connect(5000, addr.getIp(), addr.getTcpPort());
+        client.connect(5000, addr.getAddress(), addr.getTcpPort());
       } else {
-        client.connect(5000, addr.getIp(), addr.getTcpPort(), addr.getUdpPort());
+        client.connect(5000, addr.getAddress(), addr.getTcpPort(), addr.getUdpPort());
       }
       serverAddress = addr;
-      connected = true;
     } catch (IOException e) {
       e.printStackTrace();
       serverAddress = null;
-      connected = false;
-      throw new NetworkException("Unable to connect to host: " + addr.getIp() + " reason: " + e.getMessage());
+      throw new NetworkException("Unable to connect to host: " + addr.getAddress() + " reason: " + e.getMessage());
     }
   }
 
@@ -64,7 +63,21 @@ public class NetworkClient {
           System.out.println("Received unknown message " + object.getClass().getSimpleName());
         }
       }
+
+      @Override
+      public void connected(Connection conn) {
+        connectionListener.connected(conn);
+      }
+
+      @Override
+      public void disconnected(Connection conn) {
+        connectionListener.disconnected(conn);
+      }
     });
+  }
+
+  public void setConnectionListener(ConnectionListener connectionListener) {
+    this.connectionListener = connectionListener;
   }
 
   public void setUDPListener(UDPListener listener) {
@@ -75,30 +88,21 @@ public class NetworkClient {
     tcpListener = listener;
   }
 
-  public void sendTCPRequest(TCPMessage request) {
+  public void sendTCP(TCPMessage request) {
     client.sendTCP(request);
   }
 
-  public void sendUDPRequest(TCPMessage request) {
+  public void sendUDP(UDPMessage request) {
     client.sendUDP(request);
   }
 
   public void disconnect() {
     client.stop();
     serverAddress = null;
-    connected = false;
   }
 
   public InetAddress discoverHost(int udpPort, int timeoutMillis) {
     return client.discoverHost(udpPort, timeoutMillis);
-  }
-
-  public boolean isConnected() {
-    return connected;
-  }
-
-  public void setConnected(boolean connected) {
-    this.connected = connected;
   }
 
   public static void main(String[] args) throws NetworkException, InterruptedException {
@@ -132,7 +136,7 @@ public class NetworkClient {
 
     ChatMessage msg = new ChatMessage();
     msg.setText("Hello server!");
-    client.sendTCPRequest(msg);
+    client.sendTCP(msg);
 
     Thread.sleep(20000);
   }

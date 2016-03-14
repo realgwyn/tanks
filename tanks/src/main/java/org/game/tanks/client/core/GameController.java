@@ -9,8 +9,6 @@ import org.game.tanks.client.view.components.MessageWindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.esotericsoftware.kryonet.Connection;
-
 @Component
 public class GameController {
 
@@ -18,8 +16,6 @@ public class GameController {
 
   @Autowired
   Config cfg;
-  @Autowired
-  GameContext ctx;
   @Autowired
   ClientNetworkAdapter networkAdapter;
   @Autowired
@@ -34,16 +30,17 @@ public class GameController {
   ServerConnectionService serverConnectionService;
 
   public void connectToServer() {
-    // Invoke disconnect if was connected to other server
-    disconnectFromServer();
-    Connection connection = networkAdapter.connectToServer(ctx.getServerAddress(), ctx.getServerTcpPort(), ctx.getServerUdpPort());
-    if (connection != null) {
-      engine.setState(matchInitState);
-      messageWindow.showInfoMessage("Connecting to server...");
-    } else {
-      engine.setState(findGameMenuState);
-      messageWindow.showErrorMessage("Error connecting to server");
-    }
+    // // Invoke disconnect if was connected to other server
+    // disconnectFromServer();
+    // Connection connection = networkAdapter.connectToServer(ctx.getServerAddress(), ctx.getServerTcpPort(),
+    // ctx.getServerUdpPort());
+    // if (connection != null) {
+    // engine.setState(matchInitState);
+    // messageWindow.showInfoMessage("Connecting to server...");
+    // } else {
+    // engine.setState(findGameMenuState);
+    // messageWindow.showErrorMessage("Error connecting to server");
+    // }
   }
 
   public void leaveTheMatch() {

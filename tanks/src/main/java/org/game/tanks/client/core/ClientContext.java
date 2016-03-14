@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
 import org.game.tanks.client.model.PlayerGameModel;
 import org.game.tanks.model.MapModel;
-import org.game.tanks.network.model.TCPMessage;
+import org.game.tanks.network.ConnectionAddress;
 import org.game.tanks.network.model.message.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class GameContext {
+public class ClientContext {
 
   @Autowired
   Config cfg;
@@ -26,14 +24,10 @@ public class GameContext {
   private long serverTimeOffset;// XXX: is this really needed anywhere?
   private PlayerGameModel player;
 
-  private String serverAddress;
-  private int serverUdpPort;
-  private int serverTcpPort;
+  ConnectionAddress serverAddress;
 
   private List<PlayerGameModel> players;
   private Map<Long, PlayerGameModel> playerById;
-  private Queue<TCPMessage> incommingMessages;
-  private Queue<TCPMessage> defferedMessages;
   private List<ChatMessage> chatHistory;
 
   private long matchStartTime;
@@ -52,14 +46,11 @@ public class GameContext {
   public void reinitialize() {
     initCollections();
     player = new PlayerGameModel();
-    // set player name from options
   }
 
   private void initCollections() {
     players = new ArrayList<>();
     playerById = new HashMap<>();
-    incommingMessages = new ConcurrentLinkedQueue<>();
-    defferedMessages = new ConcurrentLinkedQueue<>();
     chatHistory = new ArrayList<>();
   }
 
@@ -107,36 +98,12 @@ public class GameContext {
     this.serverTimeOffset = serverTimeOffset;
   }
 
-  public String getServerAddress() {
-    return serverAddress;
-  }
-
-  public void setServerAddress(String serverAddress) {
+  public void setServerAddress(ConnectionAddress serverAddress) {
     this.serverAddress = serverAddress;
   }
 
-  public int getServerUdpPort() {
-    return serverUdpPort;
-  }
-
-  public void setServerUdpPort(int serverUdpPort) {
-    this.serverUdpPort = serverUdpPort;
-  }
-
-  public int getServerTcpPort() {
-    return serverTcpPort;
-  }
-
-  public void setServerTcpPort(int serverTcpPort) {
-    this.serverTcpPort = serverTcpPort;
-  }
-
-  public Queue<TCPMessage> getIncommingMessages() {
-    return incommingMessages;
-  }
-
-  public Queue<TCPMessage> getDefferedMessages() {
-    return defferedMessages;
+  public ConnectionAddress getServerAddress() {
+    return serverAddress;
   }
 
   public List<PlayerGameModel> getPlayers() {

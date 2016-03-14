@@ -16,6 +16,7 @@ import org.game.tanks.network.model.command.GameInitData;
 import org.game.tanks.network.model.command.GiveItem;
 import org.game.tanks.network.model.command.GiveModifier;
 import org.game.tanks.network.model.command.GiveMoney;
+import org.game.tanks.network.model.command.Handshake;
 import org.game.tanks.network.model.command.Latency;
 import org.game.tanks.network.model.command.MapInfoData;
 import org.game.tanks.network.model.command.Ping;

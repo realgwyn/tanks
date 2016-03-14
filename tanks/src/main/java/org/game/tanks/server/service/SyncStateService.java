@@ -29,7 +29,7 @@ public class SyncStateService {
     case MATCH_INIT:
       return ClientStateType.MATCH_INIT;
     case WAITING_FOR_PLAYERS:
-      return ClientStateType.WAITING_FOR_PLAYERS;
+      return ClientStateType.JOINING_MATCH_STATE;
     case ROUND_START:
       return ClientStateType.ROUND_START;
     case ROUND:

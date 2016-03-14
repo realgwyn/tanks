@@ -1,6 +1,8 @@
-package org.game.tanks.network.model;
+package org.game.tanks.network.model.command;
 
-public class Handshake extends TCPMessage {
+import org.game.tanks.network.model.Command;
+
+public class Handshake extends Command {
 
   private static final long serialVersionUID = -7858479077369194127L;
   private long playerConnectionId;

@@ -8,7 +8,6 @@ import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
 import org.game.tanks.cfg.GameStyle;
-import org.game.tanks.client.core.ActionManager;
 import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.state.menu.CreateLanGameMenuState;
 import org.game.tanks.client.state.menu.FindGameOnlineMenuState;
@@ -25,8 +24,6 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("serial")
 public class MainMenuWindow extends GuiComponent {
 
-  @Autowired
-  ActionManager actionManager;
   @Autowired
   GameEngine engine;
   @Autowired

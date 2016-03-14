@@ -31,6 +31,32 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class Config {
 
+  public final static String MAP_NAMES = "map.names";
+  public final static String GAME_NAME = "game.name";
+  public final static String GAME_UPDATE_RATE = "game.updaterate";
+  public final static String GAME_FULLSCREEN = "game.fullscreen";
+  public final static String GAME_RESOLUTION_WIDTH = "game.resolution.width";
+  public final static String GAME_RESOLUTION_HEIGHT = "game.resolution.height";
+  public final static String GAME_RESOLUTION_SCALE = "game.resolution.scale";
+  public final static String SERVER_MAX_PLAYERS = "server.maxPlayers";
+  public final static String SERVER_MAX_PLAYERS_PER_TEAM = "server.maxPlayersPerTeam";
+  public final static String SERVER_DEFAULT_TCP_PORT = "server.defaultTcpPort";
+  public final static String SERVER_DEFAULT_UDP_PORT = "server.defaultUdpPort";
+  public final static String SERVER_DEFAULT_SERVER_NAME = "server.defaultServerName";
+  public final static String SERVER_ENABLE_PROCESS_SCHEDULER = "server.enableProcessScheduler";
+  public final static String SERVER_ENABLE_ANTI_CHEAT = "server.enableAntiCheat";
+  public final static String SERVER_ENABLE_PLAYER_POSITION_CORRECTION = "server.enablePlayerPositionCorrection";
+  public final static String SERVER_ENABLE_PACKET_VALIDATION = "server.enablePacketValidation";
+  public final static String SERVER_UPDATE_RATE = "server.updaterate";
+  public final static String SERVER_NETWORK_PING_SENDING_FREQUENCY = "server.network.pingSendingFrequency";
+  public final static String SERVER_NETWORK_STATS_SENDING_FREQUENCY = "server.network.statsSendingFrequency";
+  public final static String SERVER_MAX_CHAT_HISTORY_SIZE = "server.maxChatHistorySize";
+  public final static String SERVER_ROUND_DURATION_SECONDS = "server.roundDurationSeconds";
+  public final static String SERVER_MATCH_DURATION_SECONDS = "server.matchDurationSeconds";
+  public final static String SERVER_ROUND_START_FREEZE_TIME_SECONDS = "server.roundStartFreezeTimeDurationSeconds";
+  public final static String SERVER_ENABLE_FRIENDLY_FIRE = "server.enableFriendlyfire";
+  public final static String SERVER_OFFLINE_DEBUG_MODE = "server.enableOfflineDebugMode";
+
   @Autowired
   private FileUtils fileUtils;
 
@@ -147,31 +173,5 @@ public class Config {
       return defaultValues;
     }
   }
-
-  public final static String MAP_NAMES = "map.names";
-  public final static String GAME_NAME = "game.name";
-  public final static String GAME_UPDATE_RATE = "game.updaterate";
-  public final static String GAME_FULLSCREEN = "game.fullscreen";
-  public final static String GAME_RESOLUTION_WIDTH = "game.resolution.width";
-  public final static String GAME_RESOLUTION_HEIGHT = "game.resolution.height";
-  public final static String GAME_RESOLUTION_SCALE = "game.resolution.scale";
-  public final static String SERVER_MAX_PLAYERS = "server.maxPlayers";
-  public final static String SERVER_MAX_PLAYERS_PER_TEAM = "server.maxPlayersPerTeam";
-  public final static String SERVER_DEFAULT_TCP_PORT = "server.defaultTcpPort";
-  public final static String SERVER_DEFAULT_UDP_PORT = "server.defaultUdpPort";
-  public final static String SERVER_DEFAULT_SERVER_NAME = "server.defaultServerName";
-  public final static String SERVER_ENABLE_PROCESS_SCHEDULER = "server.enableProcessScheduler";
-  public final static String SERVER_ENABLE_ANTI_CHEAT = "server.enableAntiCheat";
-  public final static String SERVER_ENABLE_PLAYER_POSITION_CORRECTION = "server.enablePlayerPositionCorrection";
-  public final static String SERVER_ENABLE_PACKET_VALIDATION = "server.enablePacketValidation";
-  public final static String SERVER_UPDATE_RATE = "server.updaterate";
-  public final static String SERVER_NETWORK_PING_SENDING_FREQUENCY = "server.network.pingSendingFrequency";
-  public final static String SERVER_NETWORK_STATS_SENDING_FREQUENCY = "server.network.statsSendingFrequency";
-  public final static String SERVER_MAX_CHAT_HISTORY_SIZE = "server.maxChatHistorySize";
-  public final static String SERVER_ROUND_DURATION_SECONDS = "server.roundDurationSeconds";
-  public final static String SERVER_MATCH_DURATION_SECONDS = "server.matchDurationSeconds";
-  public final static String SERVER_ROUND_START_FREEZE_TIME_SECONDS = "server.roundStartFreezeTimeDurationSeconds";
-  public final static String SERVER_ENABLE_FRIENDLY_FIRE = "server.enableFriendlyfire";
-  public final static String SERVER_OFFLINE_DEBUG_MODE = "server.enableOfflineDebugMode";
 
 }

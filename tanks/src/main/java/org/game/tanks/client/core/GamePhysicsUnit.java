@@ -16,7 +16,7 @@ public class GamePhysicsUnit {
   @Autowired
   GameDisplay display;
   @Autowired
-  GameContext gameContext;
+  ClientContext gameContext;
   @Autowired
   ResourceManager res;
 

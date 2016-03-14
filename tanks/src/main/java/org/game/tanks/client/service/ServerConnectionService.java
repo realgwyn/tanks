@@ -1,11 +1,14 @@
 package org.game.tanks.client.service;
 
+import org.game.tanks.client.core.ClientContext;
+import org.game.tanks.client.core.ClientEventBus;
 import org.game.tanks.client.core.ClientNetworkAdapter;
-import org.game.tanks.client.core.GameContext;
 import org.game.tanks.client.model.PlayerGameModel;
-import org.game.tanks.network.model.Handshake;
-import org.game.tanks.network.model.TCPMessage;
+import org.game.tanks.network.ConnectionAddress;
+import org.game.tanks.network.NetworkException;
+import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.command.GameInitData;
+import org.game.tanks.network.model.command.Handshake;
 import org.game.tanks.network.model.command.PlayerInfo;
 import org.game.tanks.network.model.command.SyncTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,9 @@ import org.springframework.stereotype.Component;
 public class ServerConnectionService {
 
   @Autowired
-  GameContext ctx;
+  ClientContext ctx;
+  @Autowired
+  ClientEventBus bus;
   @Autowired
   ClientNetworkAdapter networkAdapter;
 
@@ -26,10 +31,18 @@ public class ServerConnectionService {
   private int connectionStatusFlag = 0x000;
   private boolean connectionReady = false;
 
+  public void connectToServer(ConnectionAddress addr) throws NetworkException {
+    networkAdapter.connectToServer(addr);
+  }
+
+  public void disconnect() {
+    networkAdapter.disconnect();
+  }
+
   public void processMatchInitCommands() {
     connectionReady = false;
-    while (!ctx.getIncommingMessages().isEmpty()) {
-      TCPMessage cmd = ctx.getIncommingMessages().poll();
+    while (!bus.getIncomingCommands().isEmpty()) {
+      Command cmd = bus.getIncomingCommands().poll();
       if (cmd instanceof GameInitData) {
         processGameInitData((GameInitData) cmd);
         connectionStatusFlag |= GAME_INIT_DATA;
@@ -41,11 +54,12 @@ public class ServerConnectionService {
         connectionStatusFlag |= HANDSHAKE;
       } else {
         // Deffer all other commands in this stage and consume them later
-        ctx.getDefferedMessages().add(cmd);
+        bus.getDefferedIncomingCommands().add(cmd);
       }
 
       if (connectionStatusFlag == MATCH_INIT_FINISHED) {
         connectionReady = true;
+        return;
       }
     }
   }

@@ -120,7 +120,7 @@ public class ServerBroadcastClientConnect {
           long start = System.currentTimeMillis();
           while (true) {
 
-            client.sendTCPRequest(new TCPMessage());
+            client.sendTCP(new TCPMessage());
             if (System.currentTimeMillis() - start > 10000) {
               client.disconnect();
             }

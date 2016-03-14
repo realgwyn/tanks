@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * Waiting for other players at the beginning of the match
  */
 @Component
-public class MatchStartState extends ClientState {
+public class JoiningMatchState extends ClientState {
 
   @Autowired
   GameDisplay display;
@@ -22,8 +22,8 @@ public class MatchStartState extends ClientState {
   @Autowired
   HudWindow hudWindow;
 
-  public MatchStartState() {
-    super(ClientStateType.WAITING_FOR_PLAYERS);
+  public JoiningMatchState() {
+    super(ClientStateType.JOINING_MATCH_STATE);
   }
 
   @Override

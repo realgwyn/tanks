@@ -9,7 +9,7 @@ import org.game.tanks.network.model.AdminCommand;
 import org.game.tanks.network.model.Command;
 import org.game.tanks.network.model.CommunicationMessage;
 import org.game.tanks.network.model.GameEvent;
-import org.game.tanks.network.model.Handshake;
+import org.game.tanks.network.model.command.Handshake;
 import org.game.tanks.network.model.udp.PlayerSnapshot;
 import org.game.tanks.server.model.PlayerServerModel;
 import org.springframework.stereotype.Component;

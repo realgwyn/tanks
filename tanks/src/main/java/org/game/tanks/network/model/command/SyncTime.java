@@ -1,8 +1,8 @@
 package org.game.tanks.network.model.command;
 
-import org.game.tanks.network.model.TCPMessage;
+import org.game.tanks.network.model.Command;
 
-public class SyncTime extends TCPMessage {
+public class SyncTime extends Command {
 
   private static final long serialVersionUID = -3802970318039173341L;
   private long matchStartTime;

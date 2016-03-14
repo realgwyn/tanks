@@ -2,9 +2,9 @@ package org.game.tanks.network.model.command;
 
 import java.util.List;
 
-import org.game.tanks.network.model.TCPMessage;
+import org.game.tanks.network.model.Command;
 
-public class GameInitData extends TCPMessage {
+public class GameInitData extends Command {
 
   private static final long serialVersionUID = -5388071508719254864L;
   private long matchEndTime;
