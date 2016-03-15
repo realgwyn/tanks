@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.game.tanks.cfg.Config;
 import org.game.tanks.cfg.GameStyle;
+import org.game.tanks.client.core.ClientContext;
 import org.game.tanks.client.core.GameEngine;
 import org.game.tanks.client.state.MatchInitState;
 import org.game.tanks.client.state.menu.MainMenuState;
@@ -16,6 +17,7 @@ import org.game.tanks.client.view.GuiComponent;
 import org.game.tanks.client.view.components.Button;
 import org.game.tanks.client.view.components.Label;
 import org.game.tanks.client.view.components.Label.HorizontalAlignment;
+import org.game.tanks.network.ConnectionAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,14 +33,23 @@ public class FindGameOnlineMenuWindow extends GuiComponent {
   MainMenuState mainMenuState;
   @Autowired
   MatchInitState matchInitState;
+  @Autowired
+  ClientContext clientContext;
 
   private Button btnCancel;
   private Button btnJoinGame;
+
+  private int serverTcpPort;
+  private int serverUdpPort;
+  private String hostAddress;
 
   @PostConstruct
   public void initialize() {
     initComponents();
     initActions();
+    hostAddress = "localhost";
+    serverTcpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_TCP_PORT);
+    serverUdpPort = cfg.getPropertyInt(Config.SERVER_DEFAULT_UDP_PORT);
   }
 
   private void initComponents() {
@@ -63,6 +74,13 @@ public class FindGameOnlineMenuWindow extends GuiComponent {
     btnJoinGame.setMouseActionListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
+
+        ConnectionAddress connectionAddress = new ConnectionAddress()
+            .setAddress(hostAddress)
+            .setTcpPort(serverTcpPort)
+            .setUdpPort(serverUdpPort);
+        clientContext.setServerAddress(connectionAddress);
+
         engine.setState(matchInitState);
       }
     });
