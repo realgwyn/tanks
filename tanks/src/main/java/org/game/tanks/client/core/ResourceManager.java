@@ -2,8 +2,6 @@ package org.game.tanks.client.core;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,7 +37,7 @@ public class ResourceManager {
      BufferedImage image = null;
     try {
       ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-      URL resource = classLoader.getResource(imageName);
+      URL resource = classLoader.getResource("img/"+imageName);
       if(resource == null){
         throw new RuntimeException("File not found in resource path " + imageName);
       }
