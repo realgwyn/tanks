@@ -34,7 +34,7 @@ public class GameStyle {
   static {
     try {
       ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-      InputStream inputStream = classLoader.getResourceAsStream("font_hud.ttf");
+      InputStream inputStream = classLoader.getResourceAsStream("fonts/font_hud.ttf");
 
       Font hud;
       hud = Font.createFont(Font.TRUETYPE_FONT, inputStream);
