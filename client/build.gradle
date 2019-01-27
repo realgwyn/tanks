@@ -1,0 +1,9 @@
+dependencies {
+    compile(project(':common-core'))
+    compile(project(':common-game'))
+    compile(project(':common-network'))
+    
+    compile group: 'org.springframework', name: 'spring-core', version: springVersion
+    compile group: 'org.springframework', name: 'spring-context', version: springVersion
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: springVersion
+}

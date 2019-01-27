@@ -1,0 +1,5 @@
+dependencies {
+	compile(project(':common-core'))
+	compile group: 'com.esotericsoftware', name: 'kryonet', version: '2.22.0-RC1'
+
+}
