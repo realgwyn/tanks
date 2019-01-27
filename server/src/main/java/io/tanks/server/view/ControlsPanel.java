@@ -17,7 +17,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.cfg.GameplayConfig;
 import io.tanks.server.core.ServerController;
 
 @Component
@@ -26,7 +26,8 @@ public class ControlsPanel extends JPanel {
   @Autowired
   private ServerController serverController;
   @Autowired
-  private ServerConfig config;
+  private GameplayConfig gameplayConfig;
+  
   private JTextField txtServerName;
   private JTextField txtAddress;
   private JTextField txtTcpPort;
@@ -122,8 +123,7 @@ public class ControlsPanel extends JPanel {
     add(btnStop, "4, 10");
 
     JComboBox<String> cbxMapName = new JComboBox<>();
-    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(
-        config.getPropertyListString(ServerConfig.MAP_NAMES).toArray(new String[0]));
+    DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(gameplayConfig.getMapNames().toArray(new String[0]));
     cbxMapName.setModel(model);
     add(cbxMapName, "6, 2");
     cbxMapName.addItemListener(new ItemListener() {

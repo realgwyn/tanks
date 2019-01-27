@@ -14,7 +14,7 @@ import io.tanks.server.core.state.MatchInitServerState;
 import io.tanks.server.core.state.RoundInitServerState;
 import io.tanks.server.database.DatabaseService;
 import io.tanks.server.service.MapService;
-import io.tanks.server.view.ServerWindow;
+import io.tanks.server.ServerWindow;
 
 @Component
 public class ServerController {

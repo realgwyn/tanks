@@ -19,7 +19,7 @@ public class BanHistory {
   private Long id;
 
   @ManyToOne
-  private User player;
+  private Player player;
 
   @NotNull
   @Temporal(TemporalType.TIMESTAMP)
@@ -42,11 +42,11 @@ public class BanHistory {
     return this;
   }
 
-  public User getPlayer() {
+  public Player getPlayer() {
     return player;
   }
 
-  public BanHistory setPlayer(User player) {
+  public BanHistory setPlayer(Player player) {
     this.player = player;
     return this;
   }

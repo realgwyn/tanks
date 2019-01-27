@@ -1,0 +1,19 @@
+maxPlayers: 50
+maxPlayersPerTeam: 50
+defaultTcpPort: 55555
+defaultUdpPort: 55556
+defaultServerName: Tanks Game Server
+updaterate: 100
+enableProcessScheduler: true
+enablePlayerPositionCorrection: true
+enableAntiCheat: true
+enablePacketValidation: true
+pingSendingFrequency: 250
+statsSendingFrequency: 250
+maxChatHistorySize: 1000
+roundDurationSeconds: 60
+matchDurationSeconds: 600
+roundStartFreezeTimeDurationSeconds: 1
+enableFriendlyFire: true
+enableOfflineDebugMode: false
+enableNetworkDebugMode: true

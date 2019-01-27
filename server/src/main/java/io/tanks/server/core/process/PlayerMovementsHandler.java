@@ -49,7 +49,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
 
   @PostConstruct
   public void init() {
-    playerPositionCorrectionEnabled = config.getPropertyBoolean(ServerConfig.SERVER_ENABLE_PLAYER_POSITION_CORRECTION);
+    playerPositionCorrectionEnabled = config.isEnablePlayerPositionCorrection();
   }
 
   private void updatePlayerPositions() {

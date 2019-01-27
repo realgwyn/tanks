@@ -49,7 +49,7 @@ public class ProcessScheduler {
     processSchedule = new ArrayList<>();
     processSchedule.add(gameCommandHandler);
     processSchedule.add(communicationHandler);
-    schedulerEnabled = config.getPropertyBoolean(ServerConfig.SERVER_ENABLE_PROCESS_SCHEDULER);
+    schedulerEnabled = config.isEnableProcessScheduler();
   }
 
   public void reinitialize() {

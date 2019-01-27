@@ -46,9 +46,9 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   @PostConstruct
   public void init() {
-    packetValidatorEnabled = config.getPropertyBoolean(ServerConfig.SERVER_ENABLE_PACKET_VALIDATION);
-    offlineDebugModeEnabled = config.getPropertyBoolean(ServerConfig.SERVER_OFFLINE_DEBUG_MODE);
-    networkDebugModeEnabled = config.getPropertyBoolean(ServerConfig.SERVER_ENABLE_NETWORK_DEBUG_MODE);
+    packetValidatorEnabled = config.isEnablePacketValidation();
+    offlineDebugModeEnabled = config.isEnableOfflineDebugMode();
+    networkDebugModeEnabled = config.isEnableNetworkDebugMode();
   }
 
   public NetworkServer getServer() {

@@ -14,7 +14,7 @@ import io.tanks.server.core.state.MatchInitServerState;
 import io.tanks.server.core.state.OfflineServerState;
 import io.tanks.server.core.state.ServerState;
 import io.tanks.server.service.SyncStateService;
-import io.tanks.server.view.ServerWindow;
+import io.tanks.server.ServerWindow;
 import io.tanks.common.core.Loop;
 
 @Component
@@ -57,7 +57,7 @@ public class ServerEngine extends Loop {
   public void run() {
     logger.debug("Initializing ServerContext...");
     serverContext.init();
-    super.run(config.getPropertyInt(ServerConfig.SERVER_UPDATE_RATE));
+    super.run(config.getUpdaterate());
   }
 
   public synchronized void start() {

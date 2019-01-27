@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import io.tanks.common.network.model.AdminCommand;
 import io.tanks.server.database.DatabaseService;
-import io.tanks.server.database.domain.User;
 
 /**
  * Uses bCrypt
@@ -24,11 +23,13 @@ public class AuthenticationService {
   private static int workload = 12;
 
   public boolean authenticateCommand(AdminCommand cmd) {
-    User user = dbService.getUserByUsername(cmd.getUsername());
-    if (user != null) {
-      return cmd.getHash().equals(cmd.getHash());
-    }
-    return false;
+    throw new UnsupportedOperationException("TODO: implement PlayerRepo get user by username");
+    //TODO: implement PlayerRepo get user by username
+//    Player user = dbService.getUserByUsername(cmd.getUsername());
+//    if (user != null) {
+//      return cmd.getHash().equals(cmd.getHash());
+//    }
+//    return false;
   }
 
   public static String hashPassword(String password_plaintext) {

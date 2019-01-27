@@ -1,4 +1,4 @@
-package io.tanks.server.view;
+package io.tanks.server;
 
 
 import java.awt.*;
@@ -9,9 +9,6 @@ import javax.annotation.PostConstruct;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import io.tanks.server.core.ServerController;
-import io.tanks.server.model.PlayerServerModel;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +16,16 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+
+import io.tanks.server.core.ServerController;
+import io.tanks.server.model.PlayerServerModel;
+import io.tanks.server.view.ChatPanel;
+import io.tanks.server.view.ControlsPanel;
+import io.tanks.server.view.MapPanel;
+import io.tanks.server.view.PlayersListPanel;
+import io.tanks.server.view.ServerLogPanel;
+
+//TODO fixes HeadlessException: https://stackoverflow.com/questions/22864008/how-to-configure-spring-boot-with-swing-application
 
 @Component
 public class ServerWindow extends JFrame {

@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Stats {
+public class PlayerStats {
 
   @Id
   private Long id;
@@ -21,7 +21,7 @@ public class Stats {
     return totalTimeSpent;
   }
 
-  public Stats setTotalTimeSpent(Integer totalTimeSpent) {
+  public PlayerStats setTotalTimeSpent(Integer totalTimeSpent) {
     this.totalTimeSpent = totalTimeSpent;
     return this;
   }
@@ -30,7 +30,7 @@ public class Stats {
     return gamesPlayed;
   }
 
-  public Stats setGamesPlayed(Integer gamesPlayed) {
+  public PlayerStats setGamesPlayed(Integer gamesPlayed) {
     this.gamesPlayed = gamesPlayed;
     return this;
   }
@@ -39,7 +39,7 @@ public class Stats {
     return kills;
   }
 
-  public Stats setKills(Integer kills) {
+  public PlayerStats setKills(Integer kills) {
     this.kills = kills;
     return this;
   }
@@ -48,7 +48,7 @@ public class Stats {
     return deaths;
   }
 
-  public Stats setDeaths(Integer deaths) {
+  public PlayerStats setDeaths(Integer deaths) {
     this.deaths = deaths;
     return this;
   }

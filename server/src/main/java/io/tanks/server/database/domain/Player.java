@@ -14,12 +14,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Email;
 
 @Entity
-public class User {
+public class Player {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,7 +27,7 @@ public class User {
 
   @OneToOne(cascade = CascadeType.ALL)
   @PrimaryKeyJoinColumn
-  private Stats stats;
+  private PlayerStats stats;
 
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
   @JoinTable(name = "user_permission", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
@@ -62,7 +62,7 @@ public class User {
     return username;
   }
 
-  public User setUsername(String username) {
+  public Player setUsername(String username) {
     this.username = username;
     return this;
   }
@@ -71,7 +71,7 @@ public class User {
     return hash;
   }
 
-  public User setHash(String hash) {
+  public Player setHash(String hash) {
     this.hash = hash;
     return this;
   }
@@ -80,7 +80,7 @@ public class User {
     return email;
   }
 
-  public User setEmail(String email) {
+  public Player setEmail(String email) {
     this.email = email;
     return this;
   }
@@ -89,7 +89,7 @@ public class User {
     return banned;
   }
 
-  public User setBanned(Boolean banned) {
+  public Player setBanned(Boolean banned) {
     this.banned = banned;
     return this;
   }
@@ -98,7 +98,7 @@ public class User {
     return permissions;
   }
 
-  public User setPermissions(Set<Permission> permissions) {
+  public Player setPermissions(Set<Permission> permissions) {
     this.permissions = permissions;
     return this;
   }
@@ -107,7 +107,7 @@ public class User {
     return banHistory;
   }
 
-  public User setBanHistory(Set<BanHistory> banHistory) {
+  public Player setBanHistory(Set<BanHistory> banHistory) {
     this.banHistory = banHistory;
     return this;
   }

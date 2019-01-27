@@ -19,7 +19,7 @@ public class BannedIp {
   private Long id;
 
   @ManyToOne
-  private User player;
+  private Player player;
 
   @NotNull
   @Temporal(TemporalType.TIMESTAMP)
@@ -37,11 +37,11 @@ public class BannedIp {
     return this;
   }
 
-  public User getPlayer() {
+  public Player getPlayer() {
     return player;
   }
 
-  public BannedIp setPlayer(User player) {
+  public BannedIp setPlayer(Player player) {
     this.player = player;
     return this;
   }

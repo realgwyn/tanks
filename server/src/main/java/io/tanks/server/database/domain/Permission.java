@@ -18,7 +18,7 @@ public class Permission {
   private Long id;
 
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "permissions")
-  private Set<User> users;
+  private Set<Player> users;
 
   @Column(unique = true)
   private String name;
@@ -41,11 +41,11 @@ public class Permission {
     return this;
   }
 
-  public Set<User> getUsers() {
+  public Set<Player> getUsers() {
     return users;
   }
 
-  public Permission setUsers(Set<User> users) {
+  public Permission setUsers(Set<Player> users) {
     this.users = users;
     return this;
   }

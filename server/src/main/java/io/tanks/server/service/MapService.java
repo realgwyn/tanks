@@ -14,19 +14,19 @@ import org.springframework.stereotype.Component;
 import io.tanks.common.network.model.command.MapInfoData;
 import io.tanks.common.network.model.game.MapModel;
 import io.tanks.common.network.model.game.MapObject;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.cfg.GameplayConfig;
 
 @Component
 public class MapService {
 
   @Autowired
-  private ServerConfig config;
+  GameplayConfig gameplayConfig;
 
   private List<String> mapNames;
 
   @PostConstruct
   public void init() {
-    mapNames = config.getPropertyListString(ServerConfig.MAP_NAMES);
+    mapNames = gameplayConfig.getMapNames();
   }
 
   public MapModel loadMap(String mapName) {

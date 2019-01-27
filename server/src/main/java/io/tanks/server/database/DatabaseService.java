@@ -1,31 +1,33 @@
 package io.tanks.server.database;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
 
 import io.tanks.server.database.domain.MalformedPacketHistory;
 import io.tanks.server.database.domain.UnauthorizedActionHistory;
-import io.tanks.server.database.domain.User;
+import io.tanks.server.database.repository.MalformedPacketHistoryRepo;
+import io.tanks.server.database.repository.PlayerRepo;
+import io.tanks.server.database.repository.UnauthorizedActionHistoryRepo;
 
-@Component
-@Transactional
+@Service
 public class DatabaseService {
 
-  private Gson gson;
-
   @Autowired
-  private SessionFactory sessionFactory;
+  PlayerRepo playerRepo;
+  
+  @Autowired
+  UnauthorizedActionHistoryRepo unauthorizedActionHistoryRepo;
+  
+  @Autowired
+  MalformedPacketHistoryRepo malformedPacketHistoryRepo;
+  
+  private Gson gson;
 
   @PostConstruct
   public void init() {
@@ -35,7 +37,7 @@ public class DatabaseService {
   public void saveMalformedPacket(MalformedPacketHistory message) {
     String json = gson.toJson(message.getObject());
     message.setSerializedObject(json);
-    getSession().persist(message);
+    malformedPacketHistoryRepo.save(message);
   }
 
   public void saveUnauthorizedAction(String ipAddress, Object commandObject) {
@@ -44,28 +46,8 @@ public class DatabaseService {
         .setIpAddress(ipAddress)
         .setSerializedObject(json)
         .setTime(new Date());
-    getSession().persist(entity);
+    unauthorizedActionHistoryRepo.save(entity);
   }
 
-  public User getUserByUsername(String username) {
-    List<User> results = getSession().createCriteria(User.class).add(Restrictions.eq("username", username)).list();
-    if (!results.isEmpty()) {
-      return results.get(0);
-    }
-    return null;
-  }
-
-  public User createUser(String username, String hash, String email) {
-    User user = new User()
-        .setEmail(email)
-        .setHash(hash)
-        .setUsername(username);
-    getSession().persist(user);
-    return user;
-  }
-
-  private Session getSession() {
-    return sessionFactory.getCurrentSession();
-  }
 
 }

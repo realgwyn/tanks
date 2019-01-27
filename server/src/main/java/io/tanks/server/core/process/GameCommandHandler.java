@@ -46,8 +46,8 @@ public class GameCommandHandler extends ScheduledProcess {
 
   @PostConstruct
   public void init() {
-    pingSendingFrequency = config.getPropertyInt(ServerConfig.SERVER_NETWORK_PING_SENDING_FREQUENCY);
-    latencyStatsSendingFrequency = config.getPropertyInt(ServerConfig.SERVER_NETWORK_STATS_SENDING_FREQUENCY);
+    pingSendingFrequency = config.getPingSendingFrequency();
+    latencyStatsSendingFrequency = config.getStatsSendingFrequency();
   }
 
   @Override

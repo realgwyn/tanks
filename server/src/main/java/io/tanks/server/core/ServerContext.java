@@ -46,11 +46,11 @@ public class ServerContext {
    */
   @PostConstruct
   public void init() {
-    tcpPort = cfg.getPropertyInt(ServerConfig.SERVER_DEFAULT_TCP_PORT, 55555);
-    udpPort = cfg.getPropertyInt(ServerConfig.SERVER_DEFAULT_UDP_PORT, 55556);
-    serverName = cfg.getProperty(ServerConfig.SERVER_DEFAULT_SERVER_NAME, "Tanks Game Server");
-    matchDurationSeconds = cfg.getPropertyInt(ServerConfig.SERVER_MATCH_DURATION_SECONDS, 600);
-    roundDurationSeconds = cfg.getPropertyInt(ServerConfig.SERVER_ROUND_DURATION_SECONDS, 60);
+    tcpPort = cfg.getDefaultTcpPort();
+    udpPort = cfg.getDefaultUdpPort();
+    serverName = cfg.getDefaultServerName();
+    matchDurationSeconds = cfg.getMatchDurationSeconds();
+    roundDurationSeconds = cfg.getRoundDurationSeconds();
     gameType = defaultGameType;
   }
 

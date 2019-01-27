@@ -32,7 +32,7 @@ public class RoundStartServerState extends ServerState {
 
   @PostConstruct
   public void init() {
-    TIME_UNTIL_NEXT_STATE = cfg.getPropertyInt(ServerConfig.SERVER_ROUND_START_FREEZE_TIME_SECONDS, 1);
+    TIME_UNTIL_NEXT_STATE = cfg.getRoundStartFreezeTimeDurationSeconds();
   }
 
   public RoundStartServerState() {
