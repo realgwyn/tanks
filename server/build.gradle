@@ -1,26 +1,15 @@
 buildscript {
-	ext {
-		springBootVersion = '2.1.2.RELEASE'
-	}
 	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		jcenter()
 	}
 }
 
 dependencies {
-	runtime group: 'org.hsqldb', name: 'hsqldb', version: '2.3.3'
+	runtime group: 'org.hsqldb', name: 'hsqldb', version: '2.4.1'
 
 	compile(project(':common-core'))
 	compile(project(':common-game'))
 	compile(project(':common-network'))
-
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter', version: springBootVersion
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVersion
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVersion
-	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: springBootVersion
 
 	compile group: 'com.jgoodies', name: 'forms', version: '1.2.1'
 	compile group: 'com.jgoodies', name: 'jgoodies-common', version: '1.8.1'

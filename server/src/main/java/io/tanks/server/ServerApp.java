@@ -22,8 +22,6 @@ public class ServerApp {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext context = new SpringApplicationBuilder(ServerApp.class).headless(false).run(args);
-
-		ServerWindow window = context.getBean(ServerWindow.class);
 	}
 
 	@PostConstruct
