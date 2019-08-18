@@ -17,7 +17,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-import io.tanks.server.cfg.GameplayConfig;
+import io.tanks.server.config.GameplayConfig;
 import io.tanks.server.core.ServerController;
 
 @Component
@@ -48,8 +48,8 @@ public class ControlsPanel extends JPanel {
 
   private void initComponents() {
     setLayout(new FormLayout(
-        new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("80px"), FormFactory.RELATED_GAP_COLSPEC,
-            ColumnSpec.decode("100px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("110px"), },
+        new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("140px"), FormFactory.RELATED_GAP_COLSPEC,
+            ColumnSpec.decode("140px"), FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("140px"), },
         new RowSpec[] { FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,
             FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC,
             FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC,

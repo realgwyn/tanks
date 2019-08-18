@@ -1,10 +1,11 @@
 package io.tanks.server.core;
 
 import org.apache.log4j.Logger;
-import io.tanks.common.network.model.Command;
-import io.tanks.common.network.model.CommunicationMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.tanks.common.network.model.Command;
+import io.tanks.common.network.model.CommunicationMessage;
 
 /**
  * Separate thread used to send NetworkMessages
@@ -33,7 +34,7 @@ public class MessageSendingThread implements Runnable {
     while (running) {
       sendOutgoingMessages();
       try {
-        // XXX Performance: this sleep might be too long
+        //TODO XXX Performance: this sleep might be too long
         Thread.sleep(5);// Sleep a little bit
       } catch (InterruptedException e) {
       }

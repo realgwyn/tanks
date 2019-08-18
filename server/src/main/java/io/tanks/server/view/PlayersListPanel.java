@@ -4,12 +4,9 @@ package io.tanks.server.view;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.*;
-
-import io.tanks.server.core.ServerController;
-import io.tanks.server.model.PlayerServerModel;
-import io.tanks.server.view.component.PlayerListItem;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +15,10 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+
+import io.tanks.server.core.ServerController;
+import io.tanks.server.model.PlayerServerModel;
+import io.tanks.server.view.component.PlayerListItem;
 
 @Component
 public class PlayersListPanel extends JPanel {
@@ -89,9 +90,10 @@ public class PlayersListPanel extends JPanel {
   }
 
   public void removePlayer(PlayerServerModel model) {
-    // playerListItems.removeIf((PlayerListItem o) -> o.getModel().getPlayerId() == model.getPlayerId());
+    playerListItems = playerListItems.stream()
+        .filter(player -> player.getModel().getPlayerInfo().getPlayerId() != model.getPlayerInfo().getPlayerId())
+        .collect(Collectors.toList());
     refreshLayout();
-    throw new UnsupportedOperationException("Not implemented yet");
   }
 
   public void setPlayers(List<PlayerServerModel> players) {

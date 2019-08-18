@@ -14,14 +14,14 @@ import io.tanks.client.cfg.ClientConfig;
 import io.tanks.client.state.ClientState;
 import io.tanks.client.state.menu.LoadingGameState;
 import io.tanks.common.network.NetworkClient;
-import io.tanks.common.core.Loop;
+import io.tanks.common.core.SteadyTimeLoop;
 
 /**
  * 
  * @author rafal.kojta
  */
 @Component
-public class GameEngine extends Loop {
+public class GameEngine extends SteadyTimeLoop {
 
   private final static Logger logger = Logger.getLogger(GameEngine.class);
   private ClientState currentState;

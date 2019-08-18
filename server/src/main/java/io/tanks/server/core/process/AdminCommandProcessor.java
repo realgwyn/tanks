@@ -11,7 +11,6 @@ import io.tanks.common.network.model.command.admin.ChangeMap;
 import io.tanks.common.network.model.command.admin.ChangeNextMap;
 import io.tanks.common.network.model.command.admin.KickPlayer;
 import io.tanks.common.network.model.command.admin.RestartMatch;
-import io.tanks.common.network.model.command.admin.SystemCommand;
 import io.tanks.common.network.model.game.MapModel;
 import io.tanks.server.core.PlayerConnectionThread;
 import io.tanks.server.core.ServerContext;
@@ -22,9 +21,9 @@ import io.tanks.server.core.task.TaskManager;
 import io.tanks.server.service.MapService;
 
 @Component
-public class AdminCommandHandler extends ScheduledProcess {
+public class AdminCommandProcessor extends ScheduledProcess {
 
-  private final static Logger logger = Logger.getLogger(AdminCommandHandler.class);
+  private final static Logger logger = Logger.getLogger(AdminCommandProcessor.class);
 
   @Autowired
   ServerContext ctx;
@@ -41,14 +40,10 @@ public class AdminCommandHandler extends ScheduledProcess {
   @Autowired
   PlayerConnectionThread playerConnectionThread;
   @Autowired
-  SchedulerContext schedulerContext;
+  ProcessSchedulerContext schedulerContext;
 
   @Override
-  public void runProcess() {
-    processAdminCommands();
-  }
-
-  private void processAdminCommands() {
+  public void execute() {
     while (!bus.getIncomingAdminCommands().isEmpty()) {
       AdminCommand cmd = bus.getIncomingAdminCommands().poll();
       if (cmd instanceof BanPlayer) {
@@ -61,8 +56,6 @@ public class AdminCommandHandler extends ScheduledProcess {
         processKickPlayerCommand((KickPlayer) cmd);
       } else if (cmd instanceof RestartMatch) {
         processRestartMatchCommand((RestartMatch) cmd);
-      } else if (cmd instanceof SystemCommand) {
-        processSystemCommand((SystemCommand) cmd);
       } else {
         throw new UnsupportedOperationException("Unsupported type of command: " + cmd.getClass().getSimpleName());
       }
@@ -98,12 +91,6 @@ public class AdminCommandHandler extends ScheduledProcess {
 
   private void processRestartMatchCommand(RestartMatch cmd) {
     engine.setState(matchInitState);
-  }
-
-  private void processSystemCommand(SystemCommand cmd) {
-    // TODO
-    // save property to cfg file
-    // If property change requires server restart, send msg to admin informing about this
   }
 
 }

@@ -7,15 +7,15 @@ import io.tanks.server.core.ServerEventBus;
 import io.tanks.server.model.PlayerServerModel;
 
 @Component
-public class PlayerConnectionHandler extends ScheduledProcess {
+public class PlayerConnectionProcessor extends ScheduledProcess {
 
   @Autowired
   ServerEventBus bus;
   @Autowired
-  SchedulerContext schedulerCtx;
+  ProcessSchedulerContext schedulerCtx;
 
   @Override
-  public void runProcess() {
+  public void execute() {
     while (!bus.getIncomingPlayers().isEmpty()) {
       PlayerServerModel newPlayer = bus.getIncomingPlayers().poll();
       schedulerCtx.addPlayer(newPlayer);

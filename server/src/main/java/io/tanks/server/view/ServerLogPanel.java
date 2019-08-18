@@ -4,8 +4,6 @@ package io.tanks.server.view;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
@@ -32,14 +30,11 @@ public class ServerLogPanel extends JPanel {
             FormFactory.DEFAULT_ROWSPEC, }));
 
     JButton btnCopy = new JButton("Copy");
-    btnCopy.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Clipboard clipboard = toolkit.getSystemClipboard();
-        StringSelection strSel = new StringSelection(textArea.getText());
-        clipboard.setContents(strSel, null);
-      }
+    btnCopy.addActionListener(e -> {
+      Toolkit toolkit = Toolkit.getDefaultToolkit();
+      Clipboard clipboard = toolkit.getSystemClipboard();
+      StringSelection strSel = new StringSelection(textArea.getText());
+      clipboard.setContents(strSel, null);
     });
 
     JScrollPane scrollPane = new JScrollPane();
@@ -55,31 +50,21 @@ public class ServerLogPanel extends JPanel {
     add(btnCopy, "1, 4");
 
     final JToggleButton tglbtn = new JToggleButton("Lock");
-    tglbtn.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        if (tglbtn.isSelected()) {
-          ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        } else {
-          ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-        }
-
+    tglbtn.addActionListener(e -> {
+      if (tglbtn.isSelected()) {
+        ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+      } else {
+        ((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
       }
+
     });
     tglbtn.setBackground(UIManager.getColor("Button.background"));
     add(tglbtn, "3, 4");
 
     JButton btnClear = new JButton("Clear");
-    btnClear.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        textArea.setText("");
-      }
-    });
+    btnClear.addActionListener(e -> textArea.setText(""));
     btnClear.setBackground(UIManager.getColor("Button.background"));
     add(btnClear, "7, 4");
-
-
   }
 
   public void setText(String text) {

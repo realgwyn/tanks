@@ -22,7 +22,7 @@ import io.tanks.server.model.PlayerServerModel;
  *
  */
 @Component
-public class SchedulerContext {
+public class ProcessSchedulerContext {
 
   private MapModel currentMap;
   private List<PlayerServerModel> players;

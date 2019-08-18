@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.ServerConfig;
 import io.tanks.server.gameplay.DevelopmentGameType;
 import io.tanks.server.gameplay.GameType;
 

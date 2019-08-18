@@ -5,15 +5,12 @@ import org.springframework.stereotype.Component;
 
 import io.tanks.common.network.model.CommunicationMessage;
 import io.tanks.common.network.model.message.ChatMessage;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.ServerConfig;
 import io.tanks.server.core.ServerContext;
 import io.tanks.server.core.ServerEventBus;
 
-/**
- * Processes Player Chat Messages
- */
 @Component
-public class CommunicationMessageHandler extends ScheduledProcess {
+public class ChatMessageProcessor extends ScheduledProcess {
 
   @Autowired
   ServerContext ctx;
@@ -23,11 +20,7 @@ public class CommunicationMessageHandler extends ScheduledProcess {
   ServerConfig config;
 
   @Override
-  public void runProcess() {
-    processCommunitactionMessages();
-  }
-
-  private void processCommunitactionMessages() {
+  public void execute() {
     while (!bus.getIncomingCommunicationMessages().isEmpty()) {
       CommunicationMessage msg = bus.getIncomingCommunicationMessages().poll();
       if (msg instanceof ChatMessage) {

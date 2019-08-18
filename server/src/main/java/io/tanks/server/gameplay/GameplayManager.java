@@ -10,7 +10,7 @@ import io.tanks.common.network.model.game.MapModel;
 import io.tanks.server.core.PlayerConnectionThread;
 import io.tanks.server.core.ServerContext;
 import io.tanks.server.core.process.ProcessScheduler;
-import io.tanks.server.core.process.SchedulerContext;
+import io.tanks.server.core.process.ProcessSchedulerContext;
 import io.tanks.server.service.MapService;
 
 @Component
@@ -21,7 +21,7 @@ public class GameplayManager {
   @Autowired
   ServerContext serverContext;
   @Autowired
-  SchedulerContext schedulerContext;
+  ProcessSchedulerContext schedulerContext;
   @Autowired
   ProcessScheduler processScheduler;
   @Autowired

@@ -1,4 +1,4 @@
-package io.tanks.server.cfg;
+package io.tanks.server.config;
 
 import java.util.List;
 

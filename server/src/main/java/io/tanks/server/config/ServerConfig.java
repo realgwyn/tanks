@@ -1,4 +1,4 @@
-package io.tanks.server.cfg;
+package io.tanks.server.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -19,19 +19,19 @@ public class ServerConfig {
 	int defaultUdpPort;
 	String defaultServerName;
 	int updaterate;
-	boolean enableProcessScheduler;
-	boolean enablePlayerPositionCorrection;
+	boolean processScheduler;
+	boolean playerPositionCorrection;
 	boolean enableAntiCheat;
-	boolean enablePacketValidation;
+	boolean packetValidation;
 	int pingSendingFrequency;
 	int statsSendingFrequency;
 	long maxChatHistorySize;
 	int roundDurationSeconds;
 	int matchDurationSeconds;
 	int roundStartFreezeTimeDurationSeconds;
-	boolean enableFriendlyFire;
-	boolean enableOfflineDebugMode;
-	boolean enableNetworkDebugMode;
+	boolean friendlyFire;
+	boolean offlineDebugMode;
+	boolean networkDebugMode;
 
 	public int getMaxPlayers() {
 		return maxPlayers;
@@ -57,20 +57,20 @@ public class ServerConfig {
 		return updaterate;
 	}
 
-	public boolean isEnableProcessScheduler() {
-		return enableProcessScheduler;
+	public boolean isProcessScheduler() {
+		return processScheduler;
 	}
 
-	public boolean isEnablePlayerPositionCorrection() {
-		return enablePlayerPositionCorrection;
+	public boolean isPlayerPositionCorrection() {
+		return playerPositionCorrection;
 	}
 
 	public boolean isEnableAntiCheat() {
 		return enableAntiCheat;
 	}
 
-	public boolean isEnablePacketValidation() {
-		return enablePacketValidation;
+	public boolean isPacketValidation() {
+		return packetValidation;
 	}
 
 	public int getPingSendingFrequency() {
@@ -97,16 +97,16 @@ public class ServerConfig {
 		return roundStartFreezeTimeDurationSeconds;
 	}
 
-	public boolean isEnableFriendlyFire() {
-		return enableFriendlyFire;
+	public boolean isFriendlyFire() {
+		return friendlyFire;
 	}
 
-	public boolean isEnableOfflineDebugMode() {
-		return enableOfflineDebugMode;
+	public boolean isOfflineDebugMode() {
+		return offlineDebugMode;
 	}
 
-	public boolean isEnableNetworkDebugMode() {
-		return enableNetworkDebugMode;
+	public boolean isNetworkDebugMode() {
+		return networkDebugMode;
 	}
 
 	public void setMaxPlayers(int maxPlayers) {
@@ -133,20 +133,20 @@ public class ServerConfig {
 		this.updaterate = updaterate;
 	}
 
-	public void setEnableProcessScheduler(boolean enableProcessScheduler) {
-		this.enableProcessScheduler = enableProcessScheduler;
+	public void setProcessScheduler(boolean processScheduler) {
+		this.processScheduler = processScheduler;
 	}
 
-	public void setEnablePlayerPositionCorrection(boolean enablePlayerPositionCorrection) {
-		this.enablePlayerPositionCorrection = enablePlayerPositionCorrection;
+	public void setPlayerPositionCorrection(boolean playerPositionCorrection) {
+		this.playerPositionCorrection = playerPositionCorrection;
 	}
 
 	public void setEnableAntiCheat(boolean enableAntiCheat) {
 		this.enableAntiCheat = enableAntiCheat;
 	}
 
-	public void setEnablePacketValidation(boolean enablePacketValidation) {
-		this.enablePacketValidation = enablePacketValidation;
+	public void setPacketValidation(boolean packetValidation) {
+		this.packetValidation = packetValidation;
 	}
 
 	public void setPingSendingFrequency(int pingSendingFrequency) {
@@ -173,15 +173,15 @@ public class ServerConfig {
 		this.roundStartFreezeTimeDurationSeconds = roundStartFreezeTimeDurationSeconds;
 	}
 
-	public void setEnableFriendlyFire(boolean enableFriendlyFire) {
-		this.enableFriendlyFire = enableFriendlyFire;
+	public void setFriendlyFire(boolean friendlyFire) {
+		this.friendlyFire = friendlyFire;
 	}
 
-	public void setEnableOfflineDebugMode(boolean enableOfflineDebugMode) {
-		this.enableOfflineDebugMode = enableOfflineDebugMode;
+	public void setOfflineDebugMode(boolean offlineDebugMode) {
+		this.offlineDebugMode = offlineDebugMode;
 	}
 
-	public void setEnableNetworkDebugMode(boolean enableNetworkDebugMode) {
-		this.enableNetworkDebugMode = enableNetworkDebugMode;
+	public void setNetworkDebugMode(boolean networkDebugMode) {
+		this.networkDebugMode = networkDebugMode;
 	}
 }

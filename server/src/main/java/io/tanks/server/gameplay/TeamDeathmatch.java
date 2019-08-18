@@ -9,7 +9,7 @@ import io.tanks.common.network.model.command.GiveMoney;
 import io.tanks.common.network.state.PlayerState;
 import io.tanks.server.core.ServerContext;
 import io.tanks.server.core.ServerEventBus;
-import io.tanks.server.core.process.SchedulerContext;
+import io.tanks.server.core.process.ProcessSchedulerContext;
 import io.tanks.server.model.PlayerServerModel;
 import io.tanks.server.service.MapService;
 
@@ -21,7 +21,7 @@ public class TeamDeathmatch extends GameType {
   @Autowired
   ServerEventBus bus;
   @Autowired
-  SchedulerContext schedulerContext;
+  ProcessSchedulerContext schedulerContext;
   @Autowired
   MapService mapService;
 

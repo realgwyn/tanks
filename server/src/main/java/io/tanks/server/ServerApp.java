@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import io.tanks.server.cfg.GameplayConfig;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.GameplayConfig;
+import io.tanks.server.config.ServerConfig;
 
 @SpringBootApplication
 public class ServerApp {

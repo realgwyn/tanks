@@ -1,19 +1,16 @@
 package io.tanks.server.view.component;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
-import io.tanks.common.network.model.command.admin.BanPlayer;
-import io.tanks.common.network.model.command.admin.KickPlayer;
-import io.tanks.server.core.ServerController;
-import io.tanks.server.model.PlayerServerModel;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+
+import io.tanks.common.network.model.command.admin.BanPlayer;
+import io.tanks.common.network.model.command.admin.KickPlayer;
+import io.tanks.server.core.ServerController;
+import io.tanks.server.model.PlayerServerModel;
 
 public class PlayerListItem extends JPanel {
 
@@ -66,25 +63,19 @@ public class PlayerListItem extends JPanel {
     add(btnKick, "14, 2");
 
     btnBan = new JButton("Ban");
-
     add(btnBan, "16, 2");
     setModel(playerServerModel);
     initActions();
   }
 
   private void initActions() {
-    btnKick.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        controller.actionKickPlayer(new KickPlayer().setPlayerId(playerServerModel.getConnectionId()));
-      }
-    });
-    btnBan.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        controller.actionBanPlayer(new BanPlayer().setPlayerId(playerServerModel.getConnectionId()).setBanTimeLenghtMinutes(60));
-      }
-    });
+    btnKick.addActionListener(e -> controller.actionKickPlayer(
+        new KickPlayer().setPlayerId(playerServerModel.getConnectionId())));
+    
+    btnBan.addActionListener(e -> controller.actionBanPlayer(
+        new BanPlayer()
+            .setPlayerId(playerServerModel.getConnectionId())
+            .setBanTimeMinutes(60)));
   }
 
   private void setModel(PlayerServerModel model) {

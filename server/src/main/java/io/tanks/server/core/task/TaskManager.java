@@ -22,7 +22,7 @@ import io.tanks.server.database.domain.MalformedPacketHistory;
 import io.tanks.server.service.AuthenticationService;
 
 /**
- * Invokes task in separate thread
+ * Invokes batch tasks in separate thread
  * 
  * @author rafal.kojta
  *
@@ -86,7 +86,7 @@ public class TaskManager {
       msg.setType(ServerMessage.ServerMessageType.FORBIDDEN);
       msg.setText("You are not authenticated to execute this command");
       bus.getOutgoingCommunicationMessages().add(msg);
-      String ipAddress = serverNetworkAdapter.getIpAddressByConectionId(msg.getConnectionIdFrom());
+      String ipAddress = serverNetworkAdapter.getIpAddressByConnectionId(msg.getConnectionIdFrom());
       dbService.saveUnauthorizedAction(ipAddress, msg);
     }
   }

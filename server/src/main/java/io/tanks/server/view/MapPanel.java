@@ -18,13 +18,13 @@ import io.tanks.common.core.utils.GraphicsUtils;
 public class MapPanel extends JPanel {
 
   private List<PlayerServerModel> players;
-  private MapModel map;
+  private MapModel mapModel;
 
   public MapPanel() {
     players = new ArrayList<>();
-    map = new MapModel();
-    map.setHeight(1600);
-    map.setWidth(1600);
+    mapModel = new MapModel();
+    mapModel.setHeight(1600);
+    mapModel.setWidth(1600);
     setBackground(Color.WHITE);
   }
 
@@ -32,8 +32,8 @@ public class MapPanel extends JPanel {
     this.players = players;
   }
 
-  public void setMapModel(MapModel map) {
-    this.map = map;
+  public void setMapModel(MapModel mapModel) {
+    this.mapModel = mapModel;
   }
 
   public void refresh() {
@@ -44,8 +44,8 @@ public class MapPanel extends JPanel {
   public void paintComponent(Graphics g) {
     int width = getWidth();
     int height = getHeight();
-    int mapWidth = map.getWidth();
-    int mapHeight = map.getHeight();
+    int mapWidth = mapModel.getWidth();
+    int mapHeight = mapModel.getHeight();
     float widthRatio = ((float) width) / ((float) mapWidth);
     float heightRatio = ((float) height) / ((float) mapHeight);
 
@@ -67,7 +67,7 @@ public class MapPanel extends JPanel {
 
     g.setColor(Color.black);
     g.drawRect(1, 1, width - 2, height - 2);
-    for (MapObject object : map.getObjects()) {
+    for (MapObject object : mapModel.getObjects()) {
       g.drawPolygon(GraphicsUtils.scale((Polygon) object.getShape(), widthRatio, heightRatio));
     }
     for (PlayerServerModel player : players) {

@@ -14,7 +14,7 @@ import io.tanks.common.network.model.command.Disconnect;
 import io.tanks.common.network.model.command.Latency;
 import io.tanks.common.network.model.command.Ping;
 import io.tanks.common.network.model.command.PlayersLatency;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.ServerConfig;
 import io.tanks.server.core.ServerContext;
 import io.tanks.server.core.ServerEventBus;
 import io.tanks.server.model.PlayerServerModel;
@@ -23,16 +23,16 @@ import io.tanks.server.model.PlayerServerModel;
  * Processes GameCommands
  */
 @Component
-public class GameCommandHandler extends ScheduledProcess {
+public class GameCommandProcessor extends ScheduledProcess {
 
-  private final static Logger logger = Logger.getLogger(GameCommandHandler.class);
+  private final static Logger logger = Logger.getLogger(GameCommandProcessor.class);
 
   @Autowired
   ServerContext ctx;
   @Autowired
   ServerEventBus bus;
   @Autowired
-  SchedulerContext schedulerCtx;
+  ProcessSchedulerContext schedulerCtx;
   @Autowired
   ServerConfig config;
 
@@ -51,7 +51,7 @@ public class GameCommandHandler extends ScheduledProcess {
   }
 
   @Override
-  public void runProcess() {
+  public void execute() {
     currentTime = System.currentTimeMillis();
     while (!bus.getIncomingCommands().isEmpty()) {
       Command cmd = bus.getIncomingCommands().poll();

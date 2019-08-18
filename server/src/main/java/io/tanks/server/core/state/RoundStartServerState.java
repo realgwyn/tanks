@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import io.tanks.common.network.state.ServerStateType;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.ServerConfig;
 import io.tanks.server.core.ServerEngine;
 import io.tanks.server.core.process.ProcessScheduler;
 import io.tanks.server.gameplay.GameplayManager;

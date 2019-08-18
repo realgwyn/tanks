@@ -6,18 +6,13 @@ public class BanPlayer extends AdminCommand {
 
   private static final long serialVersionUID = -3767574307222712576L;
 
-  public enum BanReason {
-    CHEATING, VERBAL_ABUSEMENT, ASSHOLE, OTHER
-  }
-
   public BanPlayer() {
 
   }
 
   private int playerId;
-  private long banTimeLenghtMinutes;
-  private BanReason reason;
-  private String comment;
+  private long banTimeMinutes;
+  private String reason;
 
   public int getPlayerId() {
     return playerId;
@@ -29,29 +24,20 @@ public class BanPlayer extends AdminCommand {
   }
 
   public long getBanTimeLenght() {
-    return banTimeLenghtMinutes;
+    return banTimeMinutes;
   }
 
-  public BanPlayer setBanTimeLenghtMinutes(long banTimeLenghtMinutes) {
-    this.banTimeLenghtMinutes = banTimeLenghtMinutes;
+  public BanPlayer setBanTimeMinutes(long banTimeMinutes) {
+    this.banTimeMinutes = banTimeMinutes;
     return this;
   }
 
-  public BanReason getReason() {
+  public String getReason() {
     return reason;
   }
 
-  public BanPlayer setReason(BanReason reason) {
+  public BanPlayer setReason(String reason) {
     this.reason = reason;
-    return this;
-  }
-
-  public String getComment() {
-    return comment;
-  }
-
-  public BanPlayer setComment(String comment) {
-    this.comment = comment;
     return this;
   }
 

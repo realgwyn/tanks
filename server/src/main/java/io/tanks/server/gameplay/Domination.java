@@ -2,12 +2,12 @@ package io.tanks.server.gameplay;
 
 import java.util.List;
 
-import io.tanks.server.core.ServerContext;
-import io.tanks.server.core.process.SchedulerContext;
-import io.tanks.server.model.PlayerServerModel;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import io.tanks.server.core.ServerContext;
+import io.tanks.server.core.process.ProcessSchedulerContext;
+import io.tanks.server.model.PlayerServerModel;
 
 @Component
 public class Domination extends GameType {
@@ -15,7 +15,7 @@ public class Domination extends GameType {
   @Autowired
   ServerContext serverContext;
   @Autowired
-  SchedulerContext schedulerContext;
+  ProcessSchedulerContext schedulerContext;
 
   @Override
   public void reinitialize() {

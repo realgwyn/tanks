@@ -1,7 +1,6 @@
 package io.tanks.server;
 
 
-import java.awt.*;
 import java.beans.Beans;
 import java.util.List;
 
@@ -45,28 +44,27 @@ public class ServerWindow extends JFrame {
 
   private JPanel contentPane;
 
-  /**
-   * Launch the application.
-   */
-  public static void main(String[] args) {
-    EventQueue.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          ServerWindow frame = new ServerWindow();
-          frame.setVisible(true);
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    });
-  }
+//  /**
+//   * Launch the application.
+//   */
+//  public static void main(String[] args) {
+//    EventQueue.invokeLater(new Runnable() {
+//      @Override
+//      public void run() {
+//        try {
+//          ServerWindow frame = new ServerWindow();
+//          frame.setVisible(true);
+//        } catch (Exception e) {
+//          e.printStackTrace();
+//        }
+//      }
+//    });
+//  }
 
-  public ServerWindow()
-      throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+  public ServerWindow() throws Exception {
     setTitle("TanksServer 0.0.1");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setBounds(100, 100, 955, 465);
+    setBounds(100, 100, 1200, 600);
     contentPane = new JPanel();
     contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
     setContentPane(contentPane);

@@ -15,15 +15,15 @@ import io.tanks.server.model.PlayerServerModel;
  * Processes GameEvents
  */
 @Component
-public class GameEventHandler extends ScheduledProcess {
+public class GameEventProcessor extends ScheduledProcess {
 
   @Autowired
   private ServerEventBus bus;
   @Autowired
-  private SchedulerContext schedulerCtx;
+  private ProcessSchedulerContext schedulerCtx;
 
   @Override
-  public void runProcess() {
+  public void execute() {
     processGameEvents();
   }
 

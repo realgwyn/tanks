@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import io.tanks.common.network.model.command.MapInfoData;
 import io.tanks.common.network.model.game.MapModel;
 import io.tanks.common.network.model.game.MapObject;
-import io.tanks.server.cfg.GameplayConfig;
+import io.tanks.server.config.GameplayConfig;
 
 @Component
 public class MapService {

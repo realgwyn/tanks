@@ -8,17 +8,17 @@ import org.springframework.stereotype.Component;
 
 import io.tanks.common.network.NetworkException;
 import io.tanks.common.network.NetworkServer;
-import io.tanks.server.cfg.ServerConfig;
-import io.tanks.server.core.process.GameEventHandler;
+import io.tanks.server.config.ServerConfig;
+import io.tanks.server.core.process.GameEventProcessor;
 import io.tanks.server.core.state.MatchInitServerState;
 import io.tanks.server.core.state.OfflineServerState;
 import io.tanks.server.core.state.ServerState;
 import io.tanks.server.service.SyncStateService;
 import io.tanks.server.ServerWindow;
-import io.tanks.common.core.Loop;
+import io.tanks.common.core.SteadyTimeLoop;
 
 @Component
-public class ServerEngine extends Loop {
+public class ServerEngine extends SteadyTimeLoop {
 
   private final static Logger logger = Logger.getLogger(ServerEngine.class);
   private ServerState currentState;
@@ -34,7 +34,7 @@ public class ServerEngine extends Loop {
   @Autowired
   ServerNetworkAdapter networkAdapter;
   @Autowired
-  GameEventHandler gameEventHandler;
+  GameEventProcessor gameEventHandler;
   @Autowired
   MessageSendingThread messageSendingThread;
   @Autowired

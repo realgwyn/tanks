@@ -7,12 +7,6 @@ import org.springframework.stereotype.Component;
 import io.tanks.common.network.model.AdminCommand;
 import io.tanks.server.database.DatabaseService;
 
-/**
- * Uses bCrypt
- * 
- * @author rafcio
- *
- */
 @Component
 public class AuthenticationService {
 

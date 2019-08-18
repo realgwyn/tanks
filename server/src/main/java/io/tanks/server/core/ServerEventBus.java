@@ -5,6 +5,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.stereotype.Component;
+
 import io.tanks.common.network.model.AdminCommand;
 import io.tanks.common.network.model.Command;
 import io.tanks.common.network.model.CommunicationMessage;
@@ -12,7 +14,6 @@ import io.tanks.common.network.model.GameEvent;
 import io.tanks.common.network.model.command.Handshake;
 import io.tanks.common.network.model.udp.PlayerSnapshot;
 import io.tanks.server.model.PlayerServerModel;
-import org.springframework.stereotype.Component;
 
 /**
  * Thread-safe event writing/reading between threads
@@ -45,10 +46,10 @@ public class ServerEventBus {
     leavingPlayerIds = new ConcurrentLinkedQueue<>();
     incomingPlayers = new ConcurrentLinkedQueue<>();
 
-    flushEvents();
+    clearAllEvents();
   }
 
-  public void flushEvents() {
+  public void clearAllEvents() {
     incomingPlayerSnapshots = new ConcurrentLinkedQueue<>();
 
     incomingGameEvents = new ConcurrentLinkedQueue<>();

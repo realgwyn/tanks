@@ -11,7 +11,7 @@ import io.tanks.common.network.model.game.PlayerModel;
 import io.tanks.common.network.model.udp.GameSnapshot;
 import io.tanks.common.network.model.udp.PlayerPosition;
 import io.tanks.common.network.model.udp.PlayerSnapshot;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.ServerConfig;
 import io.tanks.server.core.ServerContext;
 import io.tanks.server.core.ServerEngine;
 import io.tanks.server.core.ServerEventBus;
@@ -19,18 +19,15 @@ import io.tanks.server.core.ServerNetworkAdapter;
 import io.tanks.server.model.PlayerServerModel;
 import io.tanks.common.core.utils.GraphicsUtils;
 
-/**
- * Processes Player movements
- */
 @Component
-public class PlayerMovementsHandler extends ScheduledProcess {
+public class PlayerMovementProcessor extends ScheduledProcess {
 
   @Autowired
   ServerContext ctx;
   @Autowired
   ServerEventBus bus;
   @Autowired
-  SchedulerContext schedulerCtx;
+  ProcessSchedulerContext schedulerCtx;
   @Autowired
   ServerEngine engine;
   @Autowired
@@ -41,7 +38,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
   private boolean playerPositionCorrectionEnabled;
 
   @Override
-  public void runProcess() {
+  public void execute() {
     updatePlayerPositions();
     playerPositionsCorrection();
     sendOutGameSnapshot();
@@ -49,7 +46,7 @@ public class PlayerMovementsHandler extends ScheduledProcess {
 
   @PostConstruct
   public void init() {
-    playerPositionCorrectionEnabled = config.isEnablePlayerPositionCorrection();
+    playerPositionCorrectionEnabled = config.isPlayerPositionCorrection();
   }
 
   private void updatePlayerPositions() {

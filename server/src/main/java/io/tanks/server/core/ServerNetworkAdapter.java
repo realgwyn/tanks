@@ -19,7 +19,7 @@ import io.tanks.common.network.model.TCPMessage;
 import io.tanks.common.network.model.UDPMessage;
 import io.tanks.common.network.model.command.Handshake;
 import io.tanks.common.network.model.udp.PlayerSnapshot;
-import io.tanks.server.cfg.ServerConfig;
+import io.tanks.server.config.ServerConfig;
 import io.tanks.server.core.task.TaskManager;
 import io.tanks.server.service.NetworkMessageValidator;
 
@@ -40,15 +40,13 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   @Autowired
   TaskManager taskManager;
 
-  private boolean packetValidatorEnabled;
-  private boolean offlineDebugModeEnabled;
-  private boolean networkDebugModeEnabled;
+  private boolean offlineDebugMode;
+  private boolean networkDebugMode;
 
   @PostConstruct
   public void init() {
-    packetValidatorEnabled = config.isEnablePacketValidation();
-    offlineDebugModeEnabled = config.isEnableOfflineDebugMode();
-    networkDebugModeEnabled = config.isEnableNetworkDebugMode();
+    offlineDebugMode = config.isOfflineDebugMode();
+    networkDebugMode = config.isNetworkDebugMode();
   }
 
   public NetworkServer getServer() {
@@ -63,10 +61,10 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   }
 
   public void sendToAllTCP(TCPMessage msg) {
-    if (offlineDebugModeEnabled) {
+    if (offlineDebugMode) {
       logger.debug("-> TCPbroadcast " + msg.toString());
     } else {
-      if (networkDebugModeEnabled) {
+      if (networkDebugMode) {
         logger.debug("-> TCPbroadcast " + msg.toString());
       }
       server.sendToAllTCP(msg);
@@ -78,10 +76,10 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   }
 
   public void sendToAllExceptTCP(int connectionID, TCPMessage msg) {
-    if (offlineDebugModeEnabled) {
+    if (offlineDebugMode) {
       logger.debug("-> TCPxor(id:" + connectionID + ")" + msg.toString());
     } else {
-      if (networkDebugModeEnabled) {
+      if (networkDebugMode) {
         logger.debug("-> TCPxor(id:" + connectionID + ")" + msg.toString());
       }
       server.sendToAllExceptTCP(connectionID, msg);
@@ -93,10 +91,10 @@ public class ServerNetworkAdapter extends NetworkAdapter {
   }
 
   public void sendTCP(int connectionID, TCPMessage msg) {
-    if (offlineDebugModeEnabled) {
+    if (offlineDebugMode) {
       logger.debug("-> TCP(id:" + connectionID + ")" + msg.toString());
     } else {
-      if (networkDebugModeEnabled) {
+      if (networkDebugMode) {
         logger.debug("-> TCP(id:" + connectionID + ")" + msg.toString());
       }
       server.sendTCP(connectionID, msg);
@@ -109,33 +107,13 @@ public class ServerNetworkAdapter extends NetworkAdapter {
 
   @Override
   public void receivedTCPMessage(Connection conn, TCPMessage message) {
-    if (offlineDebugModeEnabled) {
+    if (offlineDebugMode) {
       logger.debug("<- TCP(id:" + conn.getID() + ")" + message.toString());
     } else {
-      if (networkDebugModeEnabled) {
+      if (networkDebugMode) {
         logger.debug("<- TCP(id:" + conn.getID() + ")" + message.toString());
       }
-      if (packetValidatorEnabled) {
-        validateAndProcessIncomingMessage(conn, message);
-      } else {
-        if (message instanceof GameEvent) {
-          bus.getIncomingGameEvents().add((GameEvent) message);
-        } else if (message instanceof Command) {
-          if (message instanceof Handshake) {
-            bus.getIncomingHandshakes().add((Handshake) message);
-          } else {
-            bus.getIncomingCommands().add((Command) message);
-          }
-        } else if (message instanceof CommunicationMessage) {
-          bus.getIncomingCommunicationMessages().add((CommunicationMessage) message);
-        } else if (message instanceof AdminCommand) {
-          AdminCommand cmd = (AdminCommand) message;
-          cmd.setConnectionIdFrom(conn.getID());
-          taskManager.createTask(cmd);
-        } else {
-          throw new UnsupportedOperationException("Unsupported Message type: " + message.getClass().getSimpleName());
-        }
-      }
+      validateAndProcessIncomingMessage(conn, message);
     }
   }
 
@@ -181,7 +159,7 @@ public class ServerNetworkAdapter extends NetworkAdapter {
     return server.getClosedConnections().poll();
   }
 
-  public String getIpAddressByConectionId(int connectionIdFrom) {
+  public String getIpAddressByConnectionId(int connectionIdFrom) {
     Connection conn = server.getConnectionById(connectionIdFrom);
     if (conn != null) {
       return conn.getRemoteAddressTCP().getHostName();

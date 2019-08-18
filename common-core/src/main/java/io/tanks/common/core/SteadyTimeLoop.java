@@ -5,7 +5,7 @@ package io.tanks.common.core;
  * 
  * @author rafal.kojta
  */
-public abstract class Loop implements Runnable{
+public abstract class SteadyTimeLoop implements Runnable{
 
   protected boolean runFlag = false;
   protected double UPDATE_RATE = 100;

@@ -31,22 +31,21 @@ import io.tanks.common.network.model.command.admin.ChangeNextMap;
 import io.tanks.common.network.model.command.admin.KickPlayer;
 import io.tanks.common.network.model.command.admin.RestartMatch;
 import io.tanks.common.network.model.command.admin.RestartRound;
-import io.tanks.common.network.model.command.admin.SystemCommand;
+import io.tanks.common.network.model.event.HitEvent;
 import io.tanks.common.network.model.event.KillEvent;
 import io.tanks.common.network.model.event.MoveEvent;
-import io.tanks.common.network.model.message.ChatMessage;
-import io.tanks.common.network.model.message.ServerMessage;
-import io.tanks.common.network.state.ClientStateType;
-import io.tanks.common.network.state.ServerStateType;
-import io.tanks.common.network.model.event.HitEvent;
 import io.tanks.common.network.model.event.RespawnEvent;
 import io.tanks.common.network.model.event.ShootEvent;
 import io.tanks.common.network.model.game.MapObject;
 import io.tanks.common.network.model.game.PlayerModel;
+import io.tanks.common.network.model.message.ChatMessage;
+import io.tanks.common.network.model.message.ServerMessage;
 import io.tanks.common.network.model.udp.GameSnapshot;
 import io.tanks.common.network.model.udp.PlayerPosition;
 import io.tanks.common.network.model.udp.PlayerSnapshot;
+import io.tanks.common.network.state.ClientStateType;
 import io.tanks.common.network.state.PlayerState;
+import io.tanks.common.network.state.ServerStateType;
 
 public class NetworkDataModel {
 
@@ -81,7 +80,6 @@ public class NetworkDataModel {
     kryo.register(KickPlayer.class);
     kryo.register(RestartMatch.class);
     kryo.register(RestartRound.class);
-    kryo.register(SystemCommand.class);
 
     kryo.register(GameEvent.class);
     kryo.register(HitEvent.class);
@@ -100,8 +98,6 @@ public class NetworkDataModel {
     kryo.register(PlayerPosition.class);
 
     kryo.register(ServerStateType.class);
-    kryo.register(BanPlayer.BanReason.class);
-    kryo.register(SystemCommand.SystemCommandName.class);
     kryo.register(Point2D.class);
     kryo.register(Polygon.class);
     kryo.register(PlayerState.class);
